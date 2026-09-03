@@ -1,10 +1,13 @@
 package it.uniroma3.siw_festival.model;
 
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity 
 public class Regista {
@@ -17,6 +20,8 @@ public class Regista {
     private String nazionalità;
 
     // un regista può aver diretto più film
+    @OneToMany(mappedBy = "regista")
+    private List<Film> film;
 
     public String getNome() {
         return nome;

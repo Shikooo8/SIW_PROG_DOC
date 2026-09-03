@@ -24,7 +24,7 @@ public class Festival {
     private String descrizione;
 
     // un festival presenta più film
-    @ManyToMany(mappedBy = "festival")
+    @ManyToMany(mappedBy = "festivals")
     private List<Film> film;
 
     // un festival prevede più proiezioni

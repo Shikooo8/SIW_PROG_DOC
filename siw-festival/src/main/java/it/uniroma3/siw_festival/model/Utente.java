@@ -1,5 +1,6 @@
 package it.uniroma3.siw_festival.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,6 +12,7 @@ public class Utente {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String username;
     private String password;
     private String ruolo;

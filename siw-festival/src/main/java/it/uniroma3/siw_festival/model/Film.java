@@ -22,13 +22,13 @@ public class Film {
     private String paeseProduzione;
 
     @OneToMany(mappedBy = "film")
-    List<Proiezione> proiezioni; // un film può avere più proiezioni
+    private List<Proiezione> proiezioni; // un film può avere più proiezioni
     @ManyToMany 
     private List<Festival> festivals;// un film può partecipare a uno o più festival
     @ManyToOne
     private Regista regista; // ogni film ha un regista
     @OneToMany(mappedBy = "film")
-    List<Recensione> recensioni; // un film può avere più recensioni
+    private List<Recensione> recensioni; // un film può avere più recensioni
 
     public String getTitolo() {
         return titolo;

@@ -6,8 +6,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity 
+@Table (uniqueConstraints = @UniqueConstraint(columnNames = {"film_id", "utente_id"}))
 public class Recensione {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
