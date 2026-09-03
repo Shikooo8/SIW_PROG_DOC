@@ -1,0 +1,49 @@
+package it.uniroma3.siw_festival.service;
+
+
+import java.util.List;
+
+import it.uniroma3.siw_festival.model.Film;
+import it.uniroma3.siw_festival.repository.FilmRepository;
+import org.springframework.stereotype.Service;
+
+@Service
+public class FilmService {
+
+    private FilmRepository filmRepository;
+
+    
+    public FilmService(FilmRepository filmRepository) {
+        this.filmRepository = filmRepository;
+
+    }
+
+    public Film findById(Long id){
+        return filmRepository.findById(id).get();
+    }
+
+    public List<Film> findAll () {
+        return (List<Film>) filmRepository.findAll();
+    }
+
+    /*
+    public Film save(Film film) /*throws DuplicateMovieException {
+        if (filmRepository.existsByTitleAndYear(film.getTitolo(), film.getAnno())) {
+            //throw new DuplicateMovieException(movie.getTitle(), movie.getYear());
+            
+        }
+    return filmRepository.save(film);
+    }
+     */
+}
+/*public class DuplicateMovieException extends RuntimeException {
+    public DuplicateMovieException(String title, Integer year) {
+        super("Il film '" + title + "' (" + year + ") è già presente nel sistema");
+    }
+}*/
+
+
+
+
+
+

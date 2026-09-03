@@ -1,12 +1,15 @@
 package it.uniroma3.siw_festival.model;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.ManyToOne;
 
 public class Proiezione {
 
     private java.time.LocalDate data;
     private java.time.LocalTime ora;
-    private String stato;
+    @Enumerated(EnumType.STRING)
+    private StatoProiezione stato;
 
     
     @ManyToOne private Festival festival; //una proiezione appartiene a un festival
@@ -31,12 +34,14 @@ public class Proiezione {
         this.ora = ora;
     }
 
-    public String getStato() {
+    public StatoProiezione getStato() {
         return stato;
     }
 
-    public void setStato(String stato) {
+    public void setStato(StatoProiezione stato) {
         this.stato = stato;
     }
+
+    
 
 }
