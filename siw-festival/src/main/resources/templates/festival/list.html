@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Elenco Festival - SiwFestival</title>
+  <link rel="stylesheet" th:href="@{/css/style.css?version=3}" />
+</head>
+<body>
+    <header>
+        <h1>I Nostri Festival</h1>
+        <p><a th:href="@{/}" style="color: white; text-decoration: underline;">Torna alla Home</a></p>
+    </header>
+
+    <div class="nav-container" style="flex-direction: column; align-items: center;">
+        <!-- Mostra questo messaggio se non ci sono festival -->
+        <div th:if="${festivals.isEmpty()}" style="margin-bottom: 20px;">
+            <p>Non ci sono festival nel sistema al momento.</p>
+        </div>
+
+        <!-- Cicla sulla lista dei festival passata dal controller -->
+        <ul style="list-style: none; padding: 0; width: 50%;">
+            <li th:each="festival : ${festivals}" style="margin-bottom: 15px; text-align: center;">
+                <a th:href="@{'/festival/' + ${festival.id}}" class="nav-button" style="display: block;">
+                    <span th:text="${festival.nome}">Nome Festival</span> - 
+                    <span th:text="${festival.città}">Città</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,43 @@
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f4f8; /* Un blu molto chiaro e neutro per lo sfondo */
+    color: #002244;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #004080; /* Blu scuro per la barra in alto */
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+h1 {
+    margin: 0;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: center; /* Centra orizzontalmente gli elementi flex */
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.nav-button {
+    background-color: #0066cc; /* Blu brillante per i pulsanti */
+    color: white;
+    padding: 15px 30px;
+    text-decoration: none; /* Rimuove la sottolineatura dai link */
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border: 2px solid transparent;
+}
+
+.nav-button:hover {
+    background-color: #004080;
+    border: 2px solid #002244;
+}

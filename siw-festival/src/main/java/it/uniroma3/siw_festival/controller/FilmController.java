@@ -30,19 +30,21 @@ public class FilmController {
     private FestivalService festivalService;
     
 
-    public FilmController(FilmService filmService){
+    public FilmController(FilmService filmService, RegistaService registaService, FestivalService festivalService){
         this.filmService = filmService;
+        this.festivalService = festivalService;
+        this.registaService = registaService;
     }
 
     @PostMapping("/film")
     public String save(@Valid @ModelAttribute("film") Film film, BindingResult bindingResult, Model model) {
 
         if(bindingResult.hasErrors()){  //controlla automaticamente la verifica dei vincoli e gli errori stanno in binding
-            return "film/form.html";
+            return "film/form";
         } 
         try{
             this.filmService.save(film);
-            return "redirect:/movies";
+            return "redirect:/film";
         }
         catch(DuplicateFilmException e){
             bindingResult.reject("film.duplcate");  //registro un errore
@@ -53,13 +55,13 @@ public class FilmController {
 
     // ---- pubblico ----
     
-    @GetMapping("/film/list")
+    @GetMapping("/film")
     public String list(Model model) {
         model.addAttribute("films", filmService.findAll());
         return "film/list";
     }
     
-    @GetMapping("film/{id}")
+    @GetMapping("/film/{id}")
     public String show(@PathVariable Long id, Model model) {
         Film film = filmService.findById(id);
         model.addAttribute("film", film);
@@ -68,16 +70,16 @@ public class FilmController {
         return "film/show";
     }
 
-    /* 
-    // ---- admin ----
-    
-    @GetMapping("/new")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public String createForm(Model model) {
+    @GetMapping("/film/new")
+    //@PreAuthorize("hasAuthority('ADMIN')")
+    public String form(Model model) {
         model.addAttribute("film", new Film());
         model.addAttribute("registi", registaService.findAll());
         return "film/form";
     }
+    /* 
+    // ---- admin ----
+    
     
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")

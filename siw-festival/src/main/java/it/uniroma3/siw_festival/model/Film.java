@@ -80,4 +80,46 @@ public class Film {
         this.paeseProduzione = paeseProduzione;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Proiezione> getProiezioni() {
+        return proiezioni;
+    }
+
+    public void setProiezioni(List<Proiezione> proiezioni) {
+        this.proiezioni = proiezioni;
+    }
+
+    public List<Festival> getFestivals() {
+        return festivals;
+    }
+
+    public void setFestivals(List<Festival> festivals) {
+        this.festivals = festivals;
+    }
+
+    public Regista getRegista() {
+        return regista;
+    }
+
+    public void setRegista(Regista regista) {
+        this.regista = regista;
+    }
+
+    public List<Recensione> getRecensioni() {
+        return recensioni;
+    }
+
+    public void setRecensioni(List<Recensione> recensioni) {
+        this.recensioni = recensioni;
+    }
+
+    
+
 }

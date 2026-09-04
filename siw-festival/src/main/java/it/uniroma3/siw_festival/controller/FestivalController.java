@@ -24,10 +24,10 @@ public class FestivalController {
 
     //#==================================pubblico#==================================
 
-    @GetMapping ("/festival/list")
+    @GetMapping ("/festival")
     public String list(Model model) {
         model.addAttribute("festivals", festivalService.findAll());
-        return "festivals/list";
+        return "festival/list";
     }
 
     @GetMapping("/festival/{id}")
@@ -36,7 +36,7 @@ public class FestivalController {
         model.addAttribute("festival", festival);
         // festival.getFilm() e festival.getProiezioni() alimentano la stessa pagina
         // (spec: "il dettaglio di un festival deve permettere di accedere ai film e alle proiezioni associate")
-        return "festivals/show";
+        return "festival/show";
     }
 
     //#==================================admin#==================================

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Elenco Film - SiwFestival</title>
+    <link rel="stylesheet" th:href="@{/css/style.css?version=3}" />
+</head>
+
+<body>
+    <header>
+        <h1>Film in Catalogo</h1>
+        <p><a th:href="@{/}" style="color: white; text-decoration: underline;">Torna alla Home</a></p>
+    </header>
+
+    <div class="nav-container" style="flex-direction: column; align-items: center;">
+        <!-- Controlla se la lista dei film è vuota -->
+        <div th:if="${films.isEmpty()}" style="margin-bottom: 20px;">
+            <p>Non ci sono film nel sistema.</p>
+        </div>
+
+        <ul style="list-style: none; padding: 0; width: 50%;">
+            <li th:each="film : ${films}" style="margin-bottom: 15px; text-align: center;">
+                <!-- Costruisce un link dinamico all'id del film -->
+                <a th:href="@{'/film/' + ${film.id}}" class="nav-button" style="display: block;">
+                    <span th:text="${film.titolo}">Titolo Film</span>
+                    (<span th:text="${film.anno}">Anno</span>)
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="nav-container">
+        <!-- Questi link punteranno ai metodi @GetMapping("/festival") e @GetMapping("/film") -->
+        <a th:href="@{/film/new}" class="nav-button">Aggiungi un Film</a>
+    </div>
+</body>
+
+</html>

@@ -1,19 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Lista dei Film</title>
-   
-
+    <meta charset="UTF-8">
+    <title>SiwFestival - Homepage</title>
+    <link rel="stylesheet" th:href="@{/css/style.css?version=3}" />
 </head>
 
 <body>
-    <h1> SIW MOVIE</h1>
-    <p>
-        ciao non so che scrivere
-         <a th:href="@{'/film'}" >Lista film</a>
-    </p>
-    
+
+    <header>
+        <h1>Benvenuto a SiwFestival</h1>
+        <p>Il portale dedicato al cinema e ai festival internazionali</p>
+    </header>
+
+    <div class="nav-container">
+        <!-- Questi link punteranno ai metodi @GetMapping("/festival") e @GetMapping("/film") -->
+        <a th:href="@{/festival}" class="nav-button">Elenco Festival</a>
+        <a th:href="@{/film}" class="nav-button">Elenco Film</a>
+    </div>
 
 </body>
 

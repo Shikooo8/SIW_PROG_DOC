@@ -78,4 +78,30 @@ public class Festival {
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Film> getFilm() {
+        return film;
+    }
+
+    public void setFilm(List<Film> film) {
+        this.film = film;
+    }
+
+    public List<Proiezione> getProiezioni() {
+        return proiezioni;
+    }
+
+    public void setProiezioni(List<Proiezione> proiezioni) {
+        this.proiezioni = proiezioni;
+    }
+
+    
 }

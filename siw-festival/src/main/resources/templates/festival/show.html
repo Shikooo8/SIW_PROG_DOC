@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dettaglio Festival - SiwFestival</title>
+    <link rel="stylesheet" th:href="@{/css/style.css?version=3}" />
+</head>
+<body>
+    <header>
+        <h1 th:text="${festival.nome}">Nome Festival</h1>
+        <p><a th:href="@{/festival}" style="color: white; text-decoration: underline;">Torna all'elenco dei festival</a></p>
+    </header>
+
+    <div class="nav-container" style="flex-direction: column; align-items: center;">
+        
+        <!-- Box contenitore per i dettagli -->
+        <div style="background-color: white; padding: 30px; border-radius: 8px; width: 60%; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            
+            <h3 style="color: #004080; border-bottom: 2px solid #f0f4f8; padding-bottom: 5px;">Informazioni Principali</h3>
+            <p><strong>Anno :</strong> <span th:text="${festival.anno}">2026</span></p>
+            <!-- Aggiungi qui durata, genere, ecc. se li hai nel Model -->
+
+            <h3 style="color: #004080; border-bottom: 2px solid #f0f4f8; padding-bottom: 5px; margin-top: 20px;"></h3>
+            <!-- th:if controlla che il  non sia null prima di stamparlo -->
+            <p th:if="${festival.città}" th:text="${festival.città}">Nome e Cognome </p>
+          
+
+            <!-- Esempio per mostrare la lista dei Festival associati -->
+            <h3 style="color: #004080; border-bottom: 2px solid #f0f4f8; padding-bottom: 5px; margin-top: 20px;">Festival</h3>
+            <ul th:if="${festival.film != null and !festival.film.isEmpty()}">
+                <li th:each=" film : ${festival.film}" th:text="${film.titolo}">Nome Festival</li>
+            </ul>
+            <p th:if="${festival.film == null or festival.film.isEmpty()}">Questo film non partecipa a nessun festival.</p>
+
+        </div>
+    </div>
+</body>
+</html>

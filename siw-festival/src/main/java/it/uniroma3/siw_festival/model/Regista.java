@@ -55,4 +55,21 @@ public class Regista {
         this.nazionalità = nazionalità;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Film> getFilm() {
+        return film;
+    }
+
+    public void setFilm(List<Film> film) {
+        this.film = film;
+    }
+
+    
 }
