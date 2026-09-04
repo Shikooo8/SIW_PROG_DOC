@@ -8,6 +8,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 @Entity 
 @Table (uniqueConstraints = @UniqueConstraint(columnNames = {"film_id", "utente_id"}))
@@ -18,6 +21,10 @@ public class Recensione {
     
 
     private String testo;
+    
+    @NotNull
+    @Min(1)
+    @Max(10)
     private Integer voto;
     private java.time.LocalDateTime data;
 

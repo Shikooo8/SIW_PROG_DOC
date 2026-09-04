@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Nuovo Film</title>
+  <link rel="stylesheet" href="/stile.css?version=3" />
+  </head>
+
+  <body>
+    <div><a href="/"><img src="/logo-siw.png" width="50%"/></a></div>
+    <h1>Aggiungi un film</h1>
+    <form th:action="@{/film}" method="POST" th:object="${film}">
+      <div>
+        <label>Titolo:</label> <span><input type="text" th:field="${film.titolo}" /></span>
+        <span th:if="${#fields.hasErrors('titolo')}" th:errors="*{titolo}"></span>
+      </div>
+      <div>
+        <label>Anno:</label> <span><input type="text" th:field="${film.anno}" /></span>
+        <span th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}"></span>
+      </div>
+      <div>
+        <span><button type="submit">Conferma</button></span>
+      </div>
+    </form>
+  </body>
+</html>

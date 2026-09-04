@@ -26,21 +26,17 @@ public class FilmService {
         return (List<Film>) filmRepository.findAll();
     }
 
-    /*
-    public Film save(Film film) /*throws DuplicateMovieException {
-        if (filmRepository.existsByTitleAndYear(film.getTitolo(), film.getAnno())) {
-            //throw new DuplicateMovieException(movie.getTitle(), movie.getYear());
+    
+    public Film save(Film film) throws DuplicateFilmException {
+        if(filmRepository.existsByTitoloAndAnno(film.getTitolo(), film.getAnno())) {
+            throw new DuplicateFilmException(film.getTitolo(), film.getAnno());
             
         }
     return filmRepository.save(film);
     }
-     */
+     
 }
-/*public class DuplicateMovieException extends RuntimeException {
-    public DuplicateMovieException(String title, Integer year) {
-        super("Il film '" + title + "' (" + year + ") è già presente nel sistema");
-    }
-}*/
+
 
 
 
