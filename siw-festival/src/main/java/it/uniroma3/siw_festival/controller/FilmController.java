@@ -9,17 +9,26 @@ import org.springframework.validation.BindingResult;
 
 import it.uniroma3.siw_festival.model.Film;
 import it.uniroma3.siw_festival.service.DuplicateFilmException;
+import it.uniroma3.siw_festival.service.FestivalService;
 import it.uniroma3.siw_festival.service.FilmService;
+import it.uniroma3.siw_festival.service.RegistaService;
 import jakarta.validation.Valid;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+//import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller 
 public class FilmController {
     @Autowired FilmService filmService;
+    private RegistaService registaService;
+    private FestivalService festivalService;
+    
 
     public FilmController(FilmService filmService){
         this.filmService = filmService;
@@ -41,7 +50,88 @@ public class FilmController {
 
         }
     }
+
+    // ---- pubblico ----
     
+    @GetMapping("/film/list")
+    public String list(Model model) {
+        model.addAttribute("films", filmService.findAll());
+        return "film/list";
+    }
+    
+    @GetMapping("film/{id}")
+    public String show(@PathVariable Long id, Model model) {
+        Film film = filmService.findById(id);
+        model.addAttribute("film", film);
+        // il template mostra film.getRegista(), film.getFestival(),
+        // film.getProiezioni(), film.getRecensioni()
+        return "film/show";
+    }
+
+    /* 
+    // ---- admin ----
+    
+    @GetMapping("/new")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String createForm(Model model) {
+        model.addAttribute("film", new Film());
+        model.addAttribute("registi", registaService.findAll());
+        return "film/form";
+    }
+    
+    @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String create(@Valid @ModelAttribute("film") Film film,
+                          BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("registi", registaService.findAll());
+            return "film/form";
+        }
+        Film saved = filmService.save(film);
+        return "redirect:/film/" + saved.getId();
+    }
+    
+    @GetMapping("/{id}/edit")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String editForm(@PathVariable Long id, Model model) {
+        model.addAttribute("film", filmService.findById(id));
+        model.addAttribute("registi", registaService.findAll());
+        return "film/form";
+    }
+    
+    @PostMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String update(@PathVariable Long id,
+                          @Valid @ModelAttribute("film") Film film,
+                          BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("registi", registaService.findAll());
+            return "film/form";
+        }
+        film.setId(id);
+        filmService.save(film);
+        return "redirect:/film/" + id;
+    }
+    
+    // ---- associazione film <-> festival (admin) ----
+    
+    @PostMapping("/{filmId}/festival/{festivalId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String addToFestival(@PathVariable Long filmId, @PathVariable Long festivalId) {
+        filmService.addToFestival(filmId, festivalId);
+        return "redirect:/film/" + filmId;
+    }
+    
+    @DeleteMapping("/{filmId}/festival/{festivalId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String removeFromFestival(@PathVariable Long filmId, @PathVariable Long festivalId) {
+        filmService.removeFromFestival(filmId, festivalId);
+        return "redirect:/film/" + filmId;
+    }
+    */    
+
+
+ 
 
     
 
