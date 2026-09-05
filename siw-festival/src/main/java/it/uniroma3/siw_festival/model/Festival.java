@@ -7,29 +7,47 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.ManyToMany;
-//import java.util.Objects;
 
 @Entity
 public class Festival {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+    
+    @NotBlank 
     private String nome;
+    
+    @NotNull 
     private Integer anno;
+    
+    @NotBlank 
     private String città;
+    
+    @NotBlank 
     private java.time.LocalDate dataInizio;
+    
+    @NotBlank 
     private java.time.LocalDate dataFine;
+    
     private String descrizione;
 
-    // un festival presenta più film
     @ManyToMany(mappedBy = "festivals")
-    private List<Film> film;
+    private List<Film> film;                    // un festival presenta più film
 
-    // un festival prevede più proiezioni
     @OneToMany(mappedBy = "festival")
-    private List<Proiezione> proiezioni;
+    private List<Proiezione> proiezioni;        // un festival prevede più proiezioni
+
+
+//==================== EQUALS & HASHCODE ==============    
+
+//TODO
+
+
+//=================== GETTERS & SETTERS ===============
 
     public String getNome() {
         return nome;

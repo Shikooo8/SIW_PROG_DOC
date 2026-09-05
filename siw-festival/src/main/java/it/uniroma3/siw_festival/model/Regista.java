@@ -8,20 +8,35 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity 
 public class Regista {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    
+    @NotBlank 
     private String nome;
+    
+    @NotBlank 
     private String cognome;
+    
     private java.time.LocalDate dataNascita;
+    
     private String nazionalità;
 
-    // un regista può aver diretto più film
     @OneToMany(mappedBy = "regista")
-    private List<Film> film;
+    private List<Film> film;                        // un regista può aver diretto più film
+
+
+    //==================== EQUALS & HASHCODE ==============    
+
+//TODO
+
+
+//=================== GETTERS & SETTERS ===============
+
 
     public String getNome() {
         return nome;

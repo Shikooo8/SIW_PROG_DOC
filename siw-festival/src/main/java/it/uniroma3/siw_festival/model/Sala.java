@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity 
 public class Sala {
@@ -14,11 +16,25 @@ public class Sala {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank 
     private String nome;
+
     private String indirizzo;
+
+    @Min(1)
     private Integer capienza;
     
-    @OneToMany(mappedBy = "sala") private List<Proiezione> proiezioni;  //una sala può ospitare più proiezioni
+    @OneToMany(mappedBy = "sala") 
+    private List<Proiezione> proiezioni;  //una sala può ospitare più proiezioni
+
+    
+//==================== EQUALS & HASHCODE ==============    
+
+//TODO
+
+
+//=================== GETTERS & SETTERS ===============
+
 
     public String getNome() {
         return nome;

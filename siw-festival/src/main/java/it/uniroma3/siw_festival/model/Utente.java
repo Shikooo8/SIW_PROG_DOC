@@ -15,7 +15,17 @@ public class Utente {
     @Column(nullable = false, unique = true)
     private String username;
     private String password;
+    
     private String ruolo;
+
+
+
+//==================== EQUALS & HASHCODE ==============    
+
+//TODO
+
+
+//=================== GETTERS & SETTERS ===============
 
 
     

@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity 
 public class Proiezione {
@@ -14,17 +15,37 @@ public class Proiezione {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+
     private java.time.LocalDate data;
+    
     private java.time.LocalTime ora;
+    
     @Enumerated(EnumType.STRING)
     private StatoProiezione stato;
 
     
-    @ManyToOne private Festival festival; //una proiezione appartiene a un festival
+    @ManyToOne 
+    private Festival festival;      //una proiezione appartiene a un festival
     
-    @ManyToOne private Film film;//una proiezione riguarda un film
+    @NotBlank 
+    @ManyToOne 
+    private Film film;              //una proiezione riguarda un film
     
-    @ManyToOne private Sala sala; // una proiezione si svolge in una sala
+    @NotBlank 
+    @ManyToOne 
+    private Sala sala;              // una proiezione si svolge in una sala
+
+
+
+
+
+//==================== EQUALS & HASHCODE ==============    
+
+//TODO
+
+
+//=================== GETTERS & SETTERS ===============
+
     
     public java.time.LocalDate getData() {
         return data;

@@ -1,9 +1,9 @@
 package it.uniroma3.siw_festival.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
+//import org.springframework.ui.Model;
+//import org.springframework.validation.BindingResult;
+//import org.springframework.web.bind.annotation.GetMapping;
 
 import it.uniroma3.siw_festival.service.FestivalService;
 import it.uniroma3.siw_festival.service.FilmService;

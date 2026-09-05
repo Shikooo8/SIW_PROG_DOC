@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 @Entity 
@@ -19,18 +20,32 @@ public class Recensione {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-
+    @NotBlank
     private String testo;
     
-    @NotNull
+    @NotNull 
     @Min(1)
     @Max(10)
     private Integer voto;
+    
     private java.time.LocalDateTime data;
 
-    @ManyToOne private Film film; // una recensione riguarda un film
-    @ManyToOne private Utente utente; // una recensione è scritta da un utente registrato; Un utente può inserire al massimo una recensione per uno stesso film.
+    @NotNull 
+    @ManyToOne 
+    private Film film;          // una recensione riguarda un film
+    
+    @ManyToOne 
+    private Utente utente;      // una recensione è scritta da un utente registrato; Un utente può inserire al massimo una recensione per uno stesso film.
      
+
+
+//==================== EQUALS & HASHCODE ==============    
+
+//TODO
+
+
+//=================== GETTERS & SETTERS ===============
+
     public String getTesto() {
         return testo;
     }

@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -27,18 +28,35 @@ public class Film {
     @Min(1890)
     @NotFutureYear
     private Integer anno;
+
+    @Min(0)
+    @Max(300)
     private Integer durata;
+
     private String genere;
+    
     private String paeseProduzione;
 
     @OneToMany(mappedBy = "film")
-    private List<Proiezione> proiezioni; // un film può avere più proiezioni
+    private List<Proiezione> proiezioni;        // un film può avere più proiezioni
+    
     @ManyToMany 
-    private List<Festival> festivals;// un film può partecipare a uno o più festival
+    private List<Festival> festivals;           // un film può partecipare a uno o più festival
+    
     @ManyToOne
-    private Regista regista; // ogni film ha un regista
+    private Regista regista;                    // ogni film ha un regista
+    
     @OneToMany(mappedBy = "film")
-    private List<Recensione> recensioni; // un film può avere più recensioni
+    private List<Recensione> recensioni;        // un film può avere più recensioni
+
+
+//==================== EQUALS & HASHCODE ==============    
+
+//TODO
+
+
+//=================== GETTERS & SETTERS ===============
+
 
     public String getTitolo() {
         return titolo;
