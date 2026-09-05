@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import it.uniroma3.siw_festival.model.Regista;
 import it.uniroma3.siw_festival.repository.RegistaRepository;
+import jakarta.transaction.Transactional;
 
 @Service 
 public class RegistaService {
@@ -23,6 +24,15 @@ public class RegistaService {
 
     public List<Regista> findAll () {
         return (List<Regista>) registaRepository.findAll();
+    }
+
+    @Transactional 
+    public Regista save(Regista regista) {
+         if(registaRepository.existsByNomeAndCognome(regista.getNome(), regista.getCognome())) {
+            throw new DuplicateRegistaException(regista.getNome(), regista.getCognome());
+            
+        }
+        return registaRepository.save(regista);
     }
 
 

@@ -27,5 +27,10 @@ public class FestivalService {
         return (List<Festival>) festivalRepository.findAll();
     }
 
+    
+        public Long count() {
+        return this.festivalRepository.count();
+    }
+
 
 }

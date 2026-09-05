@@ -15,9 +15,18 @@
     </header>
 
     <div class="nav-container">
-        <!-- Questi link punteranno ai metodi @GetMapping("/festival") e @GetMapping("/film") -->
-        <a th:href="@{/festival}" class="nav-button">Elenco Festival</a>
-        <a th:href="@{/film}" class="nav-button">Elenco Film</a>
+        <!-- Per i metodi @GetMapping("/festival") e @GetMapping("/film") -->
+
+        <a th:href="@{/festival}" class="nav-button">
+            <span >Elenco Festival (</span><span th:text="${festisvalNUmber}">N</span><span>)</span>
+        </a>
+
+   
+
+        <a th:href="@{/film}" class="nav-button">
+            <span  >Elenco Film (</span><span th:text="${filmFNumber}">N</span><span>)</span>
+        </a>
+
     </div>
 
 </body>

@@ -3,49 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <title>Nuovo Film - SiwFestival</title>
-    <link rel="stylesheet" th:href="@{/css/style.css?version=3}" />
+    <link rel="stylesheet" th:href="@{/css/style.css?version=4}" />
 </head>
 <body>
     <header>
         <h1>Aggiungi un nuovo Film</h1>
-        <p><a th:href="@{/film}" style="color: white; text-decoration: underline;">Annulla e torna all'elenco</a></p>
+        <p><a th:href="@{/film}" class="header-link">Annulla e torna all'elenco</a></p>
     </header>
 
-    <div class="nav-container" style="flex-direction: column; align-items: center;">
+    <div class="nav-container">
         
-        <!-- Il form è associato all'URL /film in POST, e all'oggetto "film" -->
-        <form th:action="@{/film}" method="POST" th:object="${film}" 
-              style="background-color: white; padding: 30px; border-radius: 8px; width: 50%; box-shadow: 0 4px 8px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 15px;">
+        
+        <!-- form con l'azione del controller, metodo, oggetto creato  e  ??? -->
+        <form th:action="@{/film}" method="POST" th:object="${film}" class="form-box">
             
-            <!-- Mostra errori globali se presenti (es. film duplicato) -->
-            <div th:if="${#fields.hasGlobalErrors()}" style="color: red; font-weight: bold; padding-bottom: 10px;">
+            <div th:if="${#fields.hasGlobalErrors()}" class="global-error">
                 <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore generico</p>
             </div>
 
-            <div>
-                <label style="font-weight: bold; color: #002244;">Titolo:</label><br/>
-                <!-- th:field mappa in automatico l'input sul campo titolo dell'entità -->
-                <input type="text" th:field="*{titolo}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;"/>
-                <!-- Mostra gli errori di validazione di Spring (@NotBlank, ecc) -->
-                <span th:if="${#fields.hasErrors('titolo')}" th:errors="*{titolo}" style="color: red; font-size: 0.9em;"></span>
+            <!-- Dati del Film -->
+            <div class="form-group">
+                <label class="form-label">Titolo:</label>
+            
+                <!-- AGGIUNGO UN CAMPO E FACCIO IL CONTROLLO DI VALIDITÀ-->
+                <input type="text" th:field="*{titolo}" class="input-field"/>
+                <span th:if="${#fields.hasErrors('titolo')}" th:errors="*{titolo}" class="error-text"></span>
             </div>
 
-            <div>
-                <label style="font-weight: bold; color: #002244;">Anno:</label><br/>
-                <input type="number" th:field="*{anno}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;"/>
-                <span th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}" style="color: red; font-size: 0.9em;"></span>
+            <div class="form-group">
+                <label class="form-label">Anno:</label>
+                <input type="number" th:field="*{anno}" class="input-field"/>
+                <span th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}" class="error-text"></span>
             </div>
 
-            <div>
-                <label style="font-weight: bold; color: #002244;">Regista:</label><br/>
-                <!-- Select popolata dinamicamente con i registi presenti nel DB -->
-                <select th:field="*{regista}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
-                    <option value="">-- Seleziona un Regista --</option>
-                    <option th:each="r : ${registi}" th:value="${r.id}" th:text="${r.nome} + ' ' + ${r.cognome}"></option>
+            <hr style="width: 100%; border: 0; border-top: 1px solid #eee;" />
+
+            <!-- Creazione Nuovo Regista -->
+            <!-- E SE IL REGISTA FOSSE GIÀ PRESENTE????????-->
+            
+
+
+
+            <h3 style="margin-bottom: 0;">Nuovo Regista</h3>
+            
+            <div class="form-group">
+                <label class="form-label">Nome Regista:</label>
+                <!-- Accediamo all'attributo 'nome' dell'oggetto regista innestato -->
+                <input type="text" th:field="*{regista.nome}" class="input-field" required/>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Cognome Regista:</label>
+                <!-- Accediamo all'attributo 'cognome' dell'oggetto regista innestato -->
+                <input type="text" th:field="*{regista.cognome}" class="input-field" required/>
+            </div>
+
+            <hr style="width: 100%; border: 0; border-top: 1px solid #eee;" />
+
+            <!-- Selezione Festival -->
+            <div class="form-group">
+                <label class="form-label">Assegna a un Festival:</label>
+                <!-- NOTA: se nel tuo modello Film hai 'private List<Festival> festivals;', 
+                     sostituisci *{festival} con *{festivals} -->
+                <select th:field="*{festivals}" class="input-field">
+                    <option value="">-- Seleziona un Festival (Opzionale) --</option>
+                    <option th:each="f : ${festivals}" th:value="${f.id}" th:text="${f.nome}"></option>
                 </select>
             </div>
 
-            <button type="submit" class="nav-button" style="margin-top: 15px; cursor: pointer;">Salva Film</button>
+            <button type="submit" class="nav-button">Salva Film e Regista</button>
         </form>
 
     </div>

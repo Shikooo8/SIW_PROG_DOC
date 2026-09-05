@@ -10,6 +10,7 @@
 <body>
     <header>
         <h1>Film in Catalogo</h1>
+        <a>(</a><a th:text="${filmsNumber}">N</a><a>)</a>
         <p><a th:href="@{/}" style="color: white; text-decoration: underline;">Torna alla Home</a></p>
     </header>
 
@@ -30,7 +31,7 @@
         </ul>
     </div>
     <div class="nav-container">
-        <!-- Questi link punteranno ai metodi @GetMapping("/festival") e @GetMapping("/film") -->
+        <!-- Per metodo @GetMapping("/film/new") nel controller -->
         <a th:href="@{/film/new}" class="nav-button">Aggiungi un Film</a>
     </div>
 </body>

@@ -6,5 +6,7 @@ import it.uniroma3.siw_festival.model.Regista;
  * RegistaRepository
  */
 public interface RegistaRepository extends CrudRepository<Regista, Long>{
+    boolean existsByNomeAndCognome(String nome, String cognome);
+
 
 }
