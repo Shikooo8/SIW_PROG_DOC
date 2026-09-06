@@ -6,4 +6,6 @@ import it.uniroma3.siw_festival.model.Festival;
 
 public interface FestivalRepository extends CrudRepository<Festival, Long>{
 
+    boolean existsByNomeAndAnno(String nome, Integer anno);
+
 }

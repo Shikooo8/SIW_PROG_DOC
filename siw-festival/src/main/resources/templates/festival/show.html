@@ -20,17 +20,18 @@
             <p><strong>Anno :</strong> <span th:text="${festival.anno}">2026</span></p>
             <!-- Aggiungi qui durata, genere, ecc. se li hai nel Model -->
 
-            <h3 style="color: #004080; border-bottom: 2px solid #f0f4f8; padding-bottom: 5px; margin-top: 20px;"></h3>
             <!-- th:if controlla che il  non sia null prima di stamparlo -->
-            <p th:if="${festival.città}" th:text="${festival.città}">Nome e Cognome </p>
+            <!--p th:if="${festival.città}" th:text="${festival.città}"> </p -->            
+            <p><strong>Città :</strong> <span th:text="${festival.città}">Roma</span></p>
+
           
 
             <!-- Esempio per mostrare la lista dei Festival associati -->
-            <h3 style="color: #004080; border-bottom: 2px solid #f0f4f8; padding-bottom: 5px; margin-top: 20px;">Festival</h3>
+            <h3 style="color: #004080; border-bottom: 2px solid #f0f4f8; padding-bottom: 5px; margin-top: 20px;">Film del festival</h3>
             <ul th:if="${festival.film != null and !festival.film.isEmpty()}">
                 <li th:each=" film : ${festival.film}" th:text="${film.titolo}">Nome Festival</li>
             </ul>
-            <p th:if="${festival.film == null or festival.film.isEmpty()}">Questo film non partecipa a nessun festival.</p>
+            <p th:if="${festival.film == null or festival.film.isEmpty()}">Questo festival non ha ancora nessun film assegnato.</p>
 
         </div>
     </div>

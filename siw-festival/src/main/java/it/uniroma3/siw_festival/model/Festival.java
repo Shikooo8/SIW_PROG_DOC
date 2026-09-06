@@ -2,6 +2,8 @@ package it.uniroma3.siw_festival.model;
 
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,11 +28,11 @@ public class Festival {
     
     @NotBlank 
     private String città;
-    
-    @NotBlank 
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private java.time.LocalDate dataInizio;
     
-    @NotBlank 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private java.time.LocalDate dataFine;
     
     private String descrizione;

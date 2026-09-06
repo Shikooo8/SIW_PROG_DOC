@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import it.uniroma3.siw_festival.model.Festival;
-
+import it.uniroma3.siw_festival.model.Film;
 import it.uniroma3.siw_festival.repository.FestivalRepository;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 
 @Service 
 public class FestivalService {
@@ -30,6 +32,17 @@ public class FestivalService {
     
         public Long count() {
         return this.festivalRepository.count();
+    }
+
+    @Transactional
+      public Festival save(Festival festival) throws DuplicateFilmException {
+
+        if(festivalRepository.existsByNomeAndAnno(festival.getNome(), festival.getAnno())) {
+            throw new DuplicateFestivalException(festival.getNome(), festival.getAnno());
+            
+        }
+        //logger.info("è stato creato il festival: id={}", festival.getId()); //TODO da controllare
+        return festivalRepository.save(festival);
     }
 
 

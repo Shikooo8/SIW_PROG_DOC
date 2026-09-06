@@ -37,17 +37,18 @@ public class FilmController {
         this.registaService = registaService;
     }
 
-    @PostMapping("/film")
+   @PostMapping("/film")
     public String save(@Valid @ModelAttribute("film") Film film, BindingResult bindingResult, Model model) {
 
         if(bindingResult.hasErrors()){  
-            // Ricarica i festival se torni alla form
+            // IMPORTANTE: Ricarica sia i festival che i registi!
             model.addAttribute("festivals", festivalService.findAll());
+            model.addAttribute("registi", registaService.findAll()); 
             return "film/form";
         } 
         try{
-            // Salva PRIMA il nuovo regista nel DB, altrimenti JPA va in errore
-            if (film.getRegista() != null) {
+            // Salva PRIMA il nuovo regista nel DB, ma SOLO se stiamo creando uno nuovo (id == null)
+            if (film.getRegista() != null && film.getRegista().getId() == null) {
                 this.registaService.save(film.getRegista());
             }
             
@@ -56,7 +57,9 @@ public class FilmController {
         }
         catch(DuplicateFilmException e){
             bindingResult.reject("film.duplicate");
-            model.addAttribute("festivals", festivalService.findAll()); // Ricarica anche qui
+            // Ricarica le liste anche qui
+            model.addAttribute("festivals", festivalService.findAll()); 
+            model.addAttribute("registi", registaService.findAll()); 
             return "film/form";
         }
     }
@@ -87,6 +90,7 @@ public class FilmController {
         nuovoFilm.setRegista(new Regista()); 
         
         model.addAttribute("film", nuovoFilm);
+        model.addAttribute("registi", registaService.findAll()); 
         model.addAttribute("festivals", festivalService.findAll()); 
 
         return "film/form";

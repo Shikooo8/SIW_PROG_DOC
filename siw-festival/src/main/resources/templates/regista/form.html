@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuovo Regista - SiwFestival</title>
+    <link rel="stylesheet" th:href="@{/css/style.css?version=4}" />
+</head>
+<body>
+    <header>
+        <h1>Aggiungi un nuovo Regista</h1>
+        <p><a th:href="@{/registi}" class="header-link">Annulla e torna all'elenco</a></p>
+    </header>
+
+    <div class="nav-container">
+        <form th:action="@{/regista}" method="POST" th:object="${regista}" class="form-box">
+
+            <div th:if="${#fields.hasGlobalErrors()}" class="global-error">
+                <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore generico</p>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Nome:</label>
+                <input type="text" th:field="*{nome}" class="input-field"/>
+                <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error-text"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Cognome:</label>
+                <input type="text" th:field="*{cognome}" class="input-field"/>
+                <span th:if="${#fields.hasErrors('cognome')}" th:errors="*{cognome}" class="error-text"></span>
+            </div>
+
+            <!-- NUOVO: campo opzionale, tipo LocalDate nel model -->
+            <div class="form-group">
+                <label class="form-label">Data di nascita:</label>
+                <input type="date" th:field="*{dataNascita}" class="input-field"/>
+                <span th:if="${#fields.hasErrors('dataNascita')}" th:errors="*{dataNascita}" class="error-text"></span>
+            </div>
+
+            <!-- NUOVO: campo opzionale -->
+            <div class="form-group">
+                <label class="form-label">Nazionalità:</label>
+                <input type="text" th:field="*{nazionalità}" class="input-field"/>
+                <span th:if="${#fields.hasErrors('nazionalità')}" th:errors="*{nazionalità}" class="error-text"></span>
+            </div>
+
+            <button type="submit" class="nav-button">Salva Regista</button>
+        </form>
+    </div>
+</body>
+</html>

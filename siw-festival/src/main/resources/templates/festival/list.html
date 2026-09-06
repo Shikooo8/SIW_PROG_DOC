@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Elenco Festival - SiwFestival</title>
-  <link rel="stylesheet" th:href="@{/css/style.css?version=3}" />
+    <link rel="stylesheet" th:href="@{/css/style.css?version=3}" />
 </head>
+
 <body>
     <header>
         <h1>I Nostri Festival</h1>
@@ -21,11 +23,15 @@
         <ul style="list-style: none; padding: 0; width: 50%;">
             <li th:each="festival : ${festivals}" style="margin-bottom: 15px; text-align: center;">
                 <a th:href="@{'/festival/' + ${festival.id}}" class="nav-button" style="display: block;">
-                    <span th:text="${festival.nome}">Nome Festival</span> - 
+                    <span th:text="${festival.nome}">Nome Festival</span> -
                     <span th:text="${festival.città}">Città</span>
                 </a>
             </li>
         </ul>
     </div>
+    <div class="nav-container">
+        <a th:href="@{/festival/new}" class="nav-button">Aggiungi un festival</a>
+    </div>
 </body>
+
 </html>
