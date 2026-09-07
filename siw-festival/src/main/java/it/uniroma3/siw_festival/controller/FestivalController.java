@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import it.uniroma3.siw_festival.exception.DuplicateFestivalException;
+import it.uniroma3.siw_festival.exception.DuplicateFilmException;
 import it.uniroma3.siw_festival.model.Festival;
 import it.uniroma3.siw_festival.model.Film;
-import it.uniroma3.siw_festival.service.DuplicateFestivalException;
-import it.uniroma3.siw_festival.service.DuplicateFilmException;
 import it.uniroma3.siw_festival.service.FestivalService;
 import it.uniroma3.siw_festival.service.FilmService;
 import jakarta.validation.Valid;
@@ -47,13 +47,14 @@ public class FestivalController {
         return "festival/show";
     }
 
+   
     // #==================================admin#==================================
     @GetMapping("/festival/new")
     // @PreAuthorize("hasAuthority('ADMIN')")
     public String createForm(Model model) {
         model.addAttribute("festival", new Festival());
             model.addAttribute("films", filmService.findAll());
-
+//TODO NON SI REGISTRANO I FILM :(
         return "festival/form";
     }
 
@@ -74,6 +75,8 @@ public class FestivalController {
             return "festival/form";
         }
     }
+
+
     /*
      * @PostMapping
      * 

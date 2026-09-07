@@ -9,9 +9,9 @@ import org.springframework.ui.Model;
 //import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.validation.BindingResult;
 
+import it.uniroma3.siw_festival.exception.DuplicateFilmException;
 import it.uniroma3.siw_festival.model.Film;
 import it.uniroma3.siw_festival.model.Regista;
-import it.uniroma3.siw_festival.service.DuplicateFilmException;
 import it.uniroma3.siw_festival.service.FestivalService;
 import it.uniroma3.siw_festival.service.FilmService;
 import it.uniroma3.siw_festival.service.RegistaService;

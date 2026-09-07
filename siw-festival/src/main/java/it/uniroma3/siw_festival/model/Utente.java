@@ -8,12 +8,19 @@ import jakarta.persistence.Id;
 
 @Entity 
 public class Utente {
+
+    public static final String DEFAULT_ROLE = "DEFAULT";
+    public static final String USER_ROLE = "USER";
+    public static final String ADMIN_ROLE = "ADMIN";
+
     @Id 
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(nullable = false, unique = true)
     private String username;
+        
+    @Column(nullable = false, unique = false)
     private String password;
     
     private String ruolo;

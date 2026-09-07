@@ -30,4 +30,9 @@ public class HomeController {
         return "index"; // nome del componente HTML che mostrerà con placeholder
     }
 
+       @GetMapping("/admin/index")
+    public String adminPort(Model model) {
+  
+        return "/admin/index"; // nome del componente HTML che mostrerà con placeholder
+    }
 }

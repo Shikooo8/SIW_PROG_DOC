@@ -1,4 +1,4 @@
-package it.uniroma3.siw_festival.service;
+package it.uniroma3.siw_festival.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;

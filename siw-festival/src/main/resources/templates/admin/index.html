@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>SiwFestival - AdminHome</title>
+    <link rel="stylesheet" th:href="@{/css/style.css?version=3}" />
+</head>
+
+<body>
+
+    <header>
+        <h1>Ciao Admin</h1>
+        <p>Il portale dedicato al cinema e ai festival internazionali</p>
+    </header>
+
+    <div class="nav-container">
+        <!-- Per i metodi @GetMapping("/festival") e @GetMapping("/film") -->
+   
+        <div class="nav-container">
+        <a th:href="@{/festival/new}" class="nav-button">Aggiungi un festival</a>
+        </div>
+
+            <div class="nav-container">
+        <a th:href="@{/film/new}" class="nav-button">Aggiungi un film</a>
+         </div>
+    </div>
+
+</body>
+
+</html>

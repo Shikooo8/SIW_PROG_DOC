@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import it.uniroma3.siw_festival.exception.DuplicateFestivalException;
+import it.uniroma3.siw_festival.exception.DuplicateFilmException;
 import it.uniroma3.siw_festival.model.Festival;
 import it.uniroma3.siw_festival.model.Film;
 import it.uniroma3.siw_festival.repository.FestivalRepository;

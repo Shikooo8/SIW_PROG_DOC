@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import it.uniroma3.siw_festival.exception.DuplicateRegistaException;
 import it.uniroma3.siw_festival.model.Regista;
 import it.uniroma3.siw_festival.repository.RegistaRepository;
 import jakarta.transaction.Transactional;

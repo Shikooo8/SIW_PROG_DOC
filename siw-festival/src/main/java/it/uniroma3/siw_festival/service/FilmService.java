@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Optional;
 
+import it.uniroma3.siw_festival.exception.DuplicateFilmException;
+import it.uniroma3.siw_festival.exception.FilmNotFoundException;
 import it.uniroma3.siw_festival.model.Film;
 import it.uniroma3.siw_festival.repository.FilmRepository;
 import jakarta.transaction.Transactional;
