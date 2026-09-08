@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import it.uniroma3.siw_festival.service.FestivalService;
 import it.uniroma3.siw_festival.service.FilmService;
 import it.uniroma3.siw_festival.service.RegistaService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class HomeController {
@@ -30,9 +32,24 @@ public class HomeController {
         return "index"; // nome del componente HTML che mostrerà con placeholder
     }
 
+    //=============== AUTENTICAZIONE ==============
+
        @GetMapping("/admin/index")
     public String adminPort(Model model) {
   
-        return "/admin/index"; // nome del componente HTML che mostrerà con placeholder
+        return "/admin/index"; 
     }
+
+    @GetMapping("/login")
+    public String showLoginForm(Model model) {
+        return "authentication/loginForm";
+    }
+
+    @GetMapping("register")
+    public String showRegisterForm(Model model) {
+        return "authentication/registerForm";
+    }
+    
+    
+
 }

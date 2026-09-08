@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login- SiwFestival</title>
+    <link rel="stylesheet" th:href="@{/css/style.css?version=4}" />
+</head>
+<body>
+    <header>
+        <h1>Ciao!</h1>
+        <p><a th:href="@{/}" class="header-link">Annulla</a></p>
+    </header>
+
+    <div class="nav-container">
+        <form th:action="@{/login}" method="POST" class="form-box">
+
+
+
+            <div class="form-group">
+                <label class="form-label">Username:</label>
+                <input type="text" name="username" required />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Password:</label>
+                <input type="password" name="password" required />
+
+
+            </div>
+
+            <button type="submit" class="nav-button">Login</button>
+        </form>
+    </div>
+</body>
+</html>
