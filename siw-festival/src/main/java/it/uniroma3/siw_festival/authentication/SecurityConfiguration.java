@@ -41,8 +41,14 @@ public class SecurityConfiguration {
   protected SecurityFilterChain configure(final HttpSecurity httpSecurity) throws Exception {
 
     httpSecurity.authorizeHttpRequests(authorize -> {
-      authorize.requestMatchers(HttpMethod.GET, "/", "/index", "/register", "/login", "/css/**", "/images/**", "/favicon.ico").permitAll();
-      authorize.requestMatchers(HttpMethod.POST, "/register", "/login").permitAll();
+      authorize.requestMatchers(HttpMethod.GET, "/", "/festival/**", "/register", "/registerForm", "/login", "/css/**", "/images/**", "/favicon.ico", "/film/**").permitAll();
+      authorize.requestMatchers(HttpMethod.POST, "/register", "/registerForm", "/login").permitAll();
+
+      authorize.requestMatchers(HttpMethod.POST, "/api/film/*/recensione").hasAnyAuthority("USER", "ADMIN");
+      authorize.requestMatchers(HttpMethod.PUT, "/api/recensione/**").hasAnyAuthority("USER", "ADMIN");
+      authorize.requestMatchers(HttpMethod.DELETE, "/api/recensione/**").hasAnyAuthority("USER", "ADMIN");
+
+
       authorize.requestMatchers(HttpMethod.GET, "/admin/**").hasAnyAuthority(Utente.ADMIN_ROLE);
       authorize.requestMatchers(HttpMethod.POST, "/admin/**").hasAnyAuthority(Utente.ADMIN_ROLE);
       authorize.anyRequest().authenticated();
@@ -50,7 +56,7 @@ public class SecurityConfiguration {
 
     httpSecurity.formLogin(form -> {
       form.loginPage("/login").permitAll();
-      form.defaultSuccessUrl("/admin/index", true);
+      form.defaultSuccessUrl("/", true);
       form.failureUrl("/login?error=true");
     });
 
