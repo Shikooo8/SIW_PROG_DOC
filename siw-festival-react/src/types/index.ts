@@ -1,14 +1,9 @@
-
-export interface Regista {
+export interface Festival {
   id: number;
   nome: string;
-  dateOfBirth: string;   // "YYYY-MM-DD"
-}
-
-export interface Film {
-  id: number;
-  titolo: string;
   anno: number;
-  urlImage?: string;
-  director?: Regista;
+  città: string;
+  dataInizio: string;   // "YYYY-MM-DD"
+  dataFine: string;     // "YYYY-MM-DD"
+  descrizione?: string;
 }

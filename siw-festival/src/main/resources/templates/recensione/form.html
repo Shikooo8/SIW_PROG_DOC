@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuova Recensione - SiwFestival</title>
+    <link rel="stylesheet" th:href="@{/css/style.css?version=4}" />
+</head>
+<body>
+    <header>
+        <h1>Scrivi una recensione per: <span th:text="${film.titolo}">Titolo</span></h1>
+        <p><a th:href="@{'/film/' + ${film.id}}" class="header-link">Annulla e torna al film</a></p>
+    </header>
+
+    <div class="nav-container">
+
+        <!-- L'action punta all'URL con l'ID del film -->
+        <form th:action="@{'/recensione/new/' + ${film.id}}" method="POST" th:object="${recensione}" class="form-box">
+
+            <div th:if="${#fields.hasGlobalErrors()}" class="global-error">
+                <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore generico</p>
+            </div>
+
+            <!-- Voto -->
+            <div class="form-group">
+                <label class="form-label">Voto (da 1 a 10):</label>
+                <!-- Modifica min e max in base a come gestisci i voti nel modello -->
+                <input type="number" min="1" max="10" th:field="*{voto}" class="input-field" required/>
+                <span th:if="${#fields.hasErrors('voto')}" th:errors="*{voto}" class="error-text"></span>
+            </div>
+
+            <!-- Testo Recensione -->
+            <div class="form-group">
+                <label class="form-label">Testo:</label>
+                <textarea th:field="*{testo}" class="input-field" rows="6" required style="resize: vertical;"></textarea>
+                <span th:if="${#fields.hasErrors('testo')}" th:errors="*{testo}" class="error-text"></span>
+            </div>
+
+            <button type="submit" class="nav-button">Salva Recensione</button>
+        </form>
+
+    </div>
+</body>
+</html>

@@ -41,7 +41,7 @@ public class SecurityConfiguration {
   protected SecurityFilterChain configure(final HttpSecurity httpSecurity) throws Exception {
 
     httpSecurity.authorizeHttpRequests(authorize -> {
-      authorize.requestMatchers(HttpMethod.GET, "/", "/festival/**", "/register", "/registerForm", "/login", "/css/**", "/images/**", "/favicon.ico", "/film/**").permitAll();
+      authorize.requestMatchers(HttpMethod.GET, "/", "/api/festivals/**", "/festival/**", "/register", "/registerForm", "/login", "/css/**", "/images/**", "/favicon.ico", "/film/**").permitAll();
       authorize.requestMatchers(HttpMethod.POST, "/register", "/registerForm", "/login").permitAll();
 
       authorize.requestMatchers(HttpMethod.POST, "/api/film/*/recensione").hasAnyAuthority("USER", "ADMIN");

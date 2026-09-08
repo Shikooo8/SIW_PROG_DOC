@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,9 +39,11 @@ public class Festival {
     
     private String descrizione;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "festivals")
     private List<Film> film;                    // un festival presenta più film
 
+    @JsonIgnore                                 //TODO studia sta cosa delle dipendenze rest
     @OneToMany(mappedBy = "festival")
     private List<Proiezione> proiezioni;        // un festival prevede più proiezioni
 
