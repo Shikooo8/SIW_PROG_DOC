@@ -1,6 +1,6 @@
 import React from "react";
 import { Festival } from "../types";
-import { formatRangeData } from "../utils/formatDate";
+import { formatRangeData } from "../utils/formatDate.ts";
 
 interface Props {
   festival: Festival;

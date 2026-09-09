@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import FestivalHero from "../components/FestivalHero";
-import FestivalCarousel from "../components/FestivalCarousel";
+import Navbar from "../components/Navbar.tsx";
+import FestivalHero from "../components/FestivalHero.tsx";
+import FestivalCarousel from "../components/FestivalCarousel.tsx";
 import { Festival } from "../types";
-import { getFestivals, ordinaPerData } from "../services/festivalService";
+import { getFestivals, ordinaPerData } from "../services/festivalService.ts";
 import "../styles/theme.css";
 
 export default function HomePage() {

@@ -1,6 +1,6 @@
 import React from "react";
 import { Festival } from "../types";
-import FestivalCard from "./FestivalCard";
+import FestivalCard from "./FestivalCard.tsx";
 
 interface Props {
   titolo: string;

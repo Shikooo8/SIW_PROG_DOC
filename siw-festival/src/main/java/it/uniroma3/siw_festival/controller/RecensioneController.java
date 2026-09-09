@@ -1,7 +1,5 @@
 package it.uniroma3.siw_festival.controller;
-package it.uniroma3.siw_festival.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,11 +9,11 @@ import jakarta.validation.Valid;
 import it.uniroma3.siw_festival.model.Film;
 import it.uniroma3.siw_festival.model.Recensione;
 import it.uniroma3.siw_festival.service.FilmService;
-//import it.uniroma3.siw_festival.service.RecensioneService;
+import it.uniroma3.siw_festival.service.RecensioneService;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-@Controller
+@Controller 
 public class RecensioneController {
 
     private RecensioneService recensioneService;
@@ -33,9 +31,7 @@ public class RecensioneController {
     }
 
     @PostMapping("/recensione/new/{filmId}")
-    public String saveRecensione(@PathVariable Long filmId, 
-                                 @Valid @ModelAttribute("recensione") Recensione recensione, 
-                                 BindingResult bindingResult, Model model) {
+    public String saveRecensione(@PathVariable Long filmId, @Valid @ModelAttribute("recensione") Recensione recensione, BindingResult bindingResult, Model model) {
         Film film = filmService.findById(filmId);
         
         if (bindingResult.hasErrors()) {
@@ -46,7 +42,7 @@ public class RecensioneController {
         try {
             // Imposta i dati automatici
             recensione.setFilm(film);
-            recensione.setData(LocalDate.now());
+            recensione.setData(LocalDateTime.now());
             
             // TODO: Quando implementerai Spring Security, qui dovrai:
             // 1. Recuperare l'utente loggato
