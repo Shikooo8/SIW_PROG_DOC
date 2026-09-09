@@ -44,14 +44,14 @@
 
             <h3 style="color: #004080; border-bottom: 2px solid #f0f4f8; padding-bottom: 5px; margin-top: 20px;">
                 Recensioni</h3>
-            <ul th:if="${film.recensioni != null and !film.recensioni.isEmpty()}">
-                <li th:each="rec : ${film.recensioni}" th:text="${rec.testo}">Nome Festival</li>
-            </ul>
-            <p th:if="${film.recensioni == null or film.recensioni.isEmpty()}">Non ha alcuna recensionse</p>
+            <p>
+                <span th:text="${film.recensioni != null ? #lists.size(film.recensioni) : 0}">0</span>
+                recensioni per questo film.
+            </p>
 
         </div>
-        <a th:href="@{'/recensione/new/' + ${film.id}}" class="nav-button">
-            <span>Lascia una recensione</span>
+        <a th:href="@{'/film/' + ${film.id} + '/recensioni'}" class="nav-button">
+            <span>Vedi / lascia una recensione</span>
         </a>
     </div>
 </body>

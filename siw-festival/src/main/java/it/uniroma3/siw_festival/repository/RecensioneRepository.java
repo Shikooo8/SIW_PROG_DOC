@@ -8,8 +8,9 @@ import org.springframework.data.repository.CrudRepository;
 import it.uniroma3.siw_festival.model.Recensione;
 
 public interface RecensioneRepository extends CrudRepository<Recensione, Long> {
+    List<Recensione> findByFilmId(Long filmId);
 
     Optional<Recensione> findByFilmIdAndUtenteUsername(Long filmId, String username);
 
-    boolean existsByFilmTitoloAndUtenteUsername(String filmTitolo, String username);
+    boolean existsByFilmTitoloAndFilmAnnoAndUtenteUsername(String filmTitolo, Integer filmAnno, String username);
 }

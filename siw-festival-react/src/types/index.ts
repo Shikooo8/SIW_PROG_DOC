@@ -1,9 +1,15 @@
-export interface Festival {
+export interface Recensione {
   id: number;
-  nome: string;
-  anno: number;
-  città: string;
-  dataInizio: string;   // "YYYY-MM-DD"
-  dataFine: string;     // "YYYY-MM-DD"
-  descrizione?: string;
+  testo: string;
+  voto: number;
+  data: string;
+  autore: string;
+  autoreId: number;
+  filmId: number;
+  filmTitolo: string;
+}
+
+export interface Me {
+  autenticato: boolean;
+  username?: string;
 }

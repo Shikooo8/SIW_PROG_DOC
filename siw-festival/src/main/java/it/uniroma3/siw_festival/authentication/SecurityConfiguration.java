@@ -14,6 +14,10 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import it.uniroma3.siw_festival.model.Utente;
 
+
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -37,38 +41,43 @@ public class SecurityConfiguration {
     return new BCryptPasswordEncoder();
   }
 
-  @Bean
-  protected SecurityFilterChain configure(final HttpSecurity httpSecurity) throws Exception {
+ @Bean
+protected SecurityFilterChain configure(final HttpSecurity httpSecurity) throws Exception {
+
+    httpSecurity.csrf(csrf -> csrf
+        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+        .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
+    );
 
     httpSecurity.authorizeHttpRequests(authorize -> {
-      authorize.requestMatchers(HttpMethod.GET, "/", "/api/festivals/**", "/festival/**", "/register", "/registerForm", "/login", "/css/**", "/images/**", "/favicon.ico", "/film/**").permitAll();
-      authorize.requestMatchers(HttpMethod.POST, "/register", "/registerForm", "/login").permitAll();
+        authorize.requestMatchers(HttpMethod.GET, "/", "/api/festivals/**", "/festival/**",
+                "/register", "/registerForm", "/login", "/css/**", "/images/**", "/react/**",
+                "/favicon.ico", "/film/**", "/api/film/**", "/api/utente/me").permitAll();
+        authorize.requestMatchers(HttpMethod.POST, "/register", "/registerForm", "/login").permitAll();
 
-      authorize.requestMatchers(HttpMethod.POST, "/api/film/*/recensione").hasAnyAuthority("USER", "ADMIN");
-      authorize.requestMatchers(HttpMethod.PUT, "/api/recensione/**").hasAnyAuthority("USER", "ADMIN");
-      authorize.requestMatchers(HttpMethod.DELETE, "/api/recensione/**").hasAnyAuthority("USER", "ADMIN");
+        authorize.requestMatchers(HttpMethod.POST, "/api/film/*/recensione").hasAnyAuthority("USER", "ADMIN");
+        authorize.requestMatchers(HttpMethod.PUT, "/api/recensione/**").hasAnyAuthority("USER", "ADMIN");
+        authorize.requestMatchers(HttpMethod.DELETE, "/api/recensione/**").hasAnyAuthority("USER", "ADMIN");
 
-
-      authorize.requestMatchers(HttpMethod.GET, "/admin/**").hasAnyAuthority(Utente.ADMIN_ROLE);
-      authorize.requestMatchers(HttpMethod.POST, "/admin/**").hasAnyAuthority(Utente.ADMIN_ROLE);
-      authorize.anyRequest().authenticated();
+        authorize.requestMatchers(HttpMethod.GET, "/admin/**").hasAnyAuthority(Utente.ADMIN_ROLE);
+        authorize.requestMatchers(HttpMethod.POST, "/admin/**").hasAnyAuthority(Utente.ADMIN_ROLE);
+        authorize.anyRequest().authenticated();
     });
 
     httpSecurity.formLogin(form -> {
-      form.loginPage("/login").permitAll();
-      form.defaultSuccessUrl("/", true);
-      form.failureUrl("/login?error=true");
+        form.loginPage("/login").permitAll();
+        form.defaultSuccessUrl("/", true);
+        form.failureUrl("/login?error=true");
     });
 
     httpSecurity.logout(logout -> {
-      logout.logoutUrl("/logout");
-      logout.logoutSuccessUrl("/");
-      logout.invalidateHttpSession(true);
-      logout.deleteCookies("JSESSIONID");
-      logout.clearAuthentication(true);
-      logout.permitAll();
+        logout.logoutUrl("/logout");
+        logout.logoutSuccessUrl("/");
+        logout.invalidateHttpSession(true);
+        logout.deleteCookies("JSESSIONID");
+        logout.clearAuthentication(true);
+        logout.permitAll();
     });
-
     return httpSecurity.build();
   }
 }

@@ -2,47 +2,88 @@ package it.uniroma3.siw_festival.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.uniroma3.siw_festival.exception.DuplicateFestivalException;
-import it.uniroma3.siw_festival.exception.DuplicateFilmException;
 import it.uniroma3.siw_festival.exception.DuplicateRecensioneException;
-import it.uniroma3.siw_festival.model.Festival;
+import it.uniroma3.siw_festival.exception.RecensioneNotFoundException;
+import it.uniroma3.siw_festival.exception.RecensioneUnauthorizedException;
+import it.uniroma3.siw_festival.model.Film;
 import it.uniroma3.siw_festival.model.Recensione;
-import it.uniroma3.siw_festival.repository.FestivalRepository;
+import it.uniroma3.siw_festival.model.Utente;
 import it.uniroma3.siw_festival.repository.RecensioneRepository;
+import it.uniroma3.siw_festival.repository.UtenteRepository;
 
+@Service
 public class RecensioneService {
 
     private RecensioneRepository recensioneRepository;
+    private UtenteRepository utenteRepository;
 
-    public RecensioneService(RecensioneRepository recensioneRepository) {
+    public RecensioneService(RecensioneRepository recensioneRepository, UtenteRepository utenteRepository) {
         this.recensioneRepository = recensioneRepository;
-
+        this.utenteRepository = utenteRepository;
     }
 
-    public Recensione findById(Long id){
-        return recensioneRepository.findById(id).get();
+    @Transactional(readOnly = true)
+    public Recensione findById(Long id) {
+        return recensioneRepository.findById(id)
+                .orElseThrow(() -> new RecensioneNotFoundException(id));
     }
 
-    public List<Recensione> findAll () {
+    @Transactional(readOnly = true)
+    public List<Recensione> findAll() {
         return (List<Recensione>) recensioneRepository.findAll();
     }
 
-    
-        public Long count() {
+    @Transactional(readOnly = true)
+    public List<Recensione> findByFilmId(Long filmId) {
+        return recensioneRepository.findByFilmId(filmId);
+    }
+
+    @Transactional(readOnly = true)
+    public Long count() {
         return this.recensioneRepository.count();
     }
 
     @Transactional
-      public Recensione save(Recensione recensione) throws DuplicateRecensioneException {
+    public Recensione save(Recensione recensione) throws DuplicateRecensioneException {
+        Film film = recensione.getFilm();
 
-        if(recensioneRepository.existsByFilmTitoloAndUtenteUsername(recensione.getFilm().getTitolo(), recensione.getUtente().getUsername())) {
-            throw new DuplicateRecensioneException(recensione.getFilm().getTitolo(), recensione.getUtente().getUsername());
-            
+        if (recensioneRepository.existsByFilmTitoloAndFilmAnnoAndUtenteUsername(
+                film.getTitolo(), film.getAnno(), recensione.getUtente().getUsername())) {
+            throw new DuplicateRecensioneException(film.getTitolo(), film.getAnno(),
+                    recensione.getUtente().getUsername());
         }
-        //logger.info("è stato creato il festival: id={}", festival.getId()); //TODO da controllare
         return recensioneRepository.save(recensione);
     }
 
+    @Transactional
+    public Recensione update(Long id, String testo, Integer voto, String username) {
+        Recensione recensione = this.findById(id);
+        verificaProprietario(recensione, username);
+
+        recensione.setTesto(testo);
+        recensione.setVoto(voto);
+        // dirty checking: non serve richiamare save()
+        return recensione;
+    }
+
+    @Transactional
+    public void delete(Long id, String username) {
+        Recensione recensione = this.findById(id);
+        verificaProprietario(recensione, username);
+        recensioneRepository.delete(recensione);
+    }
+
+    private void verificaProprietario(Recensione recensione, String username) {
+        if (!recensione.getUtente().getUsername().equals(username)) {
+            throw new RecensioneUnauthorizedException();
+        }
+    }
+
+    public Utente getUtenteByUsername(String username) {
+        return utenteRepository.findByUsername(username)
+                .orElseThrow(() -> new RecensioneUnauthorizedException());
+    }
 }
