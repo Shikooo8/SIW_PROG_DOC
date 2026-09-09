@@ -3,6 +3,8 @@ package it.uniroma3.siw_festival.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 //import org.springframework.ui.Model;
@@ -11,9 +13,11 @@ import org.springframework.validation.BindingResult;
 
 import it.uniroma3.siw_festival.exception.DuplicateFilmException;
 import it.uniroma3.siw_festival.model.Film;
+import it.uniroma3.siw_festival.model.Recensione;
 import it.uniroma3.siw_festival.model.Regista;
 import it.uniroma3.siw_festival.service.FestivalService;
 import it.uniroma3.siw_festival.service.FilmService;
+import it.uniroma3.siw_festival.service.RecensioneService;
 import it.uniroma3.siw_festival.service.RegistaService;
 import jakarta.validation.Valid;
 
@@ -28,12 +32,14 @@ public class FilmController {
     private FilmService filmService;
     private RegistaService registaService;
     private FestivalService festivalService;
+    private RecensioneService recensioneService;
 
     // Costruttore corretto per la Dependency Injection
-    public FilmController(FilmService filmService, RegistaService registaService, FestivalService festivalService) {
+    public FilmController(FilmService filmService, RegistaService registaService, FestivalService festivalService, RecensioneService recensioneService) {
         this.filmService = filmService;
         this.festivalService = festivalService;
         this.registaService = registaService;
+        this.recensioneService= recensioneService;
     }
 
     @PostMapping("/film")
@@ -73,10 +79,21 @@ public class FilmController {
         return "film/list";
     }
 
-    @GetMapping("/film/{id}")
-    public String show(@PathVariable Long id, Model model) {
-        Film film = filmService.findById(id);
+         @GetMapping("/film/{id}")
+    public String show(@PathVariable("id") Long id, Model model, Authentication authentication) {
+        Film film = filmService.findById(id); // o il metodo che già usi
         model.addAttribute("film", film);
+
+        boolean loggato = authentication != null
+                && authentication.isAuthenticated()
+                && !(authentication instanceof AnonymousAuthenticationToken);
+        model.addAttribute("utenteLoggato", loggato);
+
+        if (loggato) {
+            Recensione recensioneUtente = recensioneService.findByFilmIdAndUsername(id, authentication.getName());
+            model.addAttribute("recensioneUtente", recensioneUtente);
+        }
+
         return "film/show";
     }
 
@@ -99,9 +116,6 @@ public class FilmController {
         model.addAttribute("film", film);
         return "film/recensioni";
     }
-
-
- 
 
     /*
      * // ---- admin ----

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifica Recensione - SiwFestival</title>
+    <link rel="stylesheet" th:href="@{/css/style.css?version=5}" />
+</head>
+<body>
+    <header>
+        <h1>Modifica la tua recensione</h1>
+        <p><a th:href="@{'/film/' + ${film.id}}" class="header-link">Torna al film</a></p>
+    </header>
+
+    <div class="page-container">
+        <div class="content-column" style="max-width: 600px; margin: 0 auto;">
+            <h3 class="section-title first" th:text="${film.titolo}">Titolo Film</h3>
+
+            <form th:action="@{'/recensione/' + ${recensioneId} + '/edit'}" method="POST" th:object="${recensioneForm}" class="form-box">
+
+                <div class="form-group">
+                    <label class="form-label" for="voto">Voto (1-10):</label>
+                    <input class="input-field" type="number" min="1" max="10" id="voto" th:field="*{voto}" />
+                    <span class="error-text" th:if="${#fields.hasErrors('voto')}" th:errors="*{voto}"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="testo">Recensione:</label>
+                    <textarea class="input-field" rows="5" id="testo" th:field="*{testo}"></textarea>
+                    <span class="error-text" th:if="${#fields.hasErrors('testo')}" th:errors="*{testo}"></span>
+                </div>
+
+                <button type="submit" class="nav-button">Salva modifiche</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

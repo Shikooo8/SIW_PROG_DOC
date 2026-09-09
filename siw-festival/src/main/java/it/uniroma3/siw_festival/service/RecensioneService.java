@@ -85,5 +85,11 @@ public class RecensioneService {
     public Utente getUtenteByUsername(String username) {
         return utenteRepository.findByUsername(username)
                 .orElseThrow(() -> new RecensioneUnauthorizedException());
+
+    }
+
+    @Transactional(readOnly = true)
+    public Recensione findByFilmIdAndUsername(Long filmId, String username) {
+        return recensioneRepository.findByFilmIdAndUsername(filmId, username).orElse(null);
     }
 }

@@ -25,7 +25,8 @@
 
             <h3 class="section-title">Regista</h3>
             <div th:if="${film.regista}">
-                <a th:href="@{'/regista/' + ${film.regista.id}}" class="nav-button" style="display: inline-block; margin-top: 10px;">
+                <a th:href="@{'/regista/' + ${film.regista.id}}" class="nav-button"
+                    style="display: inline-block; margin-top: 10px;">
                     <span th:text="${film.regista.nome} + ' ' + ${film.regista.cognome}">Nome e Cognome</span>
                 </a>
             </div>
@@ -35,11 +36,13 @@
             <ul th:if="${film.festivals != null and !film.festivals.isEmpty()}">
                 <li th:each="festival : ${film.festivals}" th:text="${festival.nome}">Nome Festival</li>
             </ul>
-            <p th:if="${film.festivals == null or film.festivals.isEmpty()}" class="empty-message">Questo film non partecipa a nessun festival.</p>
+            <p th:if="${film.festivals == null or film.festivals.isEmpty()}" class="empty-message">Questo film non
+                partecipa a nessun festival.</p>
 
-             <!-- Bottone di reindirizzamento a React -->
+            <!-- Bottone di reindirizzamento a React -->
             <div style="margin-top: 40px; text-align: center;">
-                <a th:href="@{'/react/film/' + ${film.id} + '/programmazione'}" class="nav-button" style="display: inline-block;">
+                <a th:href="@{'/react/film/' + ${film.id} + '/programmazione'}" class="nav-button"
+                    style="display: inline-block;">
                     Vedi Programmazione
                 </a>
             </div>
@@ -48,7 +51,8 @@
         <!-- COLONNA DESTRA: Recensioni -->
         <div class="content-column">
             <h3 class="section-title first">
-                <span>Recensioni (<span th:text="${film.recensioni != null ? #lists.size(film.recensioni) : 0}">0</span>)</span>
+                <span>Recensioni (<span
+                        th:text="${film.recensioni != null ? #lists.size(film.recensioni) : 0}">0</span>)</span>
             </h3>
 
             <!-- Messaggio se non ci sono recensioni -->
@@ -59,19 +63,46 @@
             <!-- Lista delle recensioni -->
             <div th:if="${film.recensioni != null and !film.recensioni.isEmpty()}">
                 <div th:each="recensione : ${film.recensioni}" class="review-card">
-                    
+
                     <div class="review-header">
                         <span class="review-author" th:text="${recensione.utente.username}">Username</span>
                         <!-- Formattazione data come richiesto dai requisiti -->
-                        <span class="review-date" th:if="${recensione.data != null}" th:text="${#temporals.format(recensione.data, 'dd/MM/yyyy HH:mm')}">01/01/2026</span>
+                        <span class="review-date" th:if="${recensione.data != null}"
+                            th:text="${#temporals.format(recensione.data, 'dd/MM/yyyy HH:mm')}">01/01/2026</span>
                     </div>
-                    
+
                     <div class="review-vote">Voto: <span th:text="${recensione.voto}">10</span>/10</div>
                     <p class="review-text" th:text="${recensione.testo}">Testo della recensione...</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; text-align: center;">
+                <div th:if="${utenteLoggato}">
+                    <div th:if="${recensioneUtente == null}">
+                        <a th:href="@{'/film/' + ${film.id} + '/recensione/new'}" class="nav-button">
+                            Scrivi una recensione
+                        </a>
+                    </div>
+                    <div th:if="${recensioneUtente != null}" style="display: flex; gap: 15px; justify-content: center;">
+                        <a th:href="@{'/recensione/' + ${recensioneUtente.id} + '/edit'}" class="nav-button">
+                            Modifica la tua recensione
+                        </a>
+                        <form th:action="@{'/recensione/' + ${recensioneUtente.id} + '/delete'}" method="POST"
+                            style="display:inline;">
+                            <button type="submit" class="nav-button" style="background-color:#b83232;"
+                                onclick="return confirm('Sei sicuro di voler eliminare la tua recensione?');">
+                                Elimina la tua recensione
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div th:unless="${utenteLoggato}">
+                    <p class="empty-message"><a th:href="@{/login}">Accedi</a> per scrivere una recensione.</p>
                 </div>
             </div>
 
         </div>
     </div>
 </body>
+
 </html>

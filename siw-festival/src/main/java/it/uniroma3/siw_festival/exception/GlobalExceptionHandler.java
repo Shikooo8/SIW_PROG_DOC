@@ -38,4 +38,11 @@ public String handleUnexpectedException(Exception e, Model model) {
     return "error/500";
 }
 
+@ExceptionHandler(RecensioneUnauthorizedException.class)
+@ResponseStatus(HttpStatus.FORBIDDEN)
+public String handleRecensioneUnauthorized(RecensioneUnauthorizedException e, Model model) {
+    model.addAttribute("errorMessage", "Non sei autorizzato a modificare questa recensione.");
+    return "error/403"; // crea questo template sul modello di error/404, se non esiste già
+}
+
 }
