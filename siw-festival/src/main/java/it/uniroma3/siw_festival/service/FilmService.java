@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import it.uniroma3.siw_festival.exception.DuplicateFilmException;
 import it.uniroma3.siw_festival.exception.FilmNotFoundException;
+import it.uniroma3.siw_festival.model.Festival;
 import it.uniroma3.siw_festival.model.Film;
 import it.uniroma3.siw_festival.repository.FilmRepository;
 import jakarta.transaction.Transactional;
@@ -38,6 +39,11 @@ public class FilmService {
             throw new FilmNotFoundException(id);
         }
     }
+
+    @org.springframework.transaction.annotation.Transactional (readOnly = true)
+    public Film findByIdWithProiezioni(Long id) {
+    return filmRepository.findByIdWithProiezioni(id);
+}
 
     public List<Film> findAll () {
         return (List<Film>) filmRepository.findAll();

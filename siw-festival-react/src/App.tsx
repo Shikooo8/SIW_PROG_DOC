@@ -1,15 +1,13 @@
-// src/App.tsx
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ProgrammazioneFestival from './components/ProgrammazioneFestival';
+import ProgrammazioneFilm from './components/ProgrammazioneFilm';
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Questa è la rotta chiamata dal pulsante in Thymeleaf */}
         <Route path="/react/festival/:id/programmazione" element={<ProgrammazioneFestival />} />
-        
-        {/* Qui in futuro potrai aggiungere la rotta per le recensioni */}
+        <Route path="/react/film/:id/programmazione" element={<ProgrammazioneFilm />} />
       </Routes>
     </Router>
   );

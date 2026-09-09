@@ -6,4 +6,6 @@ export interface ProiezioneDTO {
     stato: string;
     filmTitolo: string;
     salaNome: string;
+    festivalNome: string;
+
 }
