@@ -1,6 +1,9 @@
-export interface Proiezione {
-  id: number;
-  data: string;
-  ora: string;
-  stato: string; // es. SCHEDULED, COMPLETED, CANCELLED
+// src/types/index.ts
+export interface ProiezioneDTO {
+    id: number;
+    data: string;
+    ora: string;
+    stato: string;
+    filmTitolo: string;
+    salaNome: string;
 }

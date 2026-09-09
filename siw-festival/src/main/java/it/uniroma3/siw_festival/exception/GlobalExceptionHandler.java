@@ -23,11 +23,19 @@ public class GlobalExceptionHandler {
         return "error/film-not-found";
     }*/
 
-    @ExceptionHandler (Exception.class)
-    @ResponseStatus (HttpStatus.INTERNAL_SERVER_ERROR)
-    public String handleUnexpectedException(Exception e, Model model){
-        model.addAttribute("errorMessage", "Si è verificato un errore interno. Riprovare più tardi.");
-        return "error/500";
-    }
+  
+
+    @ExceptionHandler(Exception.class)
+@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+public String handleUnexpectedException(Exception e, Model model) {
+    e.printStackTrace(); // lo stampa comunque in console
+    model.addAttribute("errorMessage", e.toString());
+    model.addAttribute("stackTrace", 
+        java.util.Arrays.stream(e.getStackTrace())
+            .limit(20)
+            .map(Object::toString)
+            .collect(java.util.stream.Collectors.joining("\n")));
+    return "error/500";
+}
 
 }

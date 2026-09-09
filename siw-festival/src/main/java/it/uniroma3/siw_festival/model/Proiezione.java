@@ -1,5 +1,7 @@
 package it.uniroma3.siw_festival.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -23,14 +25,16 @@ public class Proiezione {
     @Enumerated(EnumType.STRING)
     private StatoProiezione stato;
 
-    
+    @JsonIgnore 
     @ManyToOne 
     private Festival festival;      //una proiezione appartiene a un festival
     
+    @JsonIgnore 
     @NotBlank 
     @ManyToOne 
     private Film film;              //una proiezione riguarda un film
     
+    @JsonIgnore 
     @NotBlank 
     @ManyToOne 
     private Sala sala;              // una proiezione si svolge in una sala

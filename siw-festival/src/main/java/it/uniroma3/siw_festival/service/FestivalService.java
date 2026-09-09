@@ -1,6 +1,7 @@
 package it.uniroma3.siw_festival.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,11 @@ public class FestivalService {
         this.festivalRepository = festivalRepository;
 
     }
+
+    @org.springframework.transaction.annotation.Transactional (readOnly = true)
+    public Festival findByIdWithProiezioni(Long id) {
+    return festivalRepository.findByIdWithProiezioni(id);
+}
 
     public Festival findById(Long id){
         return festivalRepository.findById(id).get();
