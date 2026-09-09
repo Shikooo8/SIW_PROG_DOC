@@ -18,6 +18,8 @@ insert into utente (id, username, password, ruolo) values (nextval('utente_seq')
 -- FESTIVAL 
 insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno) values (nextval('festival_seq'), 'Festival del Cinema di Roma', 'Roma', 'Un grande festival internazionale', '2026-10-01', '2026-10-10', 2026);
 insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno) values (nextval('festival_seq'), 'Venezia Classic', 'Venezia', 'Retrospettive', '2026-09-01', '2026-09-10', 2026);
+insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno) values (nextval('festival_seq'), 'Tokyo on Fest!', 'Tokyo', 'Grande evento specializzato in animazione', '2026-05-01', '2026-05-16', 2026);
+insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno) values (nextval('festival_seq'), 'Grande Venezuela Film', 'Caracas', 'Il festival più grande del Veneuela', '2025-12-10', '2025-12-20', 2025);
 
 -- FILM 
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista_id) values (nextval('film_seq'), 'Inception', 2010, 148, 'Fantascienza', 'USA', 1);

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dettaglio Regista - SiwFestival</title>
+    <!-- Assicurati che il percorso del CSS sia corretto -->
+    <link rel="stylesheet" th:href="@{/css/style.css?version=4}" />
+</head>
+<body>
+    <header>
+        <!-- Concatenazione di nome e cognome nel titolo -->
+        <h1 th:text="${regista.nome + ' ' + regista.cognome}">Nome Cognome</h1>
+        <p><a th:href="@{/}" style="color: white; text-decoration: underline;">Torna alla home</a></p>
+    </header>
+
+    <div class="nav-container" style="flex-direction: column; align-items: center;">
+        
+        <div style="background-color: white; padding: 30px; border-radius: 8px; width: 60%; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            
+            <h3 style="color: #004080; border-bottom: 2px solid #f0f4f8; padding-bottom: 5px;">Informazioni Biografiche</h3>
+            
+            <p><strong>Nome:</strong> <span th:text="${regista.nome}">Nome</span></p>
+            <p><strong>Cognome:</strong> <span th:text="${regista.cognome}">Cognome</span></p>
+            
+            <!-- Stampa la data formattata solo se presente nel DB -->
+            <p th:if="${regista.dataNascita != null}">
+                <strong>Data di Nascita:</strong> 
+                <span th:text="${#temporals.format(regista.dataNascita, 'dd/MM/yyyy')}">01/01/1970</span>
+            </p>
+            
+            <p th:if="${regista.nazionalità != null and !regista.nazionalità.isBlank()}">
+                <strong>Nazionalità:</strong> <span th:text="${regista.nazionalità}">Italiana</span>
+            </p>
+
+            <h3 style="color: #004080; border-bottom: 2px solid #f0f4f8; padding-bottom: 5px; margin-top: 30px;">Filmografia</h3>
+            
+            <!-- Controllo se la lista dei film diretti è vuota -->
+            <div th:if="${regista.film == null or regista.film.isEmpty()}">
+                <p>Nessun film associato a questo regista nel sistema.</p>
+            </div>
+
+            <!-- Stampa i film come bottoni cliccabili -->
+            <ul th:if="${regista.film != null and !regista.film.isEmpty()}" style="list-style: none; padding: 0;">
+                <li th:each="f : ${regista.film}" style="margin-bottom: 15px; text-align: center;">
+                    <a th:href="@{'/film/' + ${f.id}}" class="nav-button" style="display: block;">
+                        <span th:text="${f.titolo}">Titolo Film</span> 
+                        (<span th:text="${f.anno}">Anno</span>)
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</body>
+</html>

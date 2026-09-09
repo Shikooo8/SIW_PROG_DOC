@@ -7,7 +7,7 @@
 </head>
 <body>
     <header>
-        <h1>Ciao!</h1>
+        <h1>Benvenuto! Loggati o Registrati</h1>
         <p><a th:href="@{/}" class="header-link">Annulla</a></p>
     </header>
 
@@ -30,6 +30,11 @@
 
             <button type="submit" class="nav-button">Login</button>
         </form>
+        <a th:href="@{/register}" class="nav-button">
+            <span>Registrati</span>
+        </a>
     </div>
+    
+
 </body>
 </html>

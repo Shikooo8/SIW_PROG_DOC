@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Ignora il file 
+contesto_siw_settembre_2026.md

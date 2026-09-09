@@ -14,6 +14,7 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import it.uniroma3.siw_festival.model.Utente;
 
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
@@ -49,9 +50,11 @@ protected SecurityFilterChain configure(final HttpSecurity httpSecurity) throws 
         .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
     );
 
+    httpSecurity.addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
+
     httpSecurity.authorizeHttpRequests(authorize -> {
-        authorize.requestMatchers(HttpMethod.GET, "/", "/api/festivals/**", "/festival/**",
-                "/register", "/registerForm", "/login", "/css/**", "/images/**", "/react/**",
+        authorize.requestMatchers(HttpMethod.GET, "/", "/fragments", "/api/festivals/**", "/festival/**",
+                "/register", "/registerForm", "/login", "/css/**", "/images/**", "/react/**", "/regista/**",
                 "/favicon.ico", "/film/**", "/api/film/**", "/api/utente/me").permitAll();
         authorize.requestMatchers(HttpMethod.POST, "/register", "/registerForm", "/login").permitAll();
 

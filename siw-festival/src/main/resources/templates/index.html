@@ -9,30 +9,19 @@
 
 <body>
 
-    <header>
-        <h1>Benvenuto a SiwFestival</h1>
-        <p>Il portale dedicato al cinema e ai festival internazionali</p>
-    </header>
-
+<header th:replace="~{fragments/base.html :: intestazione}"></header>
     <div class="nav-container">
-        <!-- Per i metodi @GetMapping("/festival") e @GetMapping("/film") -->
 
         <a th:href="@{/festival}" class="nav-button">
-            <span >Elenco Festival (</span><span th:text="${festisvalNUmber}">N</span><span>)</span>
+            <span>Elenco Festival (</span><span th:text="${festisvalNUmber}">N</span><span>)</span>
         </a>
-
-   
 
         <a th:href="@{/film}" class="nav-button">
-            <span  >Elenco Film (</span><span th:text="${filmFNumber}">N</span><span>)</span>
+            <span>Elenco Film (</span><span th:text="${filmFNumber}">N</span><span>)</span>
         </a>
 
-         <a th:href="@{/admin/index}" class="nav-button">
-            <span  >Opzioni admin </span>
-        </a>
-
-        <a th:href="@{/register}" class="nav-button">
-            <span  >Registrati</span>
+        <a th:href="@{/admin/index}" class="nav-button">
+            <span>Opzioni admin </span>
         </a>
 
     </div>

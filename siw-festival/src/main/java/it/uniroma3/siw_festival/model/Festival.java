@@ -39,11 +39,9 @@ public class Festival {
     
     private String descrizione;
 
-    @JsonIgnore
     @ManyToMany(mappedBy = "festivals")
     private List<Film> film;                    // un festival presenta più film
 
-    @JsonIgnore                                 //TODO studia sta cosa delle dipendenze rest
     @OneToMany(mappedBy = "festival")
     private List<Proiezione> proiezioni;        // un festival prevede più proiezioni
 

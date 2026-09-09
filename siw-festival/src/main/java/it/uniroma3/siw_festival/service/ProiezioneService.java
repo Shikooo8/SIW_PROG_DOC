@@ -25,6 +25,12 @@ public class ProiezioneService {
         return (List<Proiezione>) proiezioneRepository.findAll();
     }
 
+    public List<Proiezione> findProiezioniByFestivalId(Long id) {
+              
+        return (List<Proiezione>) proiezioneRepository.findAll();
+
+    }
+
 
 
 }

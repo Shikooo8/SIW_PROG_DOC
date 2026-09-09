@@ -1,15 +1,6 @@
-export interface Recensione {
+export interface Proiezione {
   id: number;
-  testo: string;
-  voto: number;
   data: string;
-  autore: string;
-  autoreId: number;
-  filmId: number;
-  filmTitolo: string;
-}
-
-export interface Me {
-  autenticato: boolean;
-  username?: string;
+  ora: string;
+  stato: string; // es. SCHEDULED, COMPLETED, CANCELLED
 }

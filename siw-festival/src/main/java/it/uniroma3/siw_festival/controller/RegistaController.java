@@ -13,7 +13,10 @@ import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -45,6 +48,13 @@ public class RegistaController {
         
         return "redirect:/registi";
     }
+
+    @GetMapping("/regista/{id}")
+    public String showRegista(@PathVariable Long id, Model model) {
+        model.addAttribute("regista", registaService.findById(id));
+        return "regista/show";
+    }
+    
     
     
 }

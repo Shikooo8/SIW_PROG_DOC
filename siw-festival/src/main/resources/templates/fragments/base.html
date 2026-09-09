@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <!-- Definiamo il frammento chiamato "intestazione" -->
+    <header th:fragment="intestazione">
+        <h1 style="margin-bottom: 15px;">SiwFestival</h1>
+        
+        <div style="display: flex; justify-content: center; gap: 15px;">
+            <a th:href="@{/}" class="nav-button">Home</a>
+
+            <!-- Mostra "Login" se l'utente NON è loggato -->
+            <a th:if="${userDetails == null}" th:href="@{/login}" class="nav-button">Login</a>
+
+            <!-- Il form di Logout sicuro (POST) se l'utente è loggato -->
+            <form th:if="${userDetails != null}" th:action="@{/logout}" method="POST" style="display: inline;">
+                <button type="submit" class="nav-button">Logout</button>
+            </form>
+        </div>
+    </header>
+</body>
+</html>
