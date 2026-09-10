@@ -15,4 +15,6 @@ public interface FilmRepository extends CrudRepository<Film, Long>{
     @Query("SELECT f FROM Film f LEFT JOIN FETCH f.proiezioni p LEFT JOIN FETCH p.festival LEFT JOIN FETCH p.sala WHERE f.id = :id")
     Film findByIdWithProiezioni(@Param("id") Long id);
 
+    boolean existsByTitoloAndAnnoAndIdNot(String titolo, Integer anno, Long id);
+
 }

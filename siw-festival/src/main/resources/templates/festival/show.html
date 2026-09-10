@@ -43,6 +43,10 @@
                     Vedi Programmazione
                 </a>
             </div>
+             <!-- Bottone MODIFICA FILM (Solo Admin) -->
+            <div style="margin-top: 20px; text-align: center;" sec:authorize="hasAuthority('ADMIN')">
+                <a th:href="@{'/admin/festival/' + ${festival.id} + '/edit'}" class="nav-button" style="display: inline-block;"> Modifica Festival</a>
+            </div>
         </div>
 
         <!-- COLONNA DESTRA: Film Partecipanti -->

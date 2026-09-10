@@ -24,10 +24,10 @@ Un sistema per la gestione di festival cinematografici
 - eliminazione di una propria recensione
 
 ### Funzionalità riservate all’amministratore
-- creazione e modifica di un festival (no )
+- creazione e modifica di un festival               (funziona! )
 - inserimento e modifica di un film                 (funziona!)
-- inserimento e modifica di un regista (no modifica)
-- associazione di un film a un festival (BUG)
+- inserimento e modifica di un regista              (solo in relazione ad un film)
+- associazione di un film a un festival             (funziona solo su modifica festival)
 - inserimento e modifica di una sala (ancora no)
 - programmazione di una proiezione (ancora no)
 - modifica o cancellazione di una proiezione (ancora no)

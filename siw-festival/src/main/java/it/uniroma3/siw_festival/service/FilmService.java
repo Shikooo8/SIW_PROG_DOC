@@ -50,14 +50,20 @@ public class FilmService {
     }
 
     @Transactional 
-    public Film save(Film film) throws DuplicateFilmException {
-        if(filmRepository.existsByTitoloAndAnno(film.getTitolo(), film.getAnno())) {
+ public Film save(Film film) throws DuplicateFilmException {
+    if (film.getId() == null) {
+        // Inserimento nuovo film
+        if (filmRepository.existsByTitoloAndAnno(film.getTitolo(), film.getAnno())) {
             throw new DuplicateFilmException(film.getTitolo(), film.getAnno());
-            
         }
-        logger.info("è stato creato il film: id={}", film.getId()); //TODO da controllare
-        return filmRepository.save(film);
+    } else {
+        // Modifica film esistente: escludi l'ID corrente dalla ricerca
+        if (filmRepository.existsByTitoloAndAnnoAndIdNot(film.getTitolo(), film.getAnno(), film.getId())) {
+            throw new DuplicateFilmException(film.getTitolo(), film.getAnno());
+        }
     }
+    return filmRepository.save(film);
+}
 
     public Long count() {
         return this.filmRepository.count();

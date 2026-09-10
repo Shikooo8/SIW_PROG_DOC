@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifica Festival - Gestione</title>
+    <link rel="stylesheet" th:href="@{/css/style.css?version=4}" />
+            <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
+
+</head>
+<body>
+    <header>
+        <h1>Modifica il Festival</h1>
+        <p><a th:href="@{/festival}" class="header-link">Annulla e torna all'elenco</a></p>
+    </header>
+
+    <div class="nav-container">
+<form th:action="@{'/admin/festival/' + ${festival.id} + '/edit'}" method="POST" th:object="${festival}" class="form-box">            
+            <!-- CAMPO NASCOSTO (Essenziale per Update) -->
+            <input type="hidden" th:field="*{id}" />
+
+            <div th:if="${#fields.hasGlobalErrors()}" class="global-error">
+                <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore generico</p>
+            </div>
+
+            <!-- I campi standard -->
+            <div class="form-group"><label class="form-label">Nome:</label><input type="text" th:field="*{nome}" class="input-field" /><span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error-text"></span></div>
+            <div class="form-group"><label class="form-label">Anno:</label><input type="number" th:field="*{anno}" class="input-field" /><span th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}" class="error-text"></span></div>
+            <div class="form-group"><label class="form-label">Città:</label><input type="text" th:field="*{città}" class="input-field" /><span th:if="${#fields.hasErrors('città')}" th:errors="*{città}" class="error-text"></span></div>
+            <div class="form-group"><label class="form-label">Data inizio:</label><input type="date" th:field="*{dataInizio}" class="input-field" /></div>
+            <div class="form-group"><label class="form-label">Data fine:</label><input type="date" th:field="*{dataFine}" class="input-field" /></div>
+            <div class="form-group"><label class="form-label">Descrizione:</label><textarea th:field="*{descrizione}" class="input-field" rows="4"></textarea></div>
+
+            <hr style="width: 100%; border: 0; border-top: 1px solid #eee;" />
+
+            <!-- Selezione Films tramite Checkbox -->
+            <div class="form-group">
+                <label class="form-label">Film in concorso:</label>
+                <div style="max-height: 150px; overflow-y: auto; border: 1px solid #ccc; border-radius: 4px; padding: 10px; background-color: #f9f9f9;">
+                    <div th:each="m : ${films}" style="margin-bottom: 5px;">
+                        <input type="checkbox" th:field="*{film}" th:value="${m.id}" style="margin-right: 8px; cursor: pointer;" />
+                        <span th:text="${m.titolo}">Titolo Film</span>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="nav-button">Aggiorna Festival</button>
+        </form>
+    </div>
+</body>
+</html>

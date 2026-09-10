@@ -43,15 +43,20 @@ public class FestivalService {
     }
 
     @Transactional
-      public Festival save(Festival festival) throws DuplicateFilmException {
-
-        if(festivalRepository.existsByNomeAndAnno(festival.getNome(), festival.getAnno())) {
+public Festival save(Festival festival) throws DuplicateFestivalException {
+    if (festival.getId() == null) {
+        // È un inserimento nuovo: controlla tutto
+        if (festivalRepository.existsByNomeAndAnno(festival.getNome(), festival.getAnno())) {
             throw new DuplicateFestivalException(festival.getNome(), festival.getAnno());
-            
         }
-        //logger.info("è stato creato il festival: id={}", festival.getId()); //TODO da controllare
-        return festivalRepository.save(festival);
+    } else {
+        // È un aggiornamento: ignora l'ID del festival stesso
+        if (festivalRepository.existsByNomeAndAnnoAndIdNot(festival.getNome(), festival.getAnno(), festival.getId())) {
+            throw new DuplicateFestivalException(festival.getNome(),festival.getAnno());
+        }
     }
+    return festivalRepository.save(festival);
+}
 
 
 }

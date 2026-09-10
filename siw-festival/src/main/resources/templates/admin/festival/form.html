@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
-    <title>Nuovo Festival - SiwFestival</title>
+    <title>Nuovo Festival - Gestione</title>
     <link rel="stylesheet" th:href="@{/css/style.css?version=4}" />
-        <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
+            <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
 
 </head>
-
 <body>
     <header>
         <h1>Aggiungi un nuovo Festival</h1>
@@ -16,82 +14,25 @@
     </header>
 
     <div class="nav-container">
-
-        <form th:action="@{/festival}" method="POST" th:object="${festival}" class="form-box">
-
+        <form th:action="@{/admin/festival/new}" method="POST" th:object="${festival}" class="form-box">
             <div th:if="${#fields.hasGlobalErrors()}" class="global-error">
                 <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore generico</p>
             </div>
 
-            <!-- Nome: @NotBlank nel model -->
-            <div class="form-group">
-                <label class="form-label">Nome:</label>
-                <input type="text" th:field="*{nome}" class="input-field" />
-                <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error-text"></span>
-            </div>
+            <!-- I campi standard -->
+            <div class="form-group"><label class="form-label">Nome:</label><input type="text" th:field="*{nome}" class="input-field" /><span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error-text"></span></div>
+            <div class="form-group"><label class="form-label">Anno:</label><input type="number" th:field="*{anno}" class="input-field" /><span th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}" class="error-text"></span></div>
+            <div class="form-group"><label class="form-label">Città:</label><input type="text" th:field="*{città}" class="input-field" /><span th:if="${#fields.hasErrors('città')}" th:errors="*{città}" class="error-text"></span></div>
+            <div class="form-group"><label class="form-label">Data inizio:</label><input type="date" th:field="*{dataInizio}" class="input-field" /></div>
+            <div class="form-group"><label class="form-label">Data fine:</label><input type="date" th:field="*{dataFine}" class="input-field" /></div>
+            <div class="form-group"><label class="form-label">Descrizione:</label><textarea th:field="*{descrizione}" class="input-field" rows="4"></textarea></div>
 
-            <!-- Anno: @NotNull nel model -->
-            <div class="form-group">
-                <label class="form-label">Anno:</label>
-                <input type="number" th:field="*{anno}" class="input-field" />
-                <span th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}" class="error-text"></span>
-            </div>
+            <hr style="width: 100%; border: 0; border-top: 1px solid #eee;" />
 
-            <!-- Città: @NotBlank nel model -->
-            <div class="form-group">
-                <label class="form-label">Città:</label>
-                <input type="text" th:field="*{città}" class="input-field" />
-                <span th:if="${#fields.hasErrors('città')}" th:errors="*{città}" class="error-text"></span>
-            </div>
-
-            <!-- Data inizio: tipo LocalDate, quindi input type="date".
-                 NOTA: nel model è annotata @NotBlank (pensata per String), quindi
-                 di fatto non è validata come obbligatoria: lascio comunque
-                 il campo così come richiesto, senza aggiungere required lato HTML -->
-            <div class="form-group">
-                <label class="form-label">Data inizio:</label>
-                <input type="date" th:field="*{dataInizio}" class="input-field" />
-                <span th:if="${#fields.hasErrors('dataInizio')}" th:errors="*{dataInizio}" class="error-text"></span>
-            </div>
-
-            <!-- Data fine: stessa osservazione di dataInizio -->
-            <div class="form-group">
-                <label class="form-label">Data fine:</label>
-                <input type="date" th:field="*{dataFine}" class="input-field" />
-                <span th:if="${#fields.hasErrors('dataFine')}" th:errors="*{dataFine}" class="error-text"></span>
-            </div>
-
-            <!-- Descrizione: campo opzionale, nessuna annotazione di validazione nel model -->
-            <div class="form-group">
-                <label class="form-label">Descrizione:</label>
-                <!-- textarea invece di input, più adatto a un testo potenzialmente lungo -->
-                <textarea th:field="*{descrizione}" class="input-field" rows="4"></textarea>
-                <span th:if="${#fields.hasErrors('descrizione')}" th:errors="*{descrizione}" class="error-text"></span>
-            </div>
-
-<!-- Selezione Films tramite Checkbox -->
-<div class="form-group">
-    <label class="form-label">Film in concorso:</label>
-    
-    <!-- Creiamo un piccolo box con la barra di scorrimento se ci sono troppi film -->
-    <div style="max-height: 150px; overflow-y: auto; border: 1px solid #ccc; border-radius: 4px; padding: 10px; background-color: #f9f9f9;">
-        
-        <!-- th:each itera sulla lista dei film, esattamente come facevi nelle option -->
-        <div th:each="m : ${films}" style="margin-bottom: 5px;">
-            <!-- th:field mappa le selezioni sulla lista *{film} di Festival -->
-            <input type="checkbox" th:field="*{film}" th:value="${m.id}" style="margin-right: 8px; cursor: pointer;" />
-            <span th:text="${m.titolo}">Titolo Film</span>
-        </div>
-        
-    </div>
-</div>
-            <!-- NOTA: 'proiezioni' non compaiono qui: sono collezioni gestite
-                 dal lato inverso della relazione (mappedBy), non si popolano da questa form -->
+            
 
             <button type="submit" class="nav-button">Salva Festival</button>
         </form>
-
     </div>
 </body>
-
 </html>
