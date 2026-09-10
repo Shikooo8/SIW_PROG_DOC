@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <title>Dettaglio Festival - SiwFestival</title>
     <link rel="stylesheet" th:href="@{/css/style.css?version=4}" />
+        <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
+
 </head>
 
 <body>
@@ -53,7 +55,7 @@
                 <!-- Lista rapida proiezioni per Modifica/Elimina -->
                 <ul style="list-style: none; padding: 0; margin-top: 20px; font-size: 0.9em;">
                     <li th:each="p : ${festival.proiezioni}" style="margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 5px;">
-                        <span th:text="${p.film.titolo} + ' - ' + ${p.data}">Film - Data</span>
+                        <span th:text="${p.film.titolo} + '  -  ' + ${p.data} + '  -  ' + ${p.ora}">Film - Data</span>
                         <div style="float: right;">
                             <a th:href="@{'/admin/proiezione/' + ${p.id} + '/edit'}" style="color: orange; margin-right: 10px;">Modifica</a>
                             <a th:href="@{'/admin/proiezione/' + ${p.id} + '/delete'}" style="color: red;">Elimina</a>

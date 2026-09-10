@@ -13,7 +13,6 @@
     import it.uniroma3.siw_festival.service.ProiezioneService;
 
     @Controller
-    @RequestMapping("/admin/festival/{festivalId}/proiezione")
     public class ProiezioneController {
 
         private ProiezioneService proiezioneService;
@@ -29,7 +28,7 @@
             this.salaService = salaService;
         }
 
-        @GetMapping("/new")
+        @GetMapping("/admin/festival/{festivalId}/proiezione/new")
         public String formNewProiezione(@PathVariable Long festivalId, Model model) {
             Proiezione proiezione = new Proiezione();
             // Il festival viene impostato implicitamente dall'URL, non serve sceglierlo
@@ -44,7 +43,7 @@
             return "admin/proiezione/form";
         }
 
-        @PostMapping("/new")
+        @PostMapping("/admin/festival/{festivalId}/proiezione/new")
         public String saveProiezione(@PathVariable Long festivalId,
                 @Valid @ModelAttribute("proiezione") Proiezione proiezione,
                 BindingResult bindingResult,
