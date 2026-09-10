@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestione Sale</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+    <div class="nav-container" style="flex-direction: column; align-items: center;">
+        <h2>Gestione Sale</h2>
+        
+        <table border="1" style="width: 80%; margin-bottom: 30px; text-align: center; background-color: white; border-collapse: collapse;">
+            <tr style="background-color: #f0f4f8;">
+                <th>Nome</th>
+                <th>Indirizzo</th>
+                <th>Capienza</th>
+                <th>Azioni</th>
+            </tr>
+            <tr th:each="s : ${sale}">
+                <td th:text="${s.nome}">Nome</td>
+                <td th:text="${s.indirizzo}">Indirizzo</td>
+                <td th:text="${s.capienza}">Capienza</td>
+                <td>
+                    <a th:href="@{'/admin/sale/' + ${s.id} + '/edit'}">Modifica</a> | 
+                </td>
+            </tr>
+        </table>
+
+        <!-- Box Nuova Sala -->
+        <div class="form-box">
+            <h3 style="margin-top:0; color: #004080; border-bottom: 2px solid #f0f4f8; padding-bottom: 5px;">Nuova Sala</h3>
+            
+            <form th:action="@{/admin/sale}" method="POST" th:object="${nuovaSala}">
+                
+                <div class="form-group">
+                    <label class="form-label">Nome Sala:</label>
+                    <input type="text" th:field="*{nome}" class="input-field" required/>
+                    <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error-text"></span>
+                </div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label class="form-label">Indirizzo:</label>
+                    <input type="text" th:field="*{indirizzo}" class="input-field"/>
+                </div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label class="form-label">Capienza:</label>
+                    <input type="number" th:field="*{capienza}" class="input-field" required min="1"/>
+                    <span th:if="${#fields.hasErrors('capienza')}" th:errors="*{capienza}" class="error-text"></span>
+                </div>
+
+                <button type="submit" class="nav-button" style="margin-top: 20px;">Salva Sala</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

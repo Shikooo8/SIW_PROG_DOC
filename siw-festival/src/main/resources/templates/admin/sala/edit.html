@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Modifica Sala</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+    <div class="nav-container" style="flex-direction: column; align-items: center;">
+        <h2>Modifica Sala</h2>
+        
+        <div class="form-box">
+            <form th:action="@{'/admin/sale/' + ${sala.id} + '/edit'}" method="POST" th:object="${sala}">
+                
+                <div class="form-group">
+                    <label class="form-label">Nome Sala:</label>
+                    <input type="text" th:field="*{nome}" class="input-field" required/>
+                    <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error-text"></span>
+                </div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label class="form-label">Indirizzo:</label>
+                    <input type="text" th:field="*{indirizzo}" class="input-field"/>
+                </div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label class="form-label">Capienza:</label>
+                    <input type="number" th:field="*{capienza}" class="input-field" required min="1"/>
+                    <span th:if="${#fields.hasErrors('capienza')}" th:errors="*{capienza}" class="error-text"></span>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <button type="submit" class="nav-button">Aggiorna Sala</button>
+                    <a th:href="@{/admin/sale}" style="margin-left: 15px; color: #002244;">Annulla</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

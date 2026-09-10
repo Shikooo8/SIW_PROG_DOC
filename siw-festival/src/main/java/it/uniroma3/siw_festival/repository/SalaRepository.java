@@ -6,4 +6,8 @@ import it.uniroma3.siw_festival.model.Sala;
 
 public interface SalaRepository extends CrudRepository<Sala, Long>{
 
+    boolean existsByNome(String nome);
+
+    boolean existsByNomeAndIdNot(String nome, Long id);
+
 }

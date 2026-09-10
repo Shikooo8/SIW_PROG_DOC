@@ -8,7 +8,7 @@
     <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
 </head>
 
-<body>
+<body>  
 
 <header th:replace="~{fragments/base.html :: intestazione}"></header>
     <div class="nav-container">
@@ -25,6 +25,11 @@
         <a th:href="@{/admin/registi}" class="nav-button" style="display: inline-block;"  sec:authorize="hasAuthority('ADMIN')">
             Gestione Registi
         </a>
+
+        <a th:href="@{/admin/sale}" class="nav-button" style="display: inline-block;"  sec:authorize="hasAuthority('ADMIN')">
+            Gestione Sale   
+        </a>
+</div>
 
     </div>
 
