@@ -1,8 +1,8 @@
 package it.uniroma3.siw_festival.service;
 
      
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 
 import java.util.List;
@@ -10,7 +10,6 @@ import java.util.Optional;
 
 import it.uniroma3.siw_festival.exception.DuplicateFilmException;
 import it.uniroma3.siw_festival.exception.FilmNotFoundException;
-import it.uniroma3.siw_festival.model.Festival;
 import it.uniroma3.siw_festival.model.Film;
 import it.uniroma3.siw_festival.repository.FilmRepository;
 import jakarta.transaction.Transactional;
@@ -22,7 +21,7 @@ public class FilmService {
     
     private FilmRepository filmRepository;
     
-    private static final Logger logger = LoggerFactory.getLogger(FilmService.class);
+  //  private static final Logger logger = LoggerFactory.getLogger(FilmService.class);
     
     public FilmService(FilmRepository filmRepository) {
         this.filmRepository = filmRepository;

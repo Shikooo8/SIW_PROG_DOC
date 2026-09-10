@@ -8,9 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import it.uniroma3.siw_festival.exception.OverlappingProiezioneException;
 import it.uniroma3.siw_festival.model.Proiezione;
-import it.uniroma3.siw_festival.model.Recensione;
 import it.uniroma3.siw_festival.repository.ProiezioneRepository;
-import jakarta.validation.Valid;
 
 @Service 
 public class ProiezioneService {

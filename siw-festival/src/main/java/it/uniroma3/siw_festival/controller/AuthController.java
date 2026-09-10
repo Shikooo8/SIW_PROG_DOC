@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import it.uniroma3.siw_festival.exception.DuplicateUtenteException;
 import it.uniroma3.siw_festival.model.Utente;
-import it.uniroma3.siw_festival.service.FestivalService;
-import it.uniroma3.siw_festival.service.FilmService;
 import it.uniroma3.siw_festival.service.UtenteService;
 import jakarta.validation.Valid;
 
