@@ -52,7 +52,6 @@ public class Film {
 
 //==================== EQUALS & HASHCODE ==============    
 
-//TODO
 
 
 //=================== GETTERS & SETTERS ===============
@@ -60,6 +59,37 @@ public class Film {
 
     public String getTitolo() {
         return titolo;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((titolo == null) ? 0 : titolo.hashCode());
+        result = prime * result + ((anno == null) ? 0 : anno.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Film other = (Film) obj;
+        if (titolo == null) {
+            if (other.titolo != null)
+                return false;
+        } else if (!titolo.equals(other.titolo))
+            return false;
+        if (anno == null) {
+            if (other.anno != null)
+                return false;
+        } else if (!anno.equals(other.anno))
+            return false;
+        return true;
     }
 
     public void setTitolo(String titolo) {

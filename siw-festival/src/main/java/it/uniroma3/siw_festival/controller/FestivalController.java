@@ -70,26 +70,46 @@ public class FestivalController {
         model.addAttribute("films", filmService.findAll());
         return "admin/festival/formEdit"; // Usa il file con le checkbox
     }
-
-    @PostMapping("/admin/festival/{id}/edit")
+@PostMapping("/admin/festival/{id}/edit")
     public String saveEdit(@PathVariable Long id, @Valid @ModelAttribute("festival") Festival festival, BindingResult bindingResult, Model model) {
+        
         if (bindingResult.hasErrors()) {
             model.addAttribute("films", filmService.findAll());
             return "admin/festival/formEdit";
         }
+        
         try {
-            festival.setId(id); // Assicuriamo che l'ID sia valorizzato per fare l'UPDATE
+            festival.setId(id); 
             
-            // Logica di sincronizzazione dei film (mantenuta come richiesto)
+            // 1. Recuperiamo il festival originale dal DB per conoscere la situazione precedente
+            Festival oldFestival = festivalService.findById(id);
+
+            // 2. Rimuoviamo il festival dai film che sono stati DESELEZIONATI
+            if (oldFestival.getFilm() != null) {
+                for (Film f : oldFestival.getFilm()) {
+                    if (festival.getFilm() == null || !festival.getFilm().contains(f)) {
+                        f.getFestivals().remove(festival);
+                        // Se Film è la parte proprietaria (owning side), dobbiamo salvarlo
+                        filmService.save(f); 
+                    }
+                }
+            }
+            
+            // 3. Aggiungiamo il festival ai film che sono stati SELEZIONATI
             if (festival.getFilm() != null) {
                 for (Film f : festival.getFilm()) {
                     if (!f.getFestivals().contains(festival)) {
                         f.getFestivals().add(festival);
+                        // Salviamo il lato proprietario della relazione
+                        filmService.save(f); 
                     }
                 }
             }
+
+            // 4. Infine salviamo le modifiche del festival
             this.festivalService.save(festival);
             return "redirect:/festival";
+            
         } catch (DuplicateFestivalException e) {
             bindingResult.reject("festival.duplicate");
             model.addAttribute("films", filmService.findAll());

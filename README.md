@@ -26,11 +26,11 @@ Un sistema per la gestione di festival cinematografici
 ### Funzionalità riservate all’amministratore
 - creazione e modifica di un festival               (funziona! )
 - inserimento e modifica di un film                 (funziona!)
-- inserimento e modifica di un regista              (solo in relazione ad un film)
+- inserimento e modifica di un regista              (funziona !)
 - associazione di un film a un festival             (funziona solo su modifica festival)
-- inserimento e modifica di una sala (ancora no)
-- programmazione di una proiezione (ancora no)
-- modifica o cancellazione di una proiezione (ancora no)
+- inserimento e modifica di una sala                (funziona !)
+- programmazione di una proiezione                  (funziona !)
+- modifica o cancellazione di una proiezione        (funziona !)
 - eliminazione di un film da un festival (ancora no)
 
 Il sistema deve verificare la consistenza delle operazioni effettuate. Ad esempio, non deve essere possibile
