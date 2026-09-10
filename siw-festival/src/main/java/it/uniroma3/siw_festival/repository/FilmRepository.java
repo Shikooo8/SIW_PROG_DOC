@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import it.uniroma3.siw_festival.model.Festival;
 import it.uniroma3.siw_festival.model.Film;
 
 public interface FilmRepository extends CrudRepository<Film, Long>{

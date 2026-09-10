@@ -9,7 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity 
 public class Proiezione {
@@ -30,12 +30,12 @@ public class Proiezione {
     private Festival festival;      //una proiezione appartiene a un festival
     
     @JsonIgnore 
-    @NotBlank 
+    @NotNull 
     @ManyToOne 
     private Film film;              //una proiezione riguarda un film
     
     @JsonIgnore 
-    @NotBlank 
+    @NotNull 
     @ManyToOne 
     private Sala sala;              // una proiezione si svolge in una sala
 
