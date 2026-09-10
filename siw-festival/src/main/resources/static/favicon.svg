@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Cerchio bianco con un bordino dorato sottile -->
+  <circle cx="50" cy="50" r="48" fill="white" stroke="#D4AF37" stroke-width="2"/>
+  <!-- F elegante color oro -->
+  <text x="50%" y="55%" font-family="Georgia, serif" font-size="60" font-style="italic" font-weight="bold" fill="#D4AF37" text-anchor="middle" dominant-baseline="middle">F</text>
+</svg>

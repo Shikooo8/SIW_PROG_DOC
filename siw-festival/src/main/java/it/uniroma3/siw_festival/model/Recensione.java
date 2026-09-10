@@ -31,12 +31,10 @@ public class Recensione {
 
     private java.time.LocalDateTime data;
 
-    @JsonIgnore 
     @NotNull
     @ManyToOne
     private Film film; // una recensione riguarda un film
 
-    @JsonIgnore 
     @ManyToOne
     private Utente utente; // una recensione è scritta da un utente registrato; Un utente può inserire al
                            // massimo una recensione per uno stesso film.
@@ -108,22 +106,5 @@ public class Recensione {
         this.utente = utente;
     }
 
-    // =================== GET FOR REST ===============
-
-
-    public Long getFilmId() {
-        return film != null ? film.getId() : null;
-    }
-
-    public String getFilmTitolo() {
-        return film != null ? film.getTitolo() : null;
-    }
-
-    public String getAutore() {
-        return utente != null ? utente.getUsername() : null;
-    }
-
-    public Long getAutoreId() {
-        return utente != null ? utente.getId() : null;
-    }
+   
 }

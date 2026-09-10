@@ -18,14 +18,14 @@ Un sistema per la gestione di festival cinematografici
 - Il dettaglio di un festival deve permettere di accedere ai film e alle proiezioni associate.
 - Il dettaglio di un film deve mostrare almeno le informazioni sul film, il regista, i festival ai quali partecipa, le eventuali proiezioni e le recensioni.
 
-### Funzionalità utenti registrati
-- inserimento di al massimo una sola recensione per utente relativa a ciascun film (BUG)
-- modifica di una propria recensione (ancora no)
-- eliminazione di una propria recensione (implementato)
+### Funzionalità utenti registrati (implementate!!)
+- inserimento di al massimo una sola recensione per utente relativa a ciascun film
+- modifica di una propria recensione
+- eliminazione di una propria recensione
 
 ### Funzionalità riservate all’amministratore
-- creazione e modifica di un festival (no modifica)
-- inserimento e modifica di un film (no modifica)
+- creazione e modifica di un festival (no )
+- inserimento e modifica di un film                 (funziona!)
 - inserimento e modifica di un regista (no modifica)
 - associazione di un film a un festival (BUG)
 - inserimento e modifica di una sala (ancora no)
@@ -41,3 +41,4 @@ programmare due proiezioni nella stessa sala nello stesso intervallo temporale.
 
 - Alla creazione di un festival, i film scelti non vengono associati
 - Non puoi salvare le recensioni, CRASH, ma puoi cancellarle.
+- Quando si inseriscono le cose il seq number è a caso

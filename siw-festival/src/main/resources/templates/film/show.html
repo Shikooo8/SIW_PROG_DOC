@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <title>Dettaglio Film - SiwFestival</title>
     <link rel="stylesheet" th:href="@{/css/style.css?version=5}" />
+        <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
+
 </head>
 
 <body>
@@ -44,6 +46,14 @@
                 <a th:href="@{'/react/film/' + ${film.id} + '/programmazione'}" class="nav-button"
                     style="display: inline-block;">
                     Vedi Programmazione
+                </a>
+            </div>
+
+            <!-- Bottone MODIFICA FILM (Solo Admin) -->
+            <div style="margin-top: 20px; text-align: center;" sec:authorize="hasAuthority('ADMIN')">
+                <a th:href="@{'/film/' + ${film.id} + '/edit'}" class="nav-button"
+                    style="display: inline-block;">
+                    Modifica Film
                 </a>
             </div>
         </div>

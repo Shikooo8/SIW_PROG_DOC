@@ -35,11 +35,12 @@ public class FilmController {
     private RecensioneService recensioneService;
 
     // Costruttore corretto per la Dependency Injection
-    public FilmController(FilmService filmService, RegistaService registaService, FestivalService festivalService, RecensioneService recensioneService) {
+    public FilmController(FilmService filmService, RegistaService registaService, FestivalService festivalService,
+            RecensioneService recensioneService) {
         this.filmService = filmService;
         this.festivalService = festivalService;
         this.registaService = registaService;
-        this.recensioneService= recensioneService;
+        this.recensioneService = recensioneService;
     }
 
     @PostMapping("/film")
@@ -49,7 +50,7 @@ public class FilmController {
             // IMPORTANTE: Ricarica sia i festival che i registi!
             model.addAttribute("festivals", festivalService.findAll());
             model.addAttribute("registi", registaService.findAll());
-            return "film/form";
+            return "admin/film/form";
         }
         try {
             // Salva PRIMA il nuovo regista nel DB, ma SOLO se stiamo creando uno nuovo (id
@@ -65,7 +66,7 @@ public class FilmController {
             // Ricarica le liste anche qui
             model.addAttribute("festivals", festivalService.findAll());
             model.addAttribute("registi", registaService.findAll());
-            return "film/form";
+            return "admin/film/form";
         }
     }
 
@@ -79,7 +80,7 @@ public class FilmController {
         return "film/list";
     }
 
-         @GetMapping("/film/{id}")
+    @GetMapping("/film/{id}")
     public String show(@PathVariable("id") Long id, Model model, Authentication authentication) {
         Film film = filmService.findById(id); // o il metodo che già usi
         model.addAttribute("film", film);
@@ -107,7 +108,7 @@ public class FilmController {
         model.addAttribute("registi", registaService.findAll());
         model.addAttribute("festivals", festivalService.findAll());
 
-        return "film/form";
+        return "admin/film/form";
     }
 
     @GetMapping("/film/{id}/recensioni")
@@ -117,67 +118,20 @@ public class FilmController {
         return "film/recensioni";
     }
 
-    /*
-     * // ---- admin ----
-     * 
-     * 
-     * @PostMapping
-     * 
-     * @PreAuthorize("hasAuthority('ADMIN')")
-     * public String create(@Valid @ModelAttribute("film") Film film,
-     * BindingResult bindingResult, Model model) {
-     * if (bindingResult.hasErrors()) {
-     * model.addAttribute("registi", registaService.findAll());
-     * return "film/form";
-     * }
-     * Film saved = filmService.save(film);
-     * return "redirect:/film/" + saved.getId();
-     * }
-     * 
-     * @GetMapping("/{id}/edit")
-     * 
-     * @PreAuthorize("hasAuthority('ADMIN')")
-     * public String editForm(@PathVariable Long id, Model model) {
-     * model.addAttribute("film", filmService.findById(id));
-     * model.addAttribute("registi", registaService.findAll());
-     * return "film/form";
-     * }
-     * 
-     * @PostMapping("/{id}")
-     * 
-     * @PreAuthorize("hasAuthority('ADMIN')")
-     * public String update(@PathVariable Long id,
-     * 
-     * @Valid @ModelAttribute("film") Film film,
-     * BindingResult bindingResult, Model model) {
-     * if (bindingResult.hasErrors()) {
-     * model.addAttribute("registi", registaService.findAll());
-     * return "film/form";
-     * }
-     * film.setId(id);
-     * filmService.save(film);
-     * return "redirect:/film/" + id;
-     * }
-     * 
-     * // ---- associazione film <-> festival (admin) ----
-     * 
-     * @PostMapping("/{filmId}/festival/{festivalId}")
-     * 
-     * @PreAuthorize("hasAuthority('ADMIN')")
-     * public String addToFestival(@PathVariable Long filmId, @PathVariable Long
-     * festivalId) {
-     * filmService.addToFestival(filmId, festivalId);
-     * return "redirect:/film/" + filmId;
-     * }
-     * 
-     * @DeleteMapping("/{filmId}/festival/{festivalId}")
-     * 
-     * @PreAuthorize("hasAuthority('ADMIN')")
-     * public String removeFromFestival(@PathVariable Long filmId, @PathVariable
-     * Long festivalId) {
-     * filmService.removeFromFestival(filmId, festivalId);
-     * return "redirect:/film/" + filmId;
-     * }
-     */
+    @GetMapping("/film/{id}/edit")
+    public String editForm(@PathVariable Long id, Model model) {
+        Film filmDaModificare = filmService.findById(id);
 
+        // Se il film non ha un regista, ne impostiamo uno vuoto per non far crashare la
+        // form
+        if (filmDaModificare.getRegista() == null) {
+            filmDaModificare.setRegista(new Regista());
+        }
+
+        model.addAttribute("film", filmDaModificare);
+        model.addAttribute("registi", registaService.findAll());
+        model.addAttribute("festivals", festivalService.findAll());
+
+        return "admin/film/formEdit";
+    }
 }

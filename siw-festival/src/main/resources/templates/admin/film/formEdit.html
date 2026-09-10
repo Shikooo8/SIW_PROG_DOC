@@ -1,0 +1,144 @@
+    <!DOCTYPE html>
+    <html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Nuovo Film - SiwFestival</title>
+        <link rel="stylesheet" th:href="@{/css/style.css?version=4}" />
+            <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
+
+    </head>
+    <body>
+        <header>
+            <h1>Modifica il Film</h1>
+            <p><a th:href="@{/film}" class="header-link">Annulla e torna all'elenco</a></p>
+        </header>
+        
+        <div class="nav-container">
+
+            <form th:action="@{/film}" method="POST" th:object="${film}" class="form-box">
+                <input type="hidden" th:field="*{id}" />
+                <div th:if="${#fields.hasGlobalErrors()}" class="global-error">
+                    <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore generico</p>
+                </div>
+
+                <!-- Dati del Film -->
+                <div class="form-group">
+                    <label class="form-label">Titolo:</label>
+                    <input type="text" th:field="*{titolo}" class="input-field"/>
+                    <span th:if="${#fields.hasErrors('titolo')}" th:errors="*{titolo}" class="error-text"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Anno:</label>
+                    <input type="number" th:field="*{anno}" class="input-field"/>
+                    <span th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}" class="error-text"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Durata (minuti):</label>
+                    <input type="number" th:field="*{durata}" class="input-field"/>
+                    <span th:if="${#fields.hasErrors('durata')}" th:errors="*{durata}" class="error-text"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Genere:</label>
+                    <input type="text" th:field="*{genere}" class="input-field"/>
+                    <span th:if="${#fields.hasErrors('genere')}" th:errors="*{genere}" class="error-text"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Paese di produzione:</label>
+                    <input type="text" th:field="*{paeseProduzione}" class="input-field"/>
+                    <span th:if="${#fields.hasErrors('paeseProduzione')}" th:errors="*{paeseProduzione}" class="error-text"></span>
+                </div>
+
+                <hr style="width: 100%; border: 0; border-top: 1px solid #eee;" />
+
+                <!-- Selezione Regista Esistente / Nuovo -->
+                <div class="form-group">
+                    <label class="form-label">Regista:</label>
+                    <select id="registaSelect" name="regista" class="input-field" onchange="gestisciSelezioneRegista()">
+                        <option value="">-- Seleziona un regista --</option>
+                        <option th:each="r : ${registi}"
+                                th:value="${r.id}"
+                                th:text="${r.nome + ' ' + r.cognome}"></option>
+                        <option value="NUOVO">+ Aggiungi nuovo regista</option>
+                    </select>
+                    <span th:if="${#fields.hasErrors('regista')}" th:errors="*{regista}" class="error-text"></span>
+                </div>
+
+                <!-- Box Nuovo Regista -->
+                <div id="nuovoRegistaBox" class="form-group" style="display:none; border:1px solid #eee; padding:10px;">
+                    <h3 style="margin-top:0;">Nuovo Regista</h3>
+
+                    <label class="form-label">Nome Regista:</label>
+                    <input type="text" th:field="*{regista.nome}" class="input-field" required/>
+
+                    <label class="form-label">Cognome Regista:</label>
+                    <input type="text" th:field="*{regista.cognome}" class="input-field" required/>
+
+                    <label class="form-label">Data di nascita:</label>
+                    <input type="date" th:field="*{regista.dataNascita}" class="input-field"/>
+
+                    <label class="form-label">Nazionalità:</label>
+                    <input type="text" th:field="*{regista.nazionalità}" class="input-field"/>
+                </div>
+
+                <hr style="width: 100%; border: 0; border-top: 1px solid #eee;" />
+
+                <!-- Selezione Festival -->
+                <div class="form-group">
+                    <label class="form-label">Assegna a un Festival:</label>
+                    <select th:field="*{festivals}" class="input-field">
+                        <option value="">-- Seleziona un Festival (Opzionale) --</option>
+                        <option th:each="f : ${festivals}" th:value="${f.id}" th:text="${f.nome}"></option>
+                    </select>
+                </div>
+
+                <button type="submit" class="nav-button">Salva Film</button>
+            </form>
+
+        </div>
+
+        <!-- SCRIPT CORRETTO -->
+        <script>
+            function gestisciSelezioneRegista() {
+                var select = document.getElementById('registaSelect');
+                var box = document.getElementById('nuovoRegistaBox');
+                
+                // Thymeleaf genera ID uguali al path del th:field
+                var inputNome = document.getElementById('regista.nome');
+                var inputCognome = document.getElementById('regista.cognome');
+                var inputDataNascita = document.getElementById('regista.dataNascita');
+                var inputNazionalita = document.getElementById('regista.nazionalità');
+
+                if (select.value === 'NUOVO') {
+                    // Mostra il form e toglie il name dalla select
+                    box.style.display = 'block';
+                    select.removeAttribute('name');
+                    
+                    // Abilita i campi del nuovo regista così vengono inviati
+                    if(inputNome) { inputNome.disabled = false; inputNome.required = true; }
+                    if(inputCognome) { inputCognome.disabled = false; inputCognome.required = true; }
+                    if(inputDataNascita) inputDataNascita.disabled = false;
+                    if(inputNazionalita) inputNazionalita.disabled = false;
+                } else {
+                    // Nasconde il form e ripristina il name sulla select
+                    box.style.display = 'none';
+                    select.setAttribute('name', 'regista');
+                    
+                    // Disabilita i campi così i valori vuoti NON vengono inviati al server
+                    if(inputNome) { inputNome.disabled = true; inputNome.required = false; }
+                    if(inputCognome) { inputCognome.disabled = true; inputCognome.required = false; }
+                    if(inputDataNascita) inputDataNascita.disabled = true;
+                    if(inputNazionalita) inputNazionalita.disabled = true;
+                }
+            }
+
+            // Assicura che lo stato sia corretto al caricamento della pagina (utile in caso di errori)
+            window.onload = function() {
+                gestisciSelezioneRegista();
+            };
+        </script>
+    </body>
+    </html>

@@ -51,6 +51,10 @@
  			<artifactId>spring-boot-starter-security</artifactId> <!-- per le autenticazioni -->
 		</dependency>
 		<dependency>
+    <groupId>org.thymeleaf.extras</groupId>
+    <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+</dependency>
+		<dependency>
     		<groupId>org.springdoc</groupId>
     		<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId><!-- REACT-->
     		<version>2.5.0</version>

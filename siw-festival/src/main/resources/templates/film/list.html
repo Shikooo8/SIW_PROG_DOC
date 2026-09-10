@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <title>Elenco Film - SiwFestival</title>
     <link rel="stylesheet" th:href="@{/css/style.css?version=3}" />
+        <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
+
 </head>
 
 <body>
@@ -30,9 +32,10 @@
             </li>
         </ul>
     </div>
-    <!-- div class="nav-container">
+ <!-- Mostrato SOLO se l'utente ha ruolo ADMIN -->
+    <div class="nav-container" sec:authorize="hasAuthority('ADMIN')">
         <a th:href="@{/film/new}" class="nav-button">Aggiungi un Film</a>
-    </div -->
+    </div>
 </body>
 
 </html>
