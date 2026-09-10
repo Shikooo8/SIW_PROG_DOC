@@ -21,9 +21,10 @@
             <span>Elenco Film (</span><span th:text="${filmFNumber}">N</span><span>)</span>
         </a>
 
-        <!-- a th:href="@{/admin/index}" class="nav-button">
-            <span>Opzioni admin </span>
-        </a -->
+      
+        <a th:href="@{/admin/registi}" class="nav-button" style="display: inline-block;"  sec:authorize="hasAuthority('ADMIN')">
+            Gestione Registi
+        </a>
 
     </div>
 

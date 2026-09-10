@@ -36,5 +36,11 @@ public class RegistaService {
         return registaRepository.save(regista);
     }
 
+    public void deleteById(Long id) {
+          Regista regista = this.findById(id);
+        registaRepository.delete(regista);
+    }
+
+    
 
 }

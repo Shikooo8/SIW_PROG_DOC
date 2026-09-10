@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Modifica Regista</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+    <div class="nav-container" style="flex-direction: column; align-items: center;">
+        <h2>Modifica Regista</h2>
+        
+        <div class="form-box" style="border:1px solid #eee; padding:20px; width: 60%;">
+            <!-- L'azione del form include l'ID dinamico del regista -->
+            <form th:action="@{'/admin/registi/' + ${regista.id} + '/edit'}" method="POST" th:object="${regista}">
+                
+                <label class="form-label">Nome:</label>
+                <input type="text" th:field="*{nome}" class="input-field" required/>
+                <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error-text"></span>
+
+                <label class="form-label">Cognome:</label>
+                <input type="text" th:field="*{cognome}" class="input-field" required/>
+                <span th:if="${#fields.hasErrors('cognome')}" th:errors="*{cognome}" class="error-text"></span>
+
+                <label class="form-label">Data di nascita:</label>
+                <input type="date" th:field="*{dataNascita}" class="input-field"/>
+
+                <label class="form-label">Nazionalità:</label>
+                <input type="text" th:field="*{nazionalità}" class="input-field"/>
+
+                <div style="margin-top: 15px;">
+                    <button type="submit" class="nav-button">Aggiorna Regista</button>
+                    <a th:href="@{/admin/registi}" style="margin-left: 15px;">Annulla</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
