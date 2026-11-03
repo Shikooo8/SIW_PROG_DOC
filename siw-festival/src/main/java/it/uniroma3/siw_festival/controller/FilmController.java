@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class FilmController {
@@ -80,28 +79,30 @@ public class FilmController {
 
     // ====================== non chiaro ==================================
 
-    private String formView(Model model) {
-        model.addAttribute("attori", attoreService.findAll());
-        model.addAttribute("festivals", festivalService.findAll());
+    private String formView(FilmForm form, Model model) {
+        // model.addAttribute("ATTORI"); //TODO why not attori
+        model.addAttribute("festivalsSelezionati", festivalService.findAllById(form.getFestivalIds()));
         return "admin/film/form";
     }
 
     @GetMapping("/admin/film/new")
     public String newForm(Model model) {
-        model.addAttribute("film", new FilmForm());
-        return formView(model);
+        FilmForm form = new FilmForm();
+        model.addAttribute("film", form);
+        return formView(form, model);
     }
 
     @GetMapping("/admin/film/{id}/edit")
     public String editForm(@PathVariable Long id, Model model) {
-        model.addAttribute("film", filmService.getFilmForm(id));
-        return formView(model);
+        FilmForm form = filmService.getFilmForm(id);
+        model.addAttribute("film", form);
+        return formView(form, model);
     }
 
     @PostMapping("/admin/film/cast/add")
     public String addCast(@ModelAttribute("film") FilmForm form, Model model) {
         form.getCast().add(new InterpretazioneForm());
-        return formView(model);
+        return formView(form, model);
     }
 
     @PostMapping("/admin/film/cast/{index}/remove")
@@ -110,23 +111,23 @@ public class FilmController {
         if (index >= 0 && index < form.getCast().size()) {
             form.getCast().remove(index);
         }
-        return formView(model);
+        return formView(form, model);
     }
 
     @PostMapping("/admin/film")
     public String save(@Valid @ModelAttribute("film") FilmForm form, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return formView(model);
+            return formView(form, model);
         }
         try {
             Film salvato = filmService.save(form);
             return "redirect:/film/" + salvato.getId();
         } catch (DuplicateFilmException e) {
             bindingResult.reject("film.duplicato");
-            return formView(model);
+            return formView(form, model);
         } catch (CastNonValidoException e) {
             bindingResult.reject("film.cast", e.getMessage());
-            return formView(model);
+            return formView(form, model);
         }
     }
 }

@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import it.uniroma3.siw_festival.exception.DuplicateAttoreException;
 import it.uniroma3.siw_festival.model.Attore;
 import it.uniroma3.siw_festival.repository.AttoreRepository;
-import jakarta.transaction.Transactional;
 
 @Service
 public class AttoreService {
@@ -40,6 +40,13 @@ public class AttoreService {
     public void deleteById(Long id) {
         Attore attore = this.findById(id);
         attoreRepository.delete(attore);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Attore> cerca(String prefisso) {
+        String p = prefisso.trim();
+        return attoreRepository
+                .findTop15ByCognomeStartingWithIgnoreCaseOrNomeStartingWithIgnoreCaseOrderByCognomeAscNomeAsc(p, p);
     }
 
 }

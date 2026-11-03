@@ -1,5 +1,7 @@
 package it.uniroma3.siw_festival.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -15,4 +17,6 @@ public interface FestivalRepository extends CrudRepository<Festival, Long> {
 
     // Controlla i duplicati escludendo l'ID corrente (utile in fase di update)
     boolean existsByNomeAndAnnoAndIdNot(String nome, Integer anno, Long id);
+
+    List<Festival> findTop15ByNomeStartingWithIgnoreCaseOrderByNomeAsc(String prefisso);
 }

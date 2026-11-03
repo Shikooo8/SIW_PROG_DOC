@@ -544,3 +544,31 @@ input.has-error, select.has-error, textarea.has-error { border-color: var(--dang
   *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
   .card:hover, .btn:hover { transform: none; }
 }
+
+
+/* --- Selettore con ricerca (form film) --- */
+.picker { position: relative; }
+.picker-selected { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .5rem; }
+
+.picker-list {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  margin: .25rem 0 0;
+  padding: 0;
+  list-style: none;
+  max-height: 12.5rem;          /* 5 righe da 2.5rem: poi scorre */
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-card);
+}
+.picker-list li { height: 2.5rem; display: flex; align-items: center; padding: 0 .9rem; cursor: pointer; }
+.picker-list li:hover { background: var(--surface-2); color: #fff; }
+.picker-list .picker-empty { color: var(--text-faint); cursor: default; }
+
+/* la "x" dentro il badge */
+.chip-x { margin-left: .4rem; padding: 0; border: 0; background: none; color: inherit; font-size: 1rem; line-height: 1; cursor: pointer; }
+.chip-x:hover { color: var(--danger); }

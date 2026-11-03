@@ -16,7 +16,14 @@ public class InterpretazioneForm {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dataNascita;
     private String nazionalita;
+    private String attoreLabel;
     
+    public String getAttoreLabel() {
+        return attoreLabel;
+    }
+    public void setAttoreLabel(String attoreLabel) {
+        this.attoreLabel = attoreLabel;
+    }
     public Long getId() {
         return id;
     }

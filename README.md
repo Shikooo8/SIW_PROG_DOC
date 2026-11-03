@@ -95,15 +95,20 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 
 ### `/controller`
 *   **`/rest`**
-*   **`FestivalRestController`**
-    *   `@RequestMapping("/api/festivals")`
-    *   `@GetMapping("{id}/screenings")`
-*   **  **`FilmRestController`**
-    *   `@RequestMapping("/api/films")`
-    *   `@GetMapping("{id}/screenings")`
-*   **  **`AttoreController`**
+    *   **`FestivalRestController`**
+        *   `@RequestMapping("/api/festivals")`
+        *   `@GetMapping("{id}/screenings")`
+    *    **`FilmRestController`**
+        *   `@RequestMapping("/api/films")`
+        *   `@GetMapping("{id}/screenings")`
+*    **`RicercaRestController`**
+        *   `@GetMapping("/admin/ricerca/festival") List<Opzione> cercaFestival`
+        *   `@GetMapping("/admin/ricerca/attori") List<Opzione> cercaAttori`
 
-*   **  **`AuthController`**
+
+*   **`AttoreController`**
+
+*   **`AuthController`**
     *   `@GetMapping("/admin/index")` ➔ `return "/admin/index"`
     *   `@GetMapping("/login")` ➔ `return "authentication/loginForm"`
     *   `@GetMapping("/register")` ➔ `return "authentication/registerForm"`
@@ -202,12 +207,14 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 
 *   **`AttoreRepository`**
     *   `boolean existsByNomeAndCognome(...)`
+    *   `List<Attore>findTop15ByCognomeStartingWithIgnoreCaseOrNomeStartingWithIgnoreCaseOrderByCognomeAscNomeAsc(String cognome, String nome);`
 
 *   **`FestivalRepository`**
     *   `boolean existsByNomeAndAnno(String nome, Integer anno);`
     *   `@Query("SELECT f FROM Festival f LEFT JOIN FETCH f.proiezioni p LEFT JOIN FETCH p.film LEFT JOIN FETCH p.sala WHERE f.id = :id")`
     `Festival findByIdWithProiezioni(@Param("id") Long id);`
     *   `boolean existsByNomeAndAnnoAndIdNot(String nome, Integer anno, Long id);`
+    *   `List<Festival> findTop15ByNomeStartingWithIgnoreCaseOrderByNomeAsc(String prefisso);`
 
 *   **`FilmRepository`**
     *   `boolean existsByTitoloAndAnno(String titolo, Integer anno)`
@@ -237,13 +244,16 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     *   `List<Attore> findAll()`
     *   `Attore save(Attore attore)`
     *   `void deleteById(Long id)`
+    *   `List<Attore> cerca(String prefisso)`
 
 *   **`FestivalService`**
     *   `Festival findById(Long id)`
     *   `Festival findByIdWithProiezioni(Long id)`
     *   `List<Festival> findAll`
-    *   `Festival save(Festival film) throws DuplicateFestivalException`
     *   `Long count()`
+    *   `Festival save(Festival film) throws DuplicateFestivalException`
+    *   `List<Festival> cerca(String prefisso)`
+    *   `List<Festival> findAllById(List<Long> ids)`
 
 *   **`FilmService`**
     *   `Film findById(Long id)`

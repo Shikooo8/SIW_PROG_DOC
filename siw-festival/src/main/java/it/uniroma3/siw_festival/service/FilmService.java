@@ -181,6 +181,7 @@ public class FilmService {
             r.setId(i.getId());
             r.setPersonaggio(i.getPersonaggio());
             r.setAttoreId(i.getAttore().getId());
+            r.setAttoreLabel(i.getAttore().getNome() + " " + i.getAttore().getCognome());
             form.getCast().add(r);
         }
         return form;
