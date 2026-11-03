@@ -68,27 +68,26 @@ Implementato ora:
 *   **`RecensioneForm`**
 
 ### `/exception`
-*   ** DuplicateFestivalException
-*   ** DuplicateFilException
-*   **DuplicateRecensioneException
-*   ** DuplicateRegistaException
-*   ** DuplicateSalaException
-*   ** DuplicateUtenteException
-*   ** FilmNotFoundException
-*   ** GlobalExceptionHandler
-*   ** OverlappingProiezioneException
-*   ** RecensioneNotFoundException
-*   ** RecenzioneUnauthorizedException
-
+*   ** `DuplicateFestivalException`**
+*   ** `DuplicateFilException`**
+*   ** `DuplicateRecensioneException`**
+*   ** `DuplicateRegistaException`**
+*   ** `DuplicateSalaException`**
+*   ** `DuplicateUtenteException`**
+*   ** `FilmNotFoundException`**
+*   ** `GlobalExceptionHandler`**
+*   ** `OverlappingProiezioneException`**
+*   ** `RecensioneNotFoundException`**
+*   ** `RecenzioneUnauthorizedException`**
 
 ### `/controller`
 *   **`/rest`**
 *   **`FestivalRestController`**
-    *   `@`
-    *   `@`
-    *   `@`
+    *   `@RequestMapping("/api/festivals")`
+    *   `@GetMapping("{id}/screenings")`
 *   **  **`FilmRestController`**
-
+    *   `@RequestMapping("/api/films")`
+    *   `@GetMapping("{id}/screenings")`
 *   **  **`AttoreController`**
 
 *   **  **`AuthController`**
@@ -127,22 +126,28 @@ Implementato ora:
     *   `@GetMapping("/admin/festival/{festivalId}/proiezione/new")`  ➔ `return "admin/proiezione/form"`
     *   `@PostMapping("/admin/festival/{festivalId}/proiezione/new")`  ➔ `return "admin/proiezione/form"`
     *    `@GetMapping("/admin/proiezione/{id}/delete")`  ➔ `return "redirect:/festival/" + festivalId;`
+    *    `@GetMapping("/admin/proiezione/{id}/edit")`  ➔ `return "/admin/proiezione/editForm"`
+    *    `@PostMapping("/admin/proiezione/{id}/edit")`  ➔ `return "redirect:/festival/" + proiezione.getFestival(),getId();`
 
+*   **`ReactAppController`**
+    *   `(...)`
+      
+*   **`RecensioneController`**
+    *    `@GetMapping("/film/{filmId}/recensione/new")`  ➔ `return "recensione/form"`
+    *    `@PostMapping("/film/{filmId}/recensione")`  ➔ `return "redirect:/film/" + filmId;`
+    *    `@GetMapping("/recensione/{id}/edit")`  ➔ `return "recensione/editForm"`
+    *    `@PostMapping("/recensione/{id}/edit")`  ➔ `return "redirect:/film/" + recensione.getFilm(),getId();`
+    *    `@GetMapping("/recensione/{id}/delete")`  ➔ `return "redirect:/film/" + filmId;`
 
+*   **`SalaController`**
+    *   `@GetMapping("/admin/sale")` ➔ `return "admin/sale/manage"`
+    *   `@PostMapping("/admin/sale")` ➔ `return "redirect:/admin/sale"`
+    *   `@GetMapping("/admin/sala/{id}/edit")` ➔ `return "admin/sala/edit"`
+    *   `@PostMapping("/admin/sala/{id}/edit")` ➔ `return "redirect:/admin/sale"`
 
-
-*   **`NotiziaController`**
-    *   `@GetMapping("/notizie")` ➔ `return "notizie/list"`
-    *   `@GetMapping("/notizie/{id}")` ➔ `return "notizie/show"`
-    *   `@GetMapping("/admin/notizie/nuovo")` ➔ `return "admin/notizieForm"`
-    *   `@PostMapping("/admin/notizie/nuovo")` ➔ `return "redirect:/admin/notizie"`
-    *   `@GetMapping("/admin/notizie/{id}/modifica")` ➔ `return "admin/notizieForm"`
-    *   `@PostMapping("/admin/notizie/{id}/modifica")` ➔ `return "redirect:/admin/notizie"`
-    *   `@PostMapping("/admin/notizie/{id}/cancella")` ➔ `return "redirect:/admin/notizie"`
-
-*   **`UtenteRichiestaController`**
-    *   `@GetMapping("/richiesta-registrazione")` ➔ `return "richiesta"`
-    *   `@PostMapping("/richiesta-registrazione")` ➔ `return "redirect:/richiesta-registrazione?inviata"`
+*   **`UtenteRestController`**
+    *   `@RequestMapping("/api")`
+    *   `@GetMapping("/utente/me")`
 
 ###  `/exception`
 *   **`DuplicateEventoException`**: `titolo` & `data`
@@ -191,6 +196,11 @@ Implementato ora:
 
 
 ###  `/service`
+*   **`AttoreService`**
+    *   `List<Notizia> getTutteLeNotizie()`
+    *   `List<Notizia> getUltimeNotizie()`
+    *   `Notizia save(Notizia notizia)`
+    *   `void delete(Long id)`
 *   **`FestivalService`**
     *   `boolean existsByUsername(String username)`
     *   `void save(Credenziali credenziali)`
@@ -212,11 +222,7 @@ Implementato ora:
     *   `List<Iniziativa> getAll()`
     *   `Iniziativa save(Iniziativa iniziativa)`
     *   `void delete(Long id)`
-*   **`RegistaService`**
-    *   `List<Notizia> getTutteLeNotizie()`
-    *   `List<Notizia> getUltimeNotizie()`
-    *   `Notizia save(Notizia notizia)`
-    *   `void delete(Long id)`
+
 *   **`SalaService`**
     *   `List<UtenteRichiesta> getTutteLeRichieste()`
     *   `UtenteRichiesta save(UtenteRichiesta richiesta)`
