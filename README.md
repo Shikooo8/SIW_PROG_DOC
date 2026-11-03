@@ -36,9 +36,14 @@ Un sistema per la gestione di festival cinematografici
 Il sistema deve verificare la consistenza delle operazioni effettuate. Ad esempio, non deve essere possibile
 programmare due proiezioni nella stessa sala nello stesso intervallo temporale.
 
+## Stile
+Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
+- Assegnare una palette fissa e utillizzare un unico CSS con tutte le classi grafiche
+- Aggiungere le immagini per Film e Festival
 
 ## Errori trovati
-
+- Non si aprono i film
+- Dobbiamo ancora togliere "gestione regista"
 - Gestione degli errori (proiezioni nello stesso slot temporale rimanda ad errore ma da gestire)
 - Quando si inseriscono le cose il seq number è a caso
 

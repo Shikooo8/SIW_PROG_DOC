@@ -1,6 +1,6 @@
 package it.uniroma3.siw_festival.model;
 
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
