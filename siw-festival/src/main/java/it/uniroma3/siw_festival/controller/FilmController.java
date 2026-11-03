@@ -6,14 +6,11 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-//import org.springframework.ui.Model;
-//import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.validation.BindingResult;
 
 import it.uniroma3.siw_festival.exception.DuplicateFilmException;
 import it.uniroma3.siw_festival.model.Film;
 import it.uniroma3.siw_festival.model.Recensione;
-import it.uniroma3.siw_festival.model.Attore;
 import it.uniroma3.siw_festival.service.FestivalService;
 import it.uniroma3.siw_festival.service.FilmService;
 import it.uniroma3.siw_festival.service.RecensioneService;
@@ -84,9 +81,7 @@ public class FilmController {
         Film film = filmService.findById(id); // o il metodo che già usi
         model.addAttribute("film", film);
 
-        boolean loggato = authentication != null
-                && authentication.isAuthenticated()
-                && !(authentication instanceof AnonymousAuthenticationToken);
+        boolean loggato = authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken);
         model.addAttribute("utenteLoggato", loggato);
 
         if (loggato) {
@@ -119,7 +114,7 @@ public class FilmController {
     }
 
   
-    @GetMapping("/film/{id}/edit")
+    @GetMapping("/admin/film/{id}/edit")
     public String editForm(@PathVariable Long id, Model model) {
         Film filmDaModificare = filmService.findById(id);
 
@@ -130,7 +125,7 @@ public class FilmController {
         // }
 
         model.addAttribute("film", filmDaModificare);
-        model.addAttribute("registi", attoreService.findAll());
+    //    model.addAttribute("interpretazioni", attoreService.findAll());
         model.addAttribute("festivals", festivalService.findAll());
 
         return "admin/film/formEdit";

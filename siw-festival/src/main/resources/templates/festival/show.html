@@ -1,87 +1,110 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
     <title>Dettaglio Festival - SiwFestival</title>
-    <link rel="stylesheet" th:href="@{/css/style.css?version=4}" />
-        <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
-
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
 </head>
 
 <body>
-    <header>
-        <h1 th:text="${festival.nome}">Nome Festival</h1>
-        <p><a th:href="@{/festival}" style="color: white; text-decoration: underline;">Torna all'elenco dei festival</a></p>
-    </header>
+    <header th:replace="~{fragments/base.html :: intestazione}"></header>
 
-    <div style="display: flex; justify-content: center; align-items: flex-start; gap: 40px; margin: 50px auto; width: 85%;">
+    <main class="container">
 
-        <!-- COLONNA SINISTRA: Informazioni e Opzioni Admin -->
-        <div style="background-color: white; padding: 30px; border-radius: 8px; flex: 1; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-            <h3 style="color: #004080; border-bottom: 2px solid #f0f4f8; padding-bottom: 5px;">Informazioni Principali</h3>
-            
-            <p><strong>Città :</strong> <span th:text="${festival.città}">Roma</span></p>
-            <p><strong>Anno :</strong> <span th:text="${festival.anno}">2026</span></p>
-            <p th:if="${festival.dataInizio != null}">
-                <strong>Data Inizio :</strong> <span th:text="${#temporals.format(festival.dataInizio, 'dd/MM/yyyy')}">01/09/2026</span>
-            </p>
-            <p th:if="${festival.dataFine != null}">
-                <strong>Data Fine :</strong> <span th:text="${#temporals.format(festival.dataFine, 'dd/MM/yyyy')}">10/09/2026</span>
-            </p>
-            <p th:if="${festival.descrizione != null}">
-                <strong>Descrizione :</strong> <span th:text="${festival.descrizione}">Descrizione del festival...</span>
-            </p>
-
-            <!-- ZONA PUBBLICA: Bottone React -->
-            <div style="margin-top: 40px; text-align: center;">
-                <a th:href="@{'/react/festival/' + ${festival.id} + '/programmazione'}" class="nav-button" style="display: inline-block;">
-                    Vedi Programmazione (React)
-                </a>
+        <!-- INFORMAZIONI PRINCIPALI -->
+        <div class="show show-wide">
+            <div class="show-media">
+                <!-- con le immagini: <img th:src="${festival.urlImage}" th:alt="${festival.nome}"> -->
+                <div class="card-media card-media-wide card-media-empty" th:text="${festival.nome.substring(0,1)}">F
+                </div>
             </div>
 
-            <!-- ZONA ADMIN: Gestione Festival e Proiezioni -->
-            <div sec:authorize="hasAuthority('ADMIN')" style="margin-top: 40px; border-top: 2px dashed #ccc; padding-top: 20px;">
-                <h4 style="color: darkred; margin-bottom: 15px;">Opzioni Amministratore</h4>
-                
-                <a th:href="@{'/admin/festival/' + ${festival.id} + '/edit'}" class="nav-button" style="display: block; margin-bottom: 10px; background-color: #555;">
-                    Modifica Dati Festival
-                </a>
-                
-                <a th:href="@{'/admin/festival/' + ${festival.id} + '/proiezione/new'}" class="nav-button" style="display: block; background-color: #28a745;">
-                    + Programma Nuova Proiezione
-                </a>
+            <div class="show-info">
+                <h1 th:text="${festival.nome}">Nome Festival</h1>
+                <p class="show-lead" th:if="${festival.descrizione != null}" th:text="${festival.descrizione}">
+                    Descrizione del festival...</p>
 
-                <!-- Lista rapida proiezioni per Modifica/Elimina -->
-                <ul style="list-style: none; padding: 0; margin-top: 20px; font-size: 0.9em;">
-                    <li th:each="p : ${festival.proiezioni}" style="margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 5px;">
-                        <span th:text="${p.film.titolo} + '  -  ' + ${p.data} + '  -  ' + ${p.ora}">Film - Data</span>
-                        <div style="float: right;">
-                            <a th:href="@{'/admin/proiezione/' + ${p.id} + '/edit'}" style="color: orange; margin-right: 10px;">Modifica</a>
-                            <a th:href="@{'/admin/proiezione/' + ${p.id} + '/delete'}" style="color: red;">Elimina</a>
-                        </div>
-                    </li>
-                </ul>
+                <dl class="meta-list">
+                    <dt>Città</dt>
+                    <dd th:text="${festival.città}">Roma</dd>
+                    <dt>Anno</dt>
+                    <dd th:text="${festival.anno}">2026</dd>
+                    <dt th:if="${festival.dataInizio != null}">Data inizio</dt>
+                    <dd th:if="${festival.dataInizio != null}"
+                        th:text="${#temporals.format(festival.dataInizio, 'dd/MM/yyyy')}">01/09/2026</dd>
+                    <dt th:if="${festival.dataFine != null}">Data fine</dt>
+                    <dd th:if="${festival.dataFine != null}"
+                        th:text="${#temporals.format(festival.dataFine, 'dd/MM/yyyy')}">10/09/2026</dd>
+                </dl>
+
+                <div class="show-actions">
+                    <a th:href="@{'/react/festival/' + ${festival.id} + '/programmazione'}" class="btn btn-primary">Vedi
+                        programmazione</a>
+                    <a th:href="@{'/admin/festival/' + ${festival.id} + '/edit'}" class="btn btn-secondary"
+                        sec:authorize="hasAuthority('ADMIN')">Modifica festival</a>
+                    <a th:href="@{'/admin/festival/' + ${festival.id} + '/proiezione/new'}" class="btn btn-secondary"
+                        sec:authorize="hasAuthority('ADMIN')">Programma nuova proiezione</a>
+                    <a th:href="@{/festival}" class="btn btn-ghost">Torna ai festival</a>
+                </div>
             </div>
         </div>
 
-        <!-- COLONNA DESTRA: Film Partecipanti (Invariata) -->
-        <div style="background-color: white; padding: 30px; border-radius: 8px; flex: 1; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-            <h3 style="color: #004080; border-bottom: 2px solid #f0f4f8; padding-bottom: 5px;">Lista Film Partecipanti</h3>
-            
-            <div th:if="${festival.film == null or festival.film.isEmpty()}" style="margin-bottom: 20px;">
-                <p>Questo festival non ha ancora nessun film assegnato.</p>
+        <!-- FILM PARTECIPANTI -->
+        <section class="section">
+            <h2 class="section-title">Film partecipanti</h2>
+
+            <div class="empty" th:if="${festival.film == null or festival.film.isEmpty()}">
+                Questo festival non ha ancora nessun film assegnato.
             </div>
 
-            <ul th:if="${festival.film != null and !festival.film.isEmpty()}" style="list-style: none; padding: 0;">
-                <li th:each="film : ${festival.film}" style="margin-bottom: 15px; text-align: center;">
-                    <a th:href="@{'/film/' + ${film.id}}" class="nav-button" style="display: block;">
-                        <span th:text="${film.titolo}">Titolo Film</span>
-                        (<span th:text="${film.anno}">Anno</span>)
-                    </a>
+            <div class="grid" th:unless="${festival.film == null or festival.film.isEmpty()}">
+                <article class="card card-plain" th:each="film : ${festival.film}">
+                    <h3 class="card-title"><a th:href="@{'/film/' + ${film.id}}" th:text="${film.titolo}">Titolo
+                            Film</a></h3>
+                    <p class="card-meta" th:text="${film.anno}">2010</p>
+                    <div class="card-tags">
+                        <span class="badge" th:if="${film.genere != null}" th:text="${film.genere}">Genere</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- GESTIONE PROIEZIONI (solo admin) -->
+        <section class="section" sec:authorize="hasAuthority('ADMIN')">
+            <h2 class="section-title">Proiezioni programmate</h2>
+
+            <div class="empty" th:if="${festival.proiezioni == null or festival.proiezioni.isEmpty()}">
+                Nessuna proiezione programmata.
+            </div>
+
+            <ul class="screening-list" th:unless="${festival.proiezioni == null or festival.proiezioni.isEmpty()}">
+                <li class="screening" th:each="p : ${festival.proiezioni}">
+                    <span class="screening-when">
+                        <span th:text="${#temporals.format(p.data, 'dd/MM/yyyy')}">02/10/2026</span>
+                        <span th:text="${#temporals.format(p.ora, 'HH:mm')}">20:30</span>
+                    </span>
+                    <span class="screening-what">
+                        <span th:text="${p.film.titolo}">Film</span>
+                        <small th:text="${p.sala.nome}">Sala</small>
+                    </span>
+                    <span class="card-actions">
+                        <span class="badge" th:text="${p.stato}"
+                            th:classappend="${'badge-' + p.stato.name().toLowerCase()}">SCHEDULED</span>
+                        <a th:href="@{'/admin/proiezione/' + ${p.id} + '/edit'}"
+                            class="btn btn-secondary btn-sm">Modifica</a>
+                        <form th:action="@{'/admin/proiezione/' + ${p.id} + '/delete'}" method="post">
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Eliminare questa proiezione?');">Elimina</button>
+                        </form>
+                    </span>
                 </li>
             </ul>
-        </div>
-    </div>
+        </section>
+    </main>
+
+    <footer th:replace="~{fragments/base.html :: footer}"></footer>
 </body>
+
 </html>

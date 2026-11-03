@@ -69,13 +69,15 @@ protected SecurityFilterChain configure(final HttpSecurity httpSecurity) throws 
 
     httpSecurity.formLogin(form -> {
         form.loginPage("/login").permitAll();
-        form.defaultSuccessUrl("/", true);
+        // form.defaultSuccessUrl("/", true);
+        form.defaultSuccessUrl("/?login=true", true);
         form.failureUrl("/login?error=true");
     });
 
     httpSecurity.logout(logout -> {
         logout.logoutUrl("/logout");
-        logout.logoutSuccessUrl("/");
+        // logout.logoutSuccessUrl("/");
+        logout.logoutSuccessUrl("/?logout=true");
         logout.invalidateHttpSession(true);
         logout.deleteCookies("JSESSIONID");
         logout.clearAuthentication(true);

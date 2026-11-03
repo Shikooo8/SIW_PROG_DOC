@@ -1,41 +1,47 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Elenco Film - SiwFestival</title>
-    <link rel="stylesheet" th:href="@{/css/style.css?version=3}" />
-        <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
-
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
 </head>
-
 <body>
-    <header>
-        <h1>Film in Catalogo</h1>
-        <a>(</a><a th:text="${filmsNumber}">N</a><a>)</a>
-        <p><a th:href="@{/}" style="color: white; text-decoration: underline;">Torna alla Home</a></p>
-    </header>
+    <header th:replace="~{fragments/base.html :: intestazione}"></header>
 
-    <div class="nav-container" style="flex-direction: column; align-items: center;">
-        <!-- Controlla se la lista dei film è vuota -->
-        <div th:if="${films.isEmpty()}" style="margin-bottom: 20px;">
-            <p>Non ci sono film nel sistema.</p>
+    <main class="container">
+        <div class="page-header">
+            <div>
+                <h1>Film</h1>
+                <p class="page-subtitle">Film in catalogo: <span th:text="${filmsNumber}">0</span></p>
+            </div>
+            <a th:href="@{/admin/film/new}" class="btn btn-primary" sec:authorize="hasAuthority('ADMIN')">Aggiungi un film</a>
         </div>
 
-        <ul style="list-style: none; padding: 0; width: 50%;">
-            <li th:each="film : ${films}" style="margin-bottom: 15px; text-align: center;">
-                <!-- Costruisce un link dinamico all'id del film -->
-                <a th:href="@{'/film/' + ${film.id}}" class="nav-button" style="display: block;">
-                    <span th:text="${film.titolo}">Titolo Film</span>
-                    (<span th:text="${film.anno}">Anno</span>)
-                </a>
-            </li>
-        </ul>
-    </div>
- <!-- Mostrato SOLO se l'utente ha ruolo ADMIN -->
-    <div class="nav-container" sec:authorize="hasAuthority('ADMIN')">
-        <a th:href="@{/film/new}" class="nav-button">Aggiungi un Film</a>
-    </div>
-</body>
+        <div class="empty" th:if="${films.isEmpty()}">
+            Non ci sono film nel sistema.
+        </div>
 
+        <div class="grid" th:unless="${films.isEmpty()}">
+            <article class="card" th:each="film : ${films}">
+                <!-- con le immagini: <div class="card-media"><img th:src="${film.urlImage}" th:alt="${film.titolo}"></div> -->
+                <div class="card-media card-media-empty" th:text="${film.titolo.substring(0,1)}">F</div>
+                <div class="card-body">
+                    <h3 class="card-title">
+                        <a th:href="@{'/film/' + ${film.id}}" th:text="${film.titolo}">Titolo Film</a>
+                    </h3>
+                    <p class="card-meta">
+                        <span th:if="${film.regista != null}" th:text="${film.regista} + ' · '">Regista · </span><span th:text="${film.anno}">2010</span>
+                    </p>
+                    <div class="card-tags">
+                        <span class="badge" th:if="${film.genere != null}" th:text="${film.genere}">Genere</span>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <footer th:replace="~{fragments/base.html :: footer}"></footer>
+</body>
 </html>

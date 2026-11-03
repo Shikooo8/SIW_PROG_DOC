@@ -27,15 +27,13 @@ public class AttoreController {
         this.attoreService = attoreService;
     }
 
-    @GetMapping("registi")
-    public String lsit(Model model) {
-        List<Attore> registiList = attoreService.findAll();
-        model.addAttribute("registi", registiList);
-        model.addAttribute("registiNumber", registiList.size());
+    @GetMapping("attori")
+    public String list(Model model) {
+        List<Attore> attoriList = attoreService.findAll();
+        model.addAttribute("attori", attoriList);
+        model.addAttribute("attoriNumber", attoriList.size());
         return "attore/list";
     }
-
-
 
     @GetMapping("/attore/{id}")
     public String showAttore(@PathVariable Long id, Model model) {
@@ -43,35 +41,33 @@ public class AttoreController {
         return "attore/show";
     }
 
-
-
     // Mostra la lista e il form vuoto
-    @GetMapping("/admin/registi")
-    public String manageRegisti(Model model) {
-        model.addAttribute("registi", attoreService.findAll());
+    @GetMapping("/admin/attori")
+    public String manageAttori(Model model) {
+        model.addAttribute("attori", attoreService.findAll());
         model.addAttribute("nuovoAttore", new Attore()); 
         return "admin/attore/manage"; 
     }
 
     // Salva il nuovo attore
-    @PostMapping("/admin/registi")
+    @PostMapping("/admin/attori")
     public String saveAttore(@Valid @ModelAttribute("nuovoAttore") Attore attore, BindingResult bindingResult, Model model) {
         if(bindingResult.hasErrors()) {
-            model.addAttribute("registi", attoreService.findAll());
+            model.addAttribute("attori", attoreService.findAll());
             return "admin/attore/manage";
         }
         try {
             attoreService.save(attore);
-            return "redirect:/admin/registi";
+            return "redirect:/admin/attori";
         } catch (DuplicateAttoreException e) {
             bindingResult.reject("attore.duplicate");
-            model.addAttribute("registi", attoreService.findAll());
+            model.addAttribute("attori", attoreService.findAll());
             return "admin/attore/manage";
         }
     }
 
     // Mostra il form di modifica precompilato
-    @GetMapping("/admin/registi/{id}/edit")
+    @GetMapping("/admin/attori/{id}/edit")
     public String editAttoreForm(@PathVariable Long id, Model model) {
         // Presuppone che tu abbia un metodo findById nel Service che restituisca il attore
         Attore attore = attoreService.findById(id); 
@@ -80,7 +76,7 @@ public class AttoreController {
     }
 
     // Riceve i dati aggiornati e li salva
-    @PostMapping("/admin/registi/{id}/edit")
+    @PostMapping("/admin/attori/{id}/edit")
     public String updateAttore(@PathVariable Long id, @Valid @ModelAttribute("attore") Attore attore, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "admin/attore/edit"; // Torna al form se ci sono errori di validazione
@@ -96,7 +92,7 @@ public class AttoreController {
             return "admin/attore/edit";
         }
         
-        return "redirect:/admin/registi";
+        return "redirect:/admin/attori";
     }
  
     

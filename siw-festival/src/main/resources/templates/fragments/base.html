@@ -11,6 +11,8 @@
                 <a th:href="@{/film}">Film</a>
                 <a th:href="@{/admin/sale}" sec:authorize="hasAuthority('ADMIN')">Sale</a>
                 <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Accedi</a>
+                <span class="badge badge-violet" sec:authorize="isAuthenticated()"
+                    sec:authentication="name">utente</span>
                 <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()">
                     <button type="submit" class="btn btn-ghost btn-sm">Esci</button>
                 </form>

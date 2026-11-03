@@ -49,11 +49,7 @@ public class RecensioneController {
     }
 
     @PostMapping("/film/{filmId}/recensione")
-    public String save(@PathVariable Long filmId,
-                        @Valid @ModelAttribute("recensioneForm") RecensioneForm form,
-                        BindingResult bindingResult,
-                        Model model,
-                        Authentication authentication) {
+    public String save(@PathVariable Long filmId, @Valid @ModelAttribute("recensioneForm") RecensioneForm form, BindingResult bindingResult, Model model, Authentication authentication) {
 
         Film film = filmService.findById(filmId);
 
@@ -103,11 +99,7 @@ public class RecensioneController {
     }
 
     @PostMapping("/recensione/{id}/edit")
-    public String update(@PathVariable Long id,
-                          @Valid @ModelAttribute("recensioneForm") RecensioneForm form,
-                          BindingResult bindingResult,
-                          Model model,
-                          Authentication authentication) {
+    public String update(@PathVariable Long id, @Valid @ModelAttribute("recensioneForm") RecensioneForm form, BindingResult bindingResult, Model model, Authentication authentication) {
 
         Recensione recensione = recensioneService.findById(id);
 
@@ -124,8 +116,7 @@ public class RecensioneController {
         return "redirect:/film/" + recensione.getFilm().getId();
     }
 
-    // ---------- ELIMINA RECENSIONE ----------
-
+    
     @PostMapping("/recensione/{id}/delete")
     public String delete(@PathVariable Long id, Authentication authentication) {
         Recensione recensione = recensioneService.findById(id);

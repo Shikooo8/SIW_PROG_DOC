@@ -170,6 +170,14 @@ public class Film {
         this.recensioni = recensioni;
     }
 
+    public List<Interpretazione> getInterpretazioni() {
+        return interpretazioni;
+    }
+
+    public void setInterpretazioni(List<Interpretazione> interpretazioni) {
+        this.interpretazioni = interpretazioni;
+    }
+
     
 
 }

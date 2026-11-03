@@ -11,6 +11,7 @@ I film possono partecipare a uno o più festival e, nell’ambito di ciascun fes
 
 Il sistema distingue tra utenti generici, utenti registrati e utenti amministratori. Gli utenti registrati possono inserire recensioni relative ai film, mentre gli amministratori possono accedere alle funzionalità di gestione del festival.
 
+Le funzionalità delle proiezioni sono gestite da REACT
 
 
 ### Funzionalità pubbliche (da controllare)
@@ -31,7 +32,7 @@ Il sistema distingue tra utenti generici, utenti registrati e utenti amministrat
 ### Funzionalità riservate all’amministratore (da controllare )
 - creazione e modifica di un festival               
 - inserimento e modifica di un film                 
-- inserimento e modifica di un regista              
+- inserimento e modifica di un di un attore (DA FARE)       
 - associazione di un film a un festival             
 - inserimento e modifica di una sala                
 - programmazione di una proiezione                  
@@ -43,6 +44,8 @@ programmare due proiezioni nella stessa sala nello stesso intervallo temporale.
 ### Funzionalità nuove (da implementare e controllare)
 - ogni film ha più attori, ciascuno dei quali interpreta un personaggio (ad es. Marlon Brando nel Film il padrino interpreta il personaggio di don Vito Corleone)
 - un attore può aver recitato in più film, in ogni film interpreta un personaggio
+
+Quando viene modificato e creato un film, il regista sarà una semplice stringa, mentre per le interpretazioni ci sarà un "aggiungi nuovo personaggio", come stringa, a cui va associato un attore fra quelli del sistema oppure uno nuovo.
 
 ### Obiettivi finali
 
@@ -56,18 +59,18 @@ programmare due proiezioni nella stessa sala nello stesso intervallo temporale.
 - autenticazione con OAuth
 - deployment su una piattaforma cloud
 
-## Stile
+### Stile
 Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 - Assegnare una palette fissa e utillizzare un unico CSS con tutte le classi grafiche
 - Aggiungere le immagini per Film e Festival
 
 ## Errori trovati
-- Non si aprono i film
+- La modifica dei film con gli attori/personaggi ancora da gestire
+- La modifica di proiezioni non trovata
 - Gestione degli errori (proiezioni nello stesso slot temporale rimanda ad errore ma da gestire)
 - Quando si inseriscono le cose il seq number è a caso
 
 
-Implementato ora:
 
 # Struttura del Progetto
 
@@ -117,7 +120,7 @@ Implementato ora:
 *   **  **`AuthController`**
     *   `@GetMapping("/admin/index")` ➔ `return "/admin/index"`
     *   `@GetMapping("/login")` ➔ `return "authentication/loginForm"`
-    *   `@GetMapping("/register")` ➔ `return "authentication/loginForm"`
+    *   `@GetMapping("/register")` ➔ `return "authentication/registerForm"`
     *   `@PostMapping("/register")` ➔ ` return "redirect:/login?registered=true"`
 
 *   **`FestivalController`**
@@ -149,9 +152,9 @@ Implementato ora:
 *   **`ProiezioneController`**
     *   `@GetMapping("/admin/festival/{festivalId}/proiezione/new")`  ➔ `return "admin/proiezione/form"`
     *   `@PostMapping("/admin/festival/{festivalId}/proiezione/new")`  ➔ `return "admin/proiezione/form"`
-    *    `@GetMapping("/admin/proiezione/{id}/delete")`  ➔ `return "redirect:/festival/" + festivalId;`
-    *    `@GetMapping("/admin/proiezione/{id}/edit")`  ➔ `return "/admin/proiezione/editForm"`
-    *    `@PostMapping("/admin/proiezione/{id}/edit")`  ➔ `return "redirect:/festival/" + proiezione.getFestival(),getId();`
+    *   `@GetMapping("/admin/proiezione/{id}/edit")`  ➔ `return "/admin/proiezione/editForm"`
+    *   `@PostMapping("/admin/proiezione/{id}/edit")`  ➔ `return "redirect:/festival/" + proiezione.getFestival(),getId();`
+    *   `@PostMapping("/admin/proiezione/{id}/delete")`  ➔ `return "redirect:/festival/" + festivalId;`
 
 *   **`ReactAppController`**
     *   `(...)`
@@ -161,7 +164,7 @@ Implementato ora:
     *    `@PostMapping("/film/{filmId}/recensione")`  ➔ `return "redirect:/film/" + filmId;`
     *    `@GetMapping("/recensione/{id}/edit")`  ➔ `return "recensione/editForm"`
     *    `@PostMapping("/recensione/{id}/edit")`  ➔ `return "redirect:/film/" + recensione.getFilm(),getId();`
-    *    `@GetMapping("/recensione/{id}/delete")`  ➔ `return "redirect:/film/" + filmId;`
+    *    `@PostMapping("/recensione/{id}/delete")`  ➔ `return "redirect:/film/" + filmId;`
 
 *   **`SalaController`**
     *   `@GetMapping("/admin/sale")` ➔ `return "admin/sale/manage"`
@@ -188,6 +191,9 @@ Implementato ora:
 ### `/repository`
 *(Tutte le interfacce estendono `CrudRepository<Modello, Long>`)*
 
+*   **`AttoreRepository`**
+    *   `boolean existsByNomeAndCognome(...)`
+
 *   **`FestivalRepository`**
     *   `boolean existsByNomeAndAnno(String nome, Integer anno);`
     *   `@Query("SELECT f FROM Festival f LEFT JOIN FETCH f.proiezioni p LEFT JOIN FETCH p.film LEFT JOIN FETCH p.sala WHERE f.id = :id")`
@@ -197,6 +203,7 @@ Implementato ora:
 *   **`FilmRepository`**
     *   `boolean existsByTitoloAndAnno(String titolo, Integer anno)`
     *    `@Query("SELECT f FROM Film f LEFT JOIN FETCH f.proiezioni p LEFT JOIN FETCH p.festival LEFT JOIN FETCH p.sala WHERE f.id = :id")`
+    *    `@Query("SELECT f FROM Film f LEFT JOIN FETCH f.interpretazioni i LEFT JOIN FETCH i.attore WHERE f.id = :id")Film findByIdWithCast(@Param("id") Long id);`
     `Film findByIdWithProiezioni(@Param("id") Long id);`
     *   `boolean existsByTitoloAndAnnoAndIdNot(String titolo, Integer anno, Long id);`
 
@@ -205,11 +212,11 @@ Implementato ora:
     *   `List<Proiezione> findByFestivalId(Long festivalId);`
     *   `Proiezione findBySalaAndDataAndOra(Sala sala, LocalDate data, LocalTime ora);`
     *    `List<Proiezione> findBySalaAndData(Sala sala, LocalDate data);`
+
 *   **`RecensioneRepository`**
     
-*   **`AttoreRepository`**
-    *   `boolean existsByNomeAndCognome(...)`
 *   **`SalaRepository`**
+
 *   **`UtenteRepository`**
     *   `boolean existsByUsername(String username);`
     *   `Optional<Utente> findByUsername(String username);`
@@ -301,24 +308,21 @@ Implementato ora:
         *
     *   `index.html` (aggiornato)
 *   **`/authentication`**
-    *   `loginForm.html`
-    *   `registerForm.html`
+    *   `loginForm.html` (aggiornato)
+    *   `registerForm.html` (aggiornato)
 *   **`/error`**
     *   `404.html`
     *   `500.html`
 *   **`/festival`**
-    *   `list.html`
-    *   `show.html`
-*   **`/film`**
-    *   `list.html`
-    *   `recensioni.html`
-    *   `show.html`
-*   **`/fragments`**
-    *   `base.html` (aggiornato)
+    *   `list.html` (aggiornato)
+    *   `show.html` (aggiornato)
 *   **`/film`**
     *   `list.html` (aggiornato)
-    *   `show.html`
+    *   `recensioni.html`
+    *   `show.html` (aggiornato)
+*   **`/fragments`**
+    *   `base.html` (aggiornato)    
 *   **`/recensione`**
-    *   `editForm.html`
-    *   `form.html`
+    *   `editForm.html` (aggiornato)
+    *   `form.html` (aggiornato)
 

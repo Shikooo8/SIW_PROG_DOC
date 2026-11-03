@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <title>SiwFestival - Homepage</title>
     <link rel="stylesheet" th:href="@{/css/stile.css}" />
     <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
 </head>
+
 <body>
     <header th:replace="~{fragments/base.html :: intestazione}"></header>
 
     <main class="container">
+        <div class="alert alert-success" th:if="${param.login}">Accesso effettuato.</div>
+        <div class="alert alert-info" th:if="${param.logout}">Hai effettuato l'uscita.</div>
         <div class="page-header">
             <div>
                 <h1>SiwFestival</h1>
@@ -41,4 +44,5 @@
 
     <footer th:replace="~{fragments/base.html :: footer}"></footer>
 </body>
+
 </html>
