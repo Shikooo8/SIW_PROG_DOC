@@ -58,6 +58,7 @@ Quando viene modificato e creato un film, il regista sarà una semplice stringa,
 - documentazione delle API REST
 - autenticazione con OAuth
 - deployment su una piattaforma cloud
+Cerchiamo di mantenere tutto con un codice non troppo complesso e leggibile.
 
 ### Stile
 Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
@@ -65,11 +66,12 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 - Aggiungere le immagini per Film e Festival
 
 ## Errori trovati
-- La modifica dei film con gli attori/personaggi ancora da gestire
+- Da gestire meglio le associazioni in creazione e modifica : ovvero mostrare l'intero elenco di attori e o film o festival non è efficiente, bisogna caricarne in parte e fare in modo che possano aumentare oppure il filtro per nome
+- Nella modifica/creazione di un film i campi per un nuovo attore devono essere visibili solo con la scelta nuovo attore
 - La modifica di proiezioni non trovata
 - Gestione degli errori (proiezioni nello stesso slot temporale rimanda ad errore ma da gestire)
 - Quando si inseriscono le cose il seq number è a caso
-
+- Nella creazione del film c'è stato un errore ma non replicabile
 
 
 # Struttura del Progetto
@@ -90,22 +92,6 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     *   `addCorsMappings(CorsRegistry registry)`
 *   **`OpenApiConfig`**
     *   `OpenAPI openAPI()`
-
-### `/dto`
-*   **`RecensioneForm`**
-
-### `/exception`
-*   **`DuplicateAttoreException`**
-*   **`DuplicateFestivalException`**
-*   **`DuplicateFilmException`**
-*   **`DuplicateRecensioneException`**
-*   **`DuplicateSalaException`**
-*   **`DuplicateUtenteException`**
-*   **`FilmNotFoundException`**
-*   **`GlobalExceptionHandler`**
-*   **`OverlappingProiezioneException`**
-*   **`RecensioneNotFoundException`**
-*   **`RecenzioneUnauthorizedException`**
 
 ### `/controller`
 *   **`/rest`**
@@ -134,11 +120,14 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 *   **`FilmController`**
     *   `@GetMapping("/film")` ➔ `return "film/list"`
     *   `@GetMapping("/film/{id}")` ➔ `return "film/show"`
-    *   `@GetMapping("/admin/film/new")` ➔ `return "admin/film/form"`
-    *   `@GetMapping("/admin/film/{id}/edit")` ➔ `return "admin/film/formEdit"`
-    *   `@PostMapping("/film")` ➔ `return "redirect:/film"`
-
-
+    *   `@GetMapping("/film/{id}/recensioni")` ➔ `return "film/recensioni";`
+    *   `String formView(Model model)`  ➔ `return "admin/film/form";`
+    *   `@GetMapping("/admin/film/new")`  ➔ `return formView(model);`
+    *   `@GetMapping("/admin/film/{id}/edit")`  ➔ `return formView(model);`
+    *   `@PostMapping("/admin/film/cast/add")String addCast`  ➔ `return formView(model);`
+    *   `@PostMapping("/admin/film/{index}/remove") String removeCast`  ➔ `return formView(model);`
+    *   `@PostMapping("/admin/film")String save`  ➔ `return "redirect:/film/" + salvato.getId();`
+  
 *   **`GlobalBindingConfig`**
     *   `InitBinder (WebDataBinder binder)`
 
@@ -175,6 +164,26 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 *   **`UtenteRestController`**
     *   `@RequestMapping("/api")`
     *   `@GetMapping("/utente/me")`
+
+### `/dto`
+*   **`RecensioneForm`**
+*   **`FilmForm`**
+*   **`RecensioneForm`**
+
+### `/exception`
+*   **`CastNonValidoException`**
+*   **`DuplicateAttoreException`**
+*   **`DuplicateFestivalException`**
+*   **`DuplicateFilmException`**
+*   **`DuplicateRecensioneException`**
+*   **`DuplicateSalaException`**
+*   **`DuplicateUtenteException`**
+*   **`FilmNotFoundException`**
+*   **`GlobalExceptionHandler`**
+*   **`OverlappingProiezioneException`**
+*   **`RecensioneNotFoundException`**
+*   **`RecenzioneUnauthorizedException`**
+
 
 ###  `/model`
 *   **`Attore`**: `Long id`, `String nome`, `String cognome`, `java.time.LocalDate dataNascita`, `String nazionalità`, `@JsonIgnore @OneToMany(mappedBy = "attore") List<Interpretazione> interpretazioni;`
@@ -224,7 +233,10 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 
 ###  `/service`
 *   **`AttoreService`**
-    *   `(...)`
+    *   `Attore findById(Long id)`
+    *   `List<Attore> findAll()`
+    *   `Attore save(Attore attore)`
+    *   `void deleteById(Long id)`
 
 *   **`FestivalService`**
     *   `Festival findById(Long id)`
@@ -237,8 +249,11 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     *   `Film findById(Long id)`
     *   `Film findByIdWithProiezioni(Long id)`
     *   `List<Film> findAll`
-    *   `Film save(Film film) throws DuplicateFilmException`
     *   `Long count()`
+    *   `Film save(FilmForm film)`
+    *   `Film save(Film film) throws DuplicateFilmException`
+    *   `Attore risolviAttore(InterpretazioneForm)`
+    *   `FilmForm getFilmForm(Long id)`
 
 *   **`ProiezioneService`**
     *   `Proiezione findById(Long id)`
@@ -284,7 +299,7 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 *   **`import.sql`**
 
 ###  `/messages`
-*   `messages.properties` ➔ `film.duplicato`, `NotBlank`, `NotNull`, `typeMismatch`, `typeMismatch.java.lang.Integer`, `NotBlank.film.titolo`, `Min.anno`, `festival.duplicate`
+*   `messages.properties` ➔ `film.duplicate`,`film.duplicato`, `NotBlank`, `NotNull`, `typeMismatch`, `typeMismatch.java.lang.Integer`, `NotBlank.film.titolo`, `Min.anno`, `festival.duplicate`
 ###  `/static`
 *   **`/css`**
     *   `stile.css` (nuovo)

@@ -1,144 +1,149 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Nuovo Film - SiwFestival</title>
-    <link rel="stylesheet" th:href="@{/css/style.css?version=4}" />
-        <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
-
+    <title>Film - SiwFestival</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
 </head>
+
 <body>
-    <header>
-        <h1>Aggiungi un nuovo Film</h1>
-        <p><a th:href="@{/film}" class="header-link">Annulla e torna all'elenco</a></p>
-    </header>
+    <header th:replace="~{fragments/base.html :: intestazione}"></header>
 
-    <div class="nav-container">
+    <main class="container">
+        <div class="form-card">
+            <h1 th:text="${film.id == null} ? 'Aggiungi un film' : 'Modifica il film'">Film</h1>
 
-        <form th:action="@{/film}" method="POST" th:object="${film}" class="form-box">
+            <form th:action="@{/admin/film}" method="post" th:object="${film}">
+                <!-- bottone di default: Invio nei campi di testo salva, invece di premere "Rimuovi" -->
+                <button type="submit" hidden aria-hidden="true" tabindex="-1">Prova</button>
+                <input type="hidden" th:field="*{id}" />
 
-            <div th:if="${#fields.hasGlobalErrors()}" class="global-error">
-                <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore generico</p>
-            </div>
+                <div class="alert alert-error" th:if="${#fields.hasGlobalErrors()}">
+                    <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore</p>
+                </div>
 
-            <!-- Dati del Film -->
-            <div class="form-group">
-                <label class="form-label">Titolo:</label>
-                <input type="text" th:field="*{titolo}" class="input-field"/>
-                <span th:if="${#fields.hasErrors('titolo')}" th:errors="*{titolo}" class="error-text"></span>
-            </div>
+                <div class="form-group">
+                    <label for="titolo">Titolo</label>
+                    <input type="text" id="titolo" th:field="*{titolo}" />
+                    <span class="field-error" th:if="${#fields.hasErrors('titolo')}" th:errors="*{titolo}"></span>
+                </div>
 
-            <div class="form-group">
-                <label class="form-label">Anno:</label>
-                <input type="number" th:field="*{anno}" class="input-field"/>
-                <span th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}" class="error-text"></span>
-            </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="anno">Anno</label>
+                        <input type="number" id="anno" th:field="*{anno}" />
+                        <span class="field-error" th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="durata">Durata (minuti)</label>
+                        <input type="number" id="durata" th:field="*{durata}" />
+                        <span class="field-error" th:if="${#fields.hasErrors('durata')}" th:errors="*{durata}"></span>
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label class="form-label">Durata (minuti):</label>
-                <input type="number" th:field="*{durata}" class="input-field"/>
-                <span th:if="${#fields.hasErrors('durata')}" th:errors="*{durata}" class="error-text"></span>
-            </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="genere">Genere</label>
+                        <input type="text" id="genere" th:field="*{genere}" />
+                    </div>
+                    <div class="form-group">
+                        <label for="paeseProduzione">Paese di produzione</label>
+                        <input type="text" id="paeseProduzione" th:field="*{paeseProduzione}" />
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label class="form-label">Genere:</label>
-                <input type="text" th:field="*{genere}" class="input-field"/>
-                <span th:if="${#fields.hasErrors('genere')}" th:errors="*{genere}" class="error-text"></span>
-            </div>
+                <div class="form-group">
+                    <label for="regista">Regista</label>
+                    <input type="text" id="regista" th:field="*{regista}" />
+                    <span class="field-error" th:if="${#fields.hasErrors('regista')}" th:errors="*{regista}"></span>
+                </div>
 
-            <div class="form-group">
-                <label class="form-label">Paese di produzione:</label>
-                <input type="text" th:field="*{paeseProduzione}" class="input-field"/>
-                <span th:if="${#fields.hasErrors('paeseProduzione')}" th:errors="*{paeseProduzione}" class="error-text"></span>
-            </div>
+                <!-- FESTIVAL -->
+                <h2 class="section-title">Festival</h2>
+                <div class="form-group">
+                    <div class="empty" th:if="${festivals.isEmpty()}">Nessun festival nel sistema.</div>
+                    <div th:each="f : ${festivals}">
+                        <label>
+                            <input type="checkbox" th:field="*{festivalIds}" th:value="${f.id}" />
+                            <span th:text="${f.nome}">Festival</span>
+                        </label>
+                    </div>
+                </div>
 
-            <hr style="width: 100%; border: 0; border-top: 1px solid #eee;" />
+                <!-- CAST -->
+                <h2 class="section-title">Cast</h2>
+                <div class="empty" th:if="${#lists.isEmpty(film.cast)}">
+                    Nessun personaggio: aggiungine uno.
+                </div>
 
-            <!-- Selezione Regista Esistente / Nuovo -->
-            <div class="form-group">
-                <label class="form-label">Regista:</label>
-                <select id="registaSelect" name="regista" class="input-field" onchange="gestisciSelezioneRegista()">
-                    <option value="">-- Seleziona un regista --</option>
-                    <option th:each="r : ${registi}"
-                            th:value="${r.id}"
-                            th:text="${r.nome + ' ' + r.cognome}"></option>
-                    <option value="NUOVO">+ Aggiungi nuovo regista</option>
-                </select>
-                <span th:if="${#fields.hasErrors('regista')}" th:errors="*{regista}" class="error-text"></span>
-            </div>
+                <div class="review-list">
+                    <div class="review" th:each="riga, iter : *{cast}">
+                        <div class="review-head">
+                            <span class="review-author" th:text="'Personaggio ' + ${iter.count}">Personaggio 1</span>
+                            <button type="submit" th:formaction="@{'/admin/film/cast/' + ${iter.index} + '/remove'}"
+                                class="btn btn-danger btn-sm" formnovalidate>Rimuovi</button>
+                        </div>
 
-            <!-- Box Nuovo Regista -->
-            <div id="nuovoRegistaBox" class="form-group" style="display:none; border:1px solid #eee; padding:10px;">
-                <h3 style="margin-top:0;">Nuovo Regista</h3>
+                        <input type="hidden" th:field="*{cast[__${iter.index}__].id}" />
 
-                <label class="form-label">Nome Regista:</label>
-                <input type="text" th:field="*{regista.nome}" class="input-field" required/>
+                        <div class="form-group">
+                            <label th:attr="for=${'cast' + iter.index + '.personaggio'}">Nome del personaggio</label>
+                            <input type="text" th:field="*{cast[__${iter.index}__].personaggio}" />
+                            <span class="field-error"
+                                th:if="${#fields.hasErrors('cast[__${iter.index}__].personaggio')}"
+                                th:errors="*{cast[__${iter.index}__].personaggio}"></span>
+                        </div>
 
-                <label class="form-label">Cognome Regista:</label>
-                <input type="text" th:field="*{regista.cognome}" class="input-field" required/>
+                        <div class="form-group">
+                            <label th:attr="for=${'cast' + iter.index + '.attoreId'}">Attore</label>
+                            <select th:field="*{cast[__${iter.index}__].attoreId}">
+                                <option value="">Nuovo attore (compila i campi qui sotto)</option>
+                                <option th:each="a : ${attori}" th:value="${a.id}"
+                                    th:text="${a.nome + ' ' + a.cognome}">Nome Cognome</option>
+                            </select>
+                        </div>
 
-                <label class="form-label">Data di nascita:</label>
-                <input type="date" th:field="*{regista.dataNascita}" class="input-field"/>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label th:attr="for=${'cast' + iter.index + '.nome'}">Nome</label>
+                                <input type="text" th:field="*{cast[__${iter.index}__].nome}" />
+                            </div>
+                            <div class="form-group">
+                                <label th:attr="for=${'cast' + iter.index + '.cognome'}">Cognome</label>
+                                <input type="text" th:field="*{cast[__${iter.index}__].cognome}" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label th:attr="for=${'cast' + iter.index + '.dataNascita'}">Data di nascita</label>
+                                <input type="date" th:field="*{cast[__${iter.index}__].dataNascita}" />
+                            </div>
+                            <div class="form-group">
+                                <label th:attr="for=${'cast' + iter.index + '.nazionalita'}">Nazionalità</label>
+                                <input type="text" th:field="*{cast[__${iter.index}__].nazionalita}" />
+                            </div>
+                        </div>
+                        <span class="form-hint">Nome, cognome e gli altri dati servono solo se non scegli un attore
+                            dall'elenco.</span>
+                    </div>
+                </div>
 
-                <label class="form-label">Nazionalità:</label>
-                <input type="text" th:field="*{regista.nazionalità}" class="input-field"/>
-            </div>
+                <div class="form-actions">
+                    <button type="submit" th:formaction="@{/admin/film/cast/add}" class="btn btn-secondary"
+                        formnovalidate>Aggiungi personaggio</button>
+                </div>
 
-            <hr style="width: 100%; border: 0; border-top: 1px solid #eee;" />
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Salva film</button>
+                    <a th:href="@{/film}" class="btn btn-ghost">Annulla</a>
+                </div>
+            </form>
+        </div>
+    </main>
 
-            <!-- Selezione Festival -->
-            <div class="form-group">
-                <label class="form-label">Assegna a un Festival:</label>
-                <select th:field="*{festivals}" class="input-field">
-                    <option value="">-- Seleziona un Festival (Opzionale) --</option>
-                    <option th:each="f : ${festivals}" th:value="${f.id}" th:text="${f.nome}"></option>
-                </select>
-            </div>
-
-            <button type="submit" class="nav-button">Salva Film</button>
-        </form>
-
-    </div>
-
-    <!-- SCRIPT CORRETTO -->
-    <script>
-        function gestisciSelezioneRegista() {
-            var select = document.getElementById('registaSelect');
-            var box = document.getElementById('nuovoRegistaBox');
-            
-            // Thymeleaf genera ID uguali al path del th:field
-            var inputNome = document.getElementById('regista.nome');
-            var inputCognome = document.getElementById('regista.cognome');
-            var inputDataNascita = document.getElementById('regista.dataNascita');
-            var inputNazionalita = document.getElementById('regista.nazionalità');
-
-            if (select.value === 'NUOVO') {
-                // Mostra il form e toglie il name dalla select
-                box.style.display = 'block';
-                select.removeAttribute('name');
-                
-                // Abilita i campi del nuovo regista così vengono inviati
-                if(inputNome) { inputNome.disabled = false; inputNome.required = true; }
-                if(inputCognome) { inputCognome.disabled = false; inputCognome.required = true; }
-                if(inputDataNascita) inputDataNascita.disabled = false;
-                if(inputNazionalita) inputNazionalita.disabled = false;
-            } else {
-                // Nasconde il form e ripristina il name sulla select
-                box.style.display = 'none';
-                select.setAttribute('name', 'regista');
-                
-                // Disabilita i campi così i valori vuoti NON vengono inviati al server
-                if(inputNome) { inputNome.disabled = true; inputNome.required = false; }
-                if(inputCognome) { inputCognome.disabled = true; inputCognome.required = false; }
-                if(inputDataNascita) inputDataNascita.disabled = true;
-                if(inputNazionalita) inputNazionalita.disabled = true;
-            }
-        }
-
-        // Assicura che lo stato sia corretto al caricamento della pagina (utile in caso di errori)
-        window.onload = function() {
-            gestisciSelezioneRegista();
-        };
-    </script>
+    <footer th:replace="~{fragments/base.html :: footer}"></footer>
 </body>
+
 </html>

@@ -8,6 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
+import it.uniroma3.siw_festival.dto.FilmForm;
+import it.uniroma3.siw_festival.dto.InterpretazioneForm;
+import it.uniroma3.siw_festival.exception.CastNonValidoException;
 import it.uniroma3.siw_festival.exception.DuplicateFilmException;
 import it.uniroma3.siw_festival.model.Film;
 import it.uniroma3.siw_festival.model.Recensione;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class FilmController {
@@ -39,33 +43,6 @@ public class FilmController {
         this.recensioneService = recensioneService;
     }
 
-    @PostMapping("/film")
-    public String save(@Valid @ModelAttribute("film") Film film, BindingResult bindingResult, Model model) {
-
-        if (bindingResult.hasErrors()) {
-            // IMPORTANTE: Ricarica sia i festival che i registi!
-            model.addAttribute("festivals", festivalService.findAll());
-            model.addAttribute("registi", attoreService.findAll());
-            return "admin/film/form";
-        }
-        try {
-            // Salva PRIMA il nuovo attore nel DB, ma SOLO se stiamo creando uno nuovo (id
-            // == null)
-    //        if (film.getAttore() != null && film.getAttore().getId() == null) {
-    //            this.attoreService.save(film.getAttore());
-            // }
-
-            this.filmService.save(film);
-            return "redirect:/film";
-        } catch (DuplicateFilmException e) {
-            bindingResult.reject("film.duplicate");
-            // Ricarica le liste anche qui
-            model.addAttribute("festivals", festivalService.findAll());
-            model.addAttribute("registi", attoreService.findAll());
-            return "admin/film/form";
-        }
-    }
-
     // ============================utente
 
     @GetMapping("/film")
@@ -81,7 +58,8 @@ public class FilmController {
         Film film = filmService.findById(id); // o il metodo che già usi
         model.addAttribute("film", film);
 
-        boolean loggato = authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken);
+        boolean loggato = authentication != null && authentication.isAuthenticated()
+                && !(authentication instanceof AnonymousAuthenticationToken);
         model.addAttribute("utenteLoggato", loggato);
 
         if (loggato) {
@@ -92,20 +70,7 @@ public class FilmController {
         return "film/show";
     }
 
-    @GetMapping("/film/new")
-    public String form(Model model) {
-        Film nuovoFilm = new Film();
-        // Inizializza un Attore vuoto dentro il Film così Thymeleaf può legare i campi
-    //    nuovoFilm.setAttore(new Attore());//todo
-
-        model.addAttribute("film", nuovoFilm);
-        model.addAttribute("registi", attoreService.findAll());
-        model.addAttribute("festivals", festivalService.findAll());
-
-        return "admin/film/form";
-    }
-
- 
+    // serve davvero? TODO
     @GetMapping("/film/{id}/recensioni")
     public String recensioni(@PathVariable Long id, Model model) {
         Film film = filmService.findById(id);
@@ -113,22 +78,55 @@ public class FilmController {
         return "film/recensioni";
     }
 
-  
+    // ====================== non chiaro ==================================
+
+    private String formView(Model model) {
+        model.addAttribute("attori", attoreService.findAll());
+        model.addAttribute("festivals", festivalService.findAll());
+        return "admin/film/form";
+    }
+
+    @GetMapping("/admin/film/new")
+    public String newForm(Model model) {
+        model.addAttribute("film", new FilmForm());
+        return formView(model);
+    }
+
     @GetMapping("/admin/film/{id}/edit")
     public String editForm(@PathVariable Long id, Model model) {
-        Film filmDaModificare = filmService.findById(id);
+        model.addAttribute("film", filmService.getFilmForm(id));
+        return formView(model);
+    }
 
-        // Se il film non ha un attore, ne impostiamo uno vuoto per non far crashare la
-        // form
-     //   if (filmDaModificare.getAttore() == null) {
-      //      filmDaModificare.setAttore(new Attore()); //TODO non lo so
-        // }
+    @PostMapping("/admin/film/cast/add")
+    public String addCast(@ModelAttribute("film") FilmForm form, Model model) {
+        form.getCast().add(new InterpretazioneForm());
+        return formView(model);
+    }
 
-        model.addAttribute("film", filmDaModificare);
-    //    model.addAttribute("interpretazioni", attoreService.findAll());
-        model.addAttribute("festivals", festivalService.findAll());
+    @PostMapping("/admin/film/cast/{index}/remove")
+    public String removeCast(@ModelAttribute("film") FilmForm form,
+            @PathVariable("index") int index, Model model) {
+        if (index >= 0 && index < form.getCast().size()) {
+            form.getCast().remove(index);
+        }
+        return formView(model);
+    }
 
-        return "admin/film/formEdit";
-       
+    @PostMapping("/admin/film")
+    public String save(@Valid @ModelAttribute("film") FilmForm form, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return formView(model);
+        }
+        try {
+            Film salvato = filmService.save(form);
+            return "redirect:/film/" + salvato.getId();
+        } catch (DuplicateFilmException e) {
+            bindingResult.reject("film.duplicato");
+            return formView(model);
+        } catch (CastNonValidoException e) {
+            bindingResult.reject("film.cast", e.getMessage());
+            return formView(model);
+        }
     }
 }

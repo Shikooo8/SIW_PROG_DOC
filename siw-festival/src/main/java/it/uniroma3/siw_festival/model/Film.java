@@ -1,5 +1,6 @@
 package it.uniroma3.siw_festival.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.uniroma3.siw_festival.validation.NotFutureYear;
@@ -41,7 +42,7 @@ public class Film {
     private List<Proiezione> proiezioni;        // un film può avere più proiezioni
     
     @ManyToMany 
-    private List<Festival> festivals;           // un film può partecipare a uno o più festival
+    private List<Festival> festivals = new ArrayList<>();;           // un film può partecipare a uno o più festival
     
     private String regista;                    // ogni film ha un regista
     
@@ -49,7 +50,7 @@ public class Film {
     private List<Recensione> recensioni;        // un film può avere più recensioni
 
     @OneToMany(mappedBy = "film", cascade = CascadeType.ALL, orphanRemoval = true) 
-    private List<Interpretazione> interpretazioni;
+    private List<Interpretazione> interpretazioni = new ArrayList<>();;
 
 
 //==================== EQUALS & HASHCODE ==============    
