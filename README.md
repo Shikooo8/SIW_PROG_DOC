@@ -1,6 +1,6 @@
 # Sistemi Informativi sul Web
 
-Progetto dato dal docente per il corso di Sistemi Informativi sul Web dell'anno accademico 2025/2026
+Progetto dato dal docente per il corso di Sistemi Informativi sul Web per la sessione Novembre 2026
 
 ## Descrizione Progetto
 
@@ -68,17 +68,17 @@ Implementato ora:
 *   **`RecensioneForm`**
 
 ### `/exception`
-*   ** `DuplicateFestivalException`**
-*   ** `DuplicateFilException`**
-*   ** `DuplicateRecensioneException`**
-*   ** `DuplicateRegistaException`**
-*   ** `DuplicateSalaException`**
-*   ** `DuplicateUtenteException`**
-*   ** `FilmNotFoundException`**
-*   ** `GlobalExceptionHandler`**
-*   ** `OverlappingProiezioneException`**
-*   ** `RecensioneNotFoundException`**
-*   ** `RecenzioneUnauthorizedException`**
+*   **`DuplicateAttoreException`**
+*   **`DuplicateFestivalException`**
+*   **`DuplicateFilmException`**
+*   **`DuplicateRecensioneException`**
+*   **`DuplicateSalaException`**
+*   **`DuplicateUtenteException`**
+*   **`FilmNotFoundException`**
+*   **`GlobalExceptionHandler`**
+*   **`OverlappingProiezioneException`**
+*   **`RecensioneNotFoundException`**
+*   **`RecenzioneUnauthorizedException`**
 
 ### `/controller`
 *   **`/rest`**
@@ -149,24 +149,22 @@ Implementato ora:
     *   `@RequestMapping("/api")`
     *   `@GetMapping("/utente/me")`
 
-###  `/exception`
-*   **`DuplicateEventoException`**: `titolo` & `data`
-
 ###  `/model`
+*   **`Attore`**: `Long id`, `String nome`, `String cognome`, `java.time.LocalDate dataNascita`, `String nazionalità`, `@JsonIgnore @OneToMany(mappedBy = "attore") List<Interpretazione> interpretazioni;`
 *   **`Festival`**: `Long id`, `String nome`, `Integer anno`, `String città`, `java.time.LocalDate dataInizio`, `java.time.LocalDate dataFine`, `String descrizione`, `@ManyToMany(mappedBy = "festivals") List<Film> film`,`@OneToMany(mappedBy = "festival") List<Proiezione> proiezioni`
-*   **`Film`**: `Long id`, `String titolo`, `Integer anno`,`Integner durata`, `String genere`, `String paeseProduzione`, `@OneToMany(mappedBy = "film") List<Proiezione> proiezioni`, `@ManyToMany List<Festival> festivals`, `String regista`, `@OneToMany(mappedBy = "film") List<Recensione> recensioni`  
+*   **`Film`**: `Long id`, `String titolo`, `Integer anno`,`Integner durata`, `String genere`, `String paeseProduzione`, `@OneToMany(mappedBy = "film") List<Proiezione> proiezioni`, `@ManyToMany List<Festival> festivals`, `String regista`, `@OneToMany(mappedBy = "film") List<Recensione> recensioni`, `@OneToMany(mappedBy = "film", cascade = CascadeType.ALL, orphanRemoval = true)List<Interpretazione> interpretazioni;`
+*   **`Interpretazione`**: `Long id`, `@ManyToOne(optional = false) Attore attore;`, `    @JsonIgnore@ManyToOne(optional = false) Film film;`,  `@NotBlank String personaggio;`     
 *   **`Proiezione`**: `Long id`, `java.time.LocalDate data`, `java.time.LocalTime ora`, `@Enumerated(EnumType.STRING) StatoProiezione stato`, `@JsonIgnore @ManyToOne Festival festival`, `@JsonIgnore @NotNull @ManyToOne Film film`,  `@JsonIgnore @NotNull @ManyToOne Sala sala`
 *   **`Recensione`**: `Long id`, ` @NotBlank String testo`,
 `@NotNull @Min(1)@Max(10)Integer voto`, `java.time.LocalDateTime data`, `@NotNull  @ManyToOne Film film`, `@ManyToOne Utente utente`
-*   **`Attore`**: `Long id`, `String nome`, `String cognome`, `java.time.LocalDate dataNascita`, `String nazionalità`, `@ManyToMany(mappedBy = "attori") HashMap<Film, String> films`
 *   **`Sala`**: `Long id`, `String nome`, `String indirizzo`, `Integer capienza`, `@OneToMany(mappedBy = "sala") List<Proiezione> proiezioni`
 *   **`StatoProiezione`**: `{SCHEDULED, COMPLETED, CANCELLED}`
-*   **`Utente`**: `Long id`, `String nome`, `String password`, `String ruolo`
+*   **`Utente`**: `Long id`, `String username`, `String password`, `String ruolo`
 
 ### `/repository`
 *(Tutte le interfacce estendono `CrudRepository<Modello, Long>`)*
 
-*   **`FilmRepository`**
+*   **`FestivalRepository`**
     *   `boolean existsByNomeAndAnno(String nome, Integer anno);`
     *   `@Query("SELECT f FROM Festival f LEFT JOIN FETCH f.proiezioni p LEFT JOIN FETCH p.film LEFT JOIN FETCH p.sala WHERE f.id = :id")`
     `Festival findByIdWithProiezioni(@Param("id") Long id);`
@@ -189,50 +187,59 @@ Implementato ora:
     *   `boolean existsByNomeAndCognome(...)`
 *   **`SalaRepository`**
 *   **`UtenteRepository`**
-    *   `List<Utente> findByEmail(String email);`
-    *   `List<Utente> findAll();`
-    *   `List<Utente> findAllByOrderByCognomeAscNomeAsc();`
-*   **`UtenteRichiestaRepository`**
+    *   `boolean existsByUsername(String username);`
+    *   `Optional<Utente> findByUsername(String username);`
 
 
 ###  `/service`
 *   **`AttoreService`**
-    *   `List<Notizia> getTutteLeNotizie()`
-    *   `List<Notizia> getUltimeNotizie()`
-    *   `Notizia save(Notizia notizia)`
-    *   `void delete(Long id)`
+    *   `(...)`
+
 *   **`FestivalService`**
-    *   `boolean existsByUsername(String username)`
-    *   `void save(Credenziali credenziali)`
-    *   `Credenziali getByUsername(String username)`
+    *   `Festival findById(Long id)`
+    *   `Festival findByIdWithProiezioni(Long id)`
+    *   `List<Festival> findAll`
+    *   `Festival save(Festival film) throws DuplicateFestivalException`
+    *   `Long count()`
+
 *   **`FilmService`**
-    *   `List<Evento> getEventiVisibili()`
-    *   `List<Evento> getAll()`
-    *   `List<Evento> getEventiVisibiliProssimi()`
-    *   `Evento getEvento(Long id)`
-    *   `Evento save(Evento evento)`
-    *   `void nascondi(Long id)`
-    *   `void delete(Long id)`
+    *   `Film findById(Long id)`
+    *   `Film findByIdWithProiezioni(Long id)`
+    *   `List<Film> findAll`
+    *   `Film save(Film film) throws DuplicateFilmException`
+    *   `Long count()`
+
 *   **`ProiezioneService`**
-    *   `InformazioniGenerali getInformazioni()`
-    *   `InformazioniGenerali save(InformazioniGenerali info)`
+    *   `Proiezione findById(Long id)`
+    *   `List<Proiezione> findAl`
+    *   `List<Proiezione> findProiezioniByFestivalId(Long id)`
+    *   `void delete(Proiezione proiezione)`
+    *   `void deleteId(Long id)`
+    *   `Proiezione save(Proiezione nuovaProiezione) throws OverlappingProiezioneException`    
+
 *   **`RecensioneService`**
-    *   `List<Iniziativa> getIniziativeVisibili()`
-    *   `List<Iniziativa> getIniziativeVisibiliProssime()`
-    *   `List<Iniziativa> getAll()`
-    *   `Iniziativa save(Iniziativa iniziativa)`
-    *   `void delete(Long id)`
+    *   `Recensione findById(Long id)`
+    *   `List<Recensione> findAll()`
+    *   `List<Recensione> findByFilmId(Long filmId)`
+    *   `Long count()`
+    *   `Recensione save(Recensione recensione) throws DuplicateRecensioneException`
+    *   `Recensione update(Long id, String testo, Integer voto, String username)`
+    *   `void delete(Long id, String username)`
+    *   `void verificaProprietario(Recensione recensione, String username)`
+    *   `Utente getUtenteByUsername(String username)`
+    *   `Recensione findByFilmIdAndUsername(Long filmId, String username)`
+
 
 *   **`SalaService`**
-    *   `List<UtenteRichiesta> getTutteLeRichieste()`
-    *   `UtenteRichiesta save(UtenteRichiesta richiesta)`
-    *   `void elimina(Long id)`
-    *   `void approva(Long id)`
+    *   `Sala findById(Long id)`
+    *   `List<Sala> findAll ()`
+    *   `Sala save(Sala sala)`
+    *   `void deleteById(Long id)`
+
 *   **`UtenteService`**
-    *   `List<Utente> getTuttiGliUtenti()`
-    *   `Utente registraUtente(Utente utente, String username, String passwordInChiaro)`
-    *   `List<Utente> getTuttiDaCognome()`
-    *   `void delete(Long id)`
+    *   `Utente registra(Utente utente)`
+    *   `Utente getUtente(Long id) (TODO)`
+
 
 ###   `Validation`
 
@@ -266,9 +273,6 @@ Implementato ora:
     *   `/proiezione`
         *   `form.html`
         *   `formEdit.html`
-    *   `/regista`
-        *   `edit.html`
-        *   `manage.hmtl`
     *   `/sala`
         *
     *   `index.html`
@@ -293,9 +297,6 @@ Implementato ora:
 *   **`/recensione`**
     *   `editForm.html`
     *   `form.html`
-*   **`/regista`**
-    *   `form.html`
-    *   `show.html`
 
 
 

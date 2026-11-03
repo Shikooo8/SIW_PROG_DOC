@@ -3,6 +3,7 @@ package it.uniroma3.siw_festival.model;
 import java.util.List;
 
 import it.uniroma3.siw_festival.validation.NotFutureYear;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -46,6 +47,9 @@ public class Film {
     
     @OneToMany(mappedBy = "film")
     private List<Recensione> recensioni;        // un film può avere più recensioni
+
+    @OneToMany(mappedBy = "film", cascade = CascadeType.ALL, orphanRemoval = true) 
+    private List<Interpretazione> interpretazioni;
 
 
 //==================== EQUALS & HASHCODE ==============    

@@ -1,11 +1,15 @@
 package it.uniroma3.siw_festival.model;
 
 import java.util.HashMap;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 
 
@@ -24,8 +28,8 @@ public class Attore {
     
     private String nazionalità;
 
-    @ManyToMany(mappedBy = "attori") //TODO ha senso una hashmap??? allyosha
-    private HashMap<Film, String> films;                        // attori in più films
+    @JsonIgnore @OneToMany(mappedBy = "attore") private 
+    List<Interpretazione> interpretazioni;
 
 
     //==================== EQUALS & HASHCODE ==============    
@@ -76,13 +80,14 @@ public class Attore {
         this.id = id;
     }
 
-    public HashMap<Film, String> getFilm() {
-        return films;
+    public List<Interpretazione> getInterpretazioni() {
+        return interpretazioni;
     }
 
-    public void setFilm(HashMap<Film, String> films) {
-        this.films = films;
+    public void setInterpretazioni(List<Interpretazione> interpretazioni) {
+        this.interpretazioni = interpretazioni;
     }
+
 
     
 
