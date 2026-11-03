@@ -13,11 +13,11 @@ import org.springframework.validation.BindingResult;
 import it.uniroma3.siw_festival.exception.DuplicateFilmException;
 import it.uniroma3.siw_festival.model.Film;
 import it.uniroma3.siw_festival.model.Recensione;
-import it.uniroma3.siw_festival.model.Regista;
+import it.uniroma3.siw_festival.model.Attore;
 import it.uniroma3.siw_festival.service.FestivalService;
 import it.uniroma3.siw_festival.service.FilmService;
 import it.uniroma3.siw_festival.service.RecensioneService;
-import it.uniroma3.siw_festival.service.RegistaService;
+import it.uniroma3.siw_festival.service.AttoreService;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,16 +29,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class FilmController {
 
     private FilmService filmService;
-    private RegistaService registaService;
+    private AttoreService attoreService;
     private FestivalService festivalService;
     private RecensioneService recensioneService;
 
     // Costruttore corretto per la Dependency Injection
-    public FilmController(FilmService filmService, RegistaService registaService, FestivalService festivalService,
+    public FilmController(FilmService filmService, AttoreService attoreService, FestivalService festivalService,
             RecensioneService recensioneService) {
         this.filmService = filmService;
         this.festivalService = festivalService;
-        this.registaService = registaService;
+        this.attoreService = attoreService;
         this.recensioneService = recensioneService;
     }
 
@@ -48,15 +48,15 @@ public class FilmController {
         if (bindingResult.hasErrors()) {
             // IMPORTANTE: Ricarica sia i festival che i registi!
             model.addAttribute("festivals", festivalService.findAll());
-            model.addAttribute("registi", registaService.findAll());
+            model.addAttribute("registi", attoreService.findAll());
             return "admin/film/form";
         }
         try {
-            // Salva PRIMA il nuovo regista nel DB, ma SOLO se stiamo creando uno nuovo (id
+            // Salva PRIMA il nuovo attore nel DB, ma SOLO se stiamo creando uno nuovo (id
             // == null)
-            if (film.getRegista() != null && film.getRegista().getId() == null) {
-                this.registaService.save(film.getRegista());
-            }
+    //        if (film.getAttore() != null && film.getAttore().getId() == null) {
+    //            this.attoreService.save(film.getAttore());
+            // }
 
             this.filmService.save(film);
             return "redirect:/film";
@@ -64,7 +64,7 @@ public class FilmController {
             bindingResult.reject("film.duplicate");
             // Ricarica le liste anche qui
             model.addAttribute("festivals", festivalService.findAll());
-            model.addAttribute("registi", registaService.findAll());
+            model.addAttribute("registi", attoreService.findAll());
             return "admin/film/form";
         }
     }
@@ -100,16 +100,17 @@ public class FilmController {
     @GetMapping("/film/new")
     public String form(Model model) {
         Film nuovoFilm = new Film();
-        // Inizializza un Regista vuoto dentro il Film così Thymeleaf può legare i campi
-        nuovoFilm.setRegista(new Regista());
+        // Inizializza un Attore vuoto dentro il Film così Thymeleaf può legare i campi
+    //    nuovoFilm.setAttore(new Attore());//todo
 
         model.addAttribute("film", nuovoFilm);
-        model.addAttribute("registi", registaService.findAll());
+        model.addAttribute("registi", attoreService.findAll());
         model.addAttribute("festivals", festivalService.findAll());
 
         return "admin/film/form";
     }
 
+ 
     @GetMapping("/film/{id}/recensioni")
     public String recensioni(@PathVariable Long id, Model model) {
         Film film = filmService.findById(id);
@@ -117,20 +118,22 @@ public class FilmController {
         return "film/recensioni";
     }
 
+  
     @GetMapping("/film/{id}/edit")
     public String editForm(@PathVariable Long id, Model model) {
         Film filmDaModificare = filmService.findById(id);
 
-        // Se il film non ha un regista, ne impostiamo uno vuoto per non far crashare la
+        // Se il film non ha un attore, ne impostiamo uno vuoto per non far crashare la
         // form
-        if (filmDaModificare.getRegista() == null) {
-            filmDaModificare.setRegista(new Regista());
-        }
+     //   if (filmDaModificare.getAttore() == null) {
+      //      filmDaModificare.setAttore(new Attore()); //TODO non lo so
+        // }
 
         model.addAttribute("film", filmDaModificare);
-        model.addAttribute("registi", registaService.findAll());
+        model.addAttribute("registi", attoreService.findAll());
         model.addAttribute("festivals", festivalService.findAll());
 
         return "admin/film/formEdit";
+       
     }
 }

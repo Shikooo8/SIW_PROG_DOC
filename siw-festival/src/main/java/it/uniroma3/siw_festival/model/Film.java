@@ -13,7 +13,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Film {
@@ -43,8 +42,7 @@ public class Film {
     @ManyToMany 
     private List<Festival> festivals;           // un film può partecipare a uno o più festival
     
-    @ManyToOne
-    private Regista regista;                    // ogni film ha un regista
+    private String regista;                    // ogni film ha un regista
     
     @OneToMany(mappedBy = "film")
     private List<Recensione> recensioni;        // un film può avere più recensioni
@@ -152,11 +150,11 @@ public class Film {
         this.festivals = festivals;
     }
 
-    public Regista getRegista() {
+    public String getRegista() {
         return regista;
     }
 
-    public void setRegista(Regista regista) {
+    public void setRegista(String regista) {
         this.regista = regista;
     }
 

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import it.uniroma3.siw_festival.model.Festival;
 import it.uniroma3.siw_festival.model.Film;
-import it.uniroma3.siw_festival.exception.DuplicateFestivalException; 
+import it.uniroma3.siw_festival.exception.DuplicateFestivalException;
 import it.uniroma3.siw_festival.service.FestivalService;
 import it.uniroma3.siw_festival.service.FilmService;
 import jakarta.validation.Valid;
@@ -26,7 +26,8 @@ public class FestivalController {
         this.filmService = filmService;
     }
 
-    // #================================== PUBBLICO ==================================
+    // #================================== PUBBLICO
+    // ==================================
 
     @GetMapping("/festival")
     public String list(Model model) {
@@ -40,7 +41,7 @@ public class FestivalController {
         return "festival/show";
     }
 
-// #================================== ADMIN ==================================
+    // #================================== ADMIN ==================================
 
     // 1. CREAZIONE: Nessun film, solo dati base del festival
     @GetMapping("/admin/festival/new")
@@ -70,18 +71,21 @@ public class FestivalController {
         model.addAttribute("films", filmService.findAll());
         return "admin/festival/formEdit"; // Usa il file con le checkbox
     }
-@PostMapping("/admin/festival/{id}/edit")
-    public String saveEdit(@PathVariable Long id, @Valid @ModelAttribute("festival") Festival festival, BindingResult bindingResult, Model model) {
-        
+
+    @PostMapping("/admin/festival/{id}/edit")
+    public String saveEdit(@PathVariable Long id, @Valid @ModelAttribute("festival") Festival festival,
+            BindingResult bindingResult, Model model) {
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("films", filmService.findAll());
             return "admin/festival/formEdit";
         }
-        
+
         try {
-            festival.setId(id); 
-            
-            // 1. Recuperiamo il festival originale dal DB per conoscere la situazione precedente
+            festival.setId(id);
+
+            // 1. Recuperiamo il festival originale dal DB per conoscere la situazione
+            // precedente
             Festival oldFestival = festivalService.findById(id);
 
             // 2. Rimuoviamo il festival dai film che sono stati DESELEZIONATI
@@ -90,18 +94,18 @@ public class FestivalController {
                     if (festival.getFilm() == null || !festival.getFilm().contains(f)) {
                         f.getFestivals().remove(festival);
                         // Se Film è la parte proprietaria (owning side), dobbiamo salvarlo
-                        filmService.save(f); 
+                        filmService.save(f);
                     }
                 }
             }
-            
+
             // 3. Aggiungiamo il festival ai film che sono stati SELEZIONATI
             if (festival.getFilm() != null) {
                 for (Film f : festival.getFilm()) {
                     if (!f.getFestivals().contains(festival)) {
                         f.getFestivals().add(festival);
                         // Salviamo il lato proprietario della relazione
-                        filmService.save(f); 
+                        filmService.save(f);
                     }
                 }
             }
@@ -109,7 +113,7 @@ public class FestivalController {
             // 4. Infine salviamo le modifiche del festival
             this.festivalService.save(festival);
             return "redirect:/festival";
-            
+
         } catch (DuplicateFestivalException e) {
             bindingResult.reject("festival.duplicate");
             model.addAttribute("films", filmService.findAll());

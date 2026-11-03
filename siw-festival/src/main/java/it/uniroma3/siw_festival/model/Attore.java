@@ -1,17 +1,15 @@
 package it.uniroma3.siw_festival.model;
 
+import java.util.HashMap;
 
-import java.util.List;
-
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotBlank;
 
-@Entity 
-public class Regista {
+
+public class Attore {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -26,8 +24,8 @@ public class Regista {
     
     private String nazionalità;
 
-    @OneToMany(mappedBy = "regista")
-    private List<Film> film;                        // un regista può aver diretto più film
+    @ManyToMany(mappedBy = "attori") //TODO ha senso una hashmap??? allyosha
+    private HashMap<Film, String> films;                        // attori in più films
 
 
     //==================== EQUALS & HASHCODE ==============    
@@ -78,13 +76,14 @@ public class Regista {
         this.id = id;
     }
 
-    public List<Film> getFilm() {
-        return film;
+    public HashMap<Film, String> getFilm() {
+        return films;
     }
 
-    public void setFilm(List<Film> film) {
-        this.film = film;
+    public void setFilm(HashMap<Film, String> films) {
+        this.films = films;
     }
 
     
+
 }
