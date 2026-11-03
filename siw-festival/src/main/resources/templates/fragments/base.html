@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <body>
-    <!-- Definiamo il frammento chiamato "intestazione" -->
-    <header th:fragment="intestazione">
-        <h1 style="margin-bottom: 15px;">SiwFestival</h1>
-        
-        <div style="display: flex; justify-content: center; gap: 15px;">
-            <a th:href="@{/}" class="nav-button">Home</a>
-
-            <!-- Mostra "Login" se l'utente NON è loggato -->
-            <a th:if="${userDetails == null}" th:href="@{/login}" class="nav-button">Login</a>
-
-            <!-- Il form di Logout sicuro (POST) se l'utente è loggato -->
-            <form th:if="${userDetails != null}" th:action="@{/logout}" method="POST" style="display: inline;">
-                <button type="submit" class="nav-button">Logout</button>
-            </form>
+    <header th:fragment="intestazione" class="navbar" xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+        <div class="navbar-inner">
+            <a class="brand" th:href="@{/}">SiwFestival</a>
+            <nav class="nav-links">
+                <a th:href="@{/festival}">Festival</a>
+                <a th:href="@{/film}">Film</a>
+                <a th:href="@{/admin/sale}" sec:authorize="hasAuthority('ADMIN')">Sale</a>
+                <a th:href="@{/login}" sec:authorize="!isAuthenticated()">Accedi</a>
+                <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()">
+                    <button type="submit" class="btn btn-ghost btn-sm">Esci</button>
+                </form>
+            </nav>
         </div>
     </header>
+
+    <footer th:fragment="footer" class="footer">
+        <p>SiwFestival · Sistemi Informativi su Web</p>
+    </footer>
 </body>
+
 </html>

@@ -1,38 +1,44 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>SiwFestival - Homepage</title>
-    <link rel="stylesheet" th:href="@{/css/style.css?version=3}" />
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
     <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
 </head>
+<body>
+    <header th:replace="~{fragments/base.html :: intestazione}"></header>
 
-<body>  
+    <main class="container">
+        <div class="page-header">
+            <div>
+                <h1>SiwFestival</h1>
+                <p class="page-subtitle">Festival, film e proiezioni in un unico posto.</p>
+            </div>
+        </div>
 
-<header th:replace="~{fragments/base.html :: intestazione}"></header>
-    <div class="nav-container">
+        <div class="grid grid-wide">
+            <article class="card card-plain">
+                <h3 class="card-title"><a th:href="@{/festival}">Elenco festival</a></h3>
+                <p class="card-meta">Festival disponibili: <span th:text="${festisvalNUmber}">0</span></p>
+                <p class="card-text">Consulta i festival, i film partecipanti e il programma delle proiezioni.</p>
+            </article>
 
-        <a th:href="@{/festival}" class="nav-button">
-            <span>Elenco Festival (</span><span th:text="${festisvalNUmber}">N</span><span>)</span>
-        </a>
+            <article class="card card-plain">
+                <h3 class="card-title"><a th:href="@{/film}">Elenco film</a></h3>
+                <p class="card-meta">Film disponibili: <span th:text="${filmFNumber}">0</span></p>
+                <p class="card-text">Scopri cast, registi, recensioni e proiezioni di ogni film.</p>
+            </article>
 
-        <a th:href="@{/film}" class="nav-button">
-            <span>Elenco Film (</span><span th:text="${filmFNumber}">N</span><span>)</span>
-        </a>
+            <article class="card card-plain" sec:authorize="hasAuthority('ADMIN')">
+                <h3 class="card-title"><a th:href="@{/admin/sale}">Gestione sale</a></h3>
+                <p class="card-text">Inserisci e modifica le sale in cui si svolgono le proiezioni.</p>
+                <div class="card-tags"><span class="badge badge-violet">Solo admin</span></div>
+            </article>
+        </div>
+    </main>
 
-      
-        <a th:href="@{/admin/registi}" class="nav-button" style="display: inline-block;"  sec:authorize="hasAuthority('ADMIN')">
-            Gestione Registi
-        </a>
-
-        <a th:href="@{/admin/sale}" class="nav-button" style="display: inline-block;"  sec:authorize="hasAuthority('ADMIN')">
-            Gestione Sale   
-        </a>
-</div>
-
-    </div>
-
+    <footer th:replace="~{fragments/base.html :: footer}"></footer>
 </body>
-
 </html>

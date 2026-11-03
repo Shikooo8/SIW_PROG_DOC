@@ -1,40 +1,54 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
     <title>Elenco Festival - SiwFestival</title>
-    <link rel="stylesheet" th:href="@{/css/style.css?version=3}" />
-        <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
-
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
 </head>
 
 <body>
-    <header>
-        <h1>I Nostri Festival</h1>
-        <p><a th:href="@{/}" style="color: white; text-decoration: underline;">Torna alla Home</a></p>
-    </header>
+    <header th:replace="~{fragments/base.html :: intestazione}"></header>
 
-    <div class="nav-container" style="flex-direction: column; align-items: center;">
-        <!-- Mostra questo messaggio se non ci sono festival -->
-        <div th:if="${festivals.isEmpty()}" style="margin-bottom: 20px;">
-            <p>Non ci sono festival nel sistema al momento.</p>
+    <main class="container">
+        <div class="page-header">
+            <div>
+                <h1>Festival</h1>
+                <p class="page-subtitle">Festival presenti nel sistema: <span th:text="${festivals.size()}">0</span></p>
+            </div>
+            <a th:href="@{/admin/festival/new}" class="btn btn-primary" sec:authorize="hasAuthority('ADMIN')">Aggiungi
+                un festival</a>
         </div>
 
-        <!-- Cicla sulla lista dei festival passata dal controller -->
-        <ul style="list-style: none; padding: 0; width: 50%;">
-            <li th:each="festival : ${festivals}" style="margin-bottom: 15px; text-align: center;">
-                <a th:href="@{'/festival/' + ${festival.id}}" class="nav-button" style="display: block;">
-                    <span th:text="${festival.nome}">Nome Festival</span> -
-                    <span th:text="${festival.città}">Città</span>
-                </a>
-            </li>
-        </ul>
-    </div>
- <!-- Mostrato SOLO se l'utente ha ruolo ADMIN -->
-    <div class="nav-container" sec:authorize="hasAuthority('ADMIN')">
-        <a th:href="@{admin/festival/new}" class="nav-button">Aggiungi un Festival</a>
-    </div>
+        <div class="empty" th:if="${festivals.isEmpty()}">
+            Non ci sono festival nel sistema al momento.
+        </div>
+
+        <div class="grid grid-wide" th:unless="${festivals.isEmpty()}">
+            <article class="card" th:each="festival : ${festivals}">
+                <!-- quando avrai le immagini: sostituisci questo div con <div class="card-media card-media-wide"><img ...></div> -->
+                <div class="card-media card-media-wide card-media-empty" th:text="${festival.nome.substring(0,1)}">F
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">
+                        <a th:href="@{'/festival/' + ${festival.id}}" th:text="${festival.nome}">Nome Festival</a>
+                    </h3>
+                    <p class="card-meta"><span th:text="${festival.città}">Città</span> · <span
+                            th:text="${festival.anno}">2026</span></p>
+                    <p class="card-text" th:text="${#strings.abbreviate(festival.descrizione, 120)}">Descrizione</p>
+                    <div class="card-tags">
+                        <span class="badge"
+                            th:text="${#temporals.format(festival.dataInizio, 'dd/MM/yyyy')}">01/10/2026</span>
+                        <span class="badge badge-violet"
+                            th:text="${#temporals.format(festival.dataFine, 'dd/MM/yyyy')}">10/10/2026</span>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <footer th:replace="~{fragments/base.html :: footer}"></footer>
 </body>
 
 </html>

@@ -4,11 +4,16 @@ Progetto dato dal docente per il corso di Sistemi Informativi sul Web per la ses
 
 ## Descrizione Progetto
 
-Un sistema per la gestione di festival cinematografici
-· ogni film ha più attori, ciascuno dei quali interpreta un personaggio (ad es. Marlon Brando nel Film il padrino interpreta il personaggio di don Vito Corleone)
+
+Il sistema gestisce uno o più festival cinematografici. Per ogni festival vengono registrati i film partecipanti, gli attori, le sale cinematografiche e le proiezioni programmate.
+
+I film possono partecipare a uno o più festival e, nell’ambito di ciascun festival, possono essere presentati attraverso una o più proiezioni.
+
+Il sistema distingue tra utenti generici, utenti registrati e utenti amministratori. Gli utenti registrati possono inserire recensioni relative ai film, mentre gli amministratori possono accedere alle funzionalità di gestione del festival.
 
 
-### Funzionalità pubbliche (implementate!)
+
+### Funzionalità pubbliche (da controllare)
 - visualizzazione dell’elenco dei festival
 - visualizzazione del dettaglio di un festival
 - visualizzazione dei film partecipanti a un festival
@@ -18,12 +23,12 @@ Un sistema per la gestione di festival cinematografici
 - Il dettaglio di un festival deve permettere di accedere ai film e alle proiezioni associate.
 - Il dettaglio di un film deve mostrare almeno le informazioni sul film, il regista, i festival ai quali partecipa, le eventuali proiezioni e le recensioni.
 
-### Funzionalità utenti registrati (implementate!!)
+### Funzionalità utenti registrati (da controllare)
 - inserimento di al massimo una sola recensione per utente relativa a ciascun film
 - modifica di una propria recensione
 - eliminazione di una propria recensione
 
-### Funzionalità riservate all’amministratore (implementate !!!)
+### Funzionalità riservate all’amministratore (da controllare )
 - creazione e modifica di un festival               
 - inserimento e modifica di un film                 
 - inserimento e modifica di un regista              
@@ -32,9 +37,24 @@ Un sistema per la gestione di festival cinematografici
 - programmazione di una proiezione                  
 - modifica o cancellazione di una proiezione        
 - eliminazione di un film da un festival 
-
 Il sistema deve verificare la consistenza delle operazioni effettuate. Ad esempio, non deve essere possibile
 programmare due proiezioni nella stessa sala nello stesso intervallo temporale.
+
+### Funzionalità nuove (da implementare e controllare)
+- ogni film ha più attori, ciascuno dei quali interpreta un personaggio (ad es. Marlon Brando nel Film il padrino interpreta il personaggio di don Vito Corleone)
+- un attore può aver recitato in più film, in ogni film interpreta un personaggio
+
+### Obiettivi finali
+
+- paginazione
+- ricerca e filtri
+- ricerca dei film per titolo o genere 
+- ricerca delle proiezioni per data
+- upload di locandine o immagini
+- statistiche sulle recensioni
+- documentazione delle API REST
+- autenticazione con OAuth
+- deployment su una piattaforma cloud
 
 ## Stile
 Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
@@ -43,7 +63,6 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 
 ## Errori trovati
 - Non si aprono i film
-- Dobbiamo ancora togliere "gestione regista"
 - Gestione degli errori (proiezioni nello stesso slot temporale rimanda ad errore ma da gestire)
 - Quando si inseriscono le cose il seq number è a caso
 
@@ -258,11 +277,11 @@ Implementato ora:
 *   **`import.sql`**
 
 ###  `/messages`
-*   `messages.properties` ➔ `film.duplicato`
-
+*   `messages.properties` ➔ `film.duplicato`, `NotBlank`, `NotNull`, `typeMismatch`, `typeMismatch.java.lang.Integer`, `NotBlank.film.titolo`, `Min.anno`, `festival.duplicate`
 ###  `/static`
 *   **`/css`**
-    *   `stile.css`
+    *   `stile.css` (nuovo)
+    *   `style.css`
 *   **`/images`**
 *   **`/react`**
 
@@ -280,7 +299,7 @@ Implementato ora:
         *   `formEdit.html`
     *   `/sala`
         *
-    *   `index.html`
+    *   `index.html` (aggiornato)
 *   **`/authentication`**
     *   `loginForm.html`
     *   `registerForm.html`
@@ -295,21 +314,11 @@ Implementato ora:
     *   `recensioni.html`
     *   `show.html`
 *   **`/fragments`**
-    *   `base.html`
+    *   `base.html` (aggiornato)
 *   **`/film`**
-    *   `list.html`
+    *   `list.html` (aggiornato)
     *   `show.html`
 *   **`/recensione`**
     *   `editForm.html`
     *   `form.html`
-
-
-
-
-
-
-
-
-
-
 
