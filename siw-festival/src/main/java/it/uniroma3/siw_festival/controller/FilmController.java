@@ -2,6 +2,7 @@ package it.uniroma3.siw_festival.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -39,13 +40,20 @@ public class FilmController {
         this.recensioneService = recensioneService;
     }
 
-    // ================================== PUBBLICO ==================================
+    // ================================== PUBBLICO
+    // ==================================
 
     @GetMapping("/film")
-    public String list(Model model) {
-        List<Film> films = filmService.findAll();
-        model.addAttribute("films", films);
-        model.addAttribute("filmsNumber", films.size());
+    public String list(@RequestParam(defaultValue = "") String q,
+            @RequestParam(defaultValue = "0") int page, Model model) {
+
+        String ricerca = (q == null) ? "" : q; // se q è null usa "", altrimenti q
+        Page<Film> pagina = filmService.cercaPagina(ricerca, page);
+
+        model.addAttribute("films", pagina.getContent());
+        model.addAttribute("pagina", pagina);
+        model.addAttribute("q", ricerca); // il template usa questo
+        model.addAttribute("filmsNumber", pagina.getTotalElements());
         return "film/list";
     }
 
@@ -124,7 +132,8 @@ public class FilmController {
         } catch (ImmagineNonValidaException e) {
             bindingResult.reject("immagine.nonValida");
         }
-        // si arriva qui solo se è stata catturata un'eccezione: rimostra il form con l'errore
+        // si arriva qui solo se è stata catturata un'eccezione: rimostra il form con
+        // l'errore
         return formView(form, model);
     }
 }

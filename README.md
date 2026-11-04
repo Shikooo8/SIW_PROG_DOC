@@ -128,7 +128,7 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     *   `@PostMapping("/admin/festival/{id}/edit")` ➔ `return "redirect:/festival"`
 
 *   **`FilmController`**
-    *   `@GetMapping("/film")` ➔ `return "film/list"`
+    *   `@GetMapping("/film")list` ➔ `return "film/list"`
     *   `@GetMapping("/film/{id}")` ➔ `return "film/show"`
     *   `private String formView(FilmForm form, Model model)` ➔ `return "admin/film/form"`
     *   `@GetMapping("/admin/film/new")` ➔ `return formView(form, model)`
@@ -136,6 +136,8 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     *   `@PostMapping("/admin/film/cast/add")` ➔ `return formView(form, model)`
     *   `@PostMapping("/admin/film/cast/{index}/remove")` ➔ `return formView(form, model)`
     *   `@PostMapping("/admin/film")` ➔ `return "redirect:/film/" + salvato.getId()` *(con errori: `return formView(form, model)`)*
+
+    
 *   **`GlobalBindingConfig`**
     *   `InitBinder (WebDataBinder binder)`
 
@@ -232,6 +234,7 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     *   `List<Film> findTop15ByTitoloStartingWithIgnoreCaseOrderByTitoloAsc(String prefisso);`
     *   `List<Film> findByFestivalsId(Long festivalId)`
     *   `boolean existsByIdAndFestivalsId(Long filmId Long festivalId)`
+    *   `Page<Film> findByTitoloContainingIgnoreCase String titolo, Pageable pageable)`
 
 *   **`ProiezioneRepository`**
     *   `List<Proiezione> findBySalaIdAndData(Long salaId, LocalDate data);`
@@ -284,6 +287,7 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     *   `List<Film> cerca(String prefisso)`
     *   `List<Film> findAllById(List<Long> ids) `
     *   `List<Film> findByFestivalId(Long festivalId)`
+    *   `Page<Film> cercaPagina(String testo, int pagina)`
 
 *   **`ProiezioneService`**
     *   `Proiezione findById(Long id)`

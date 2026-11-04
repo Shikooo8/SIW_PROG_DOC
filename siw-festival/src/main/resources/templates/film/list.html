@@ -15,14 +15,22 @@
         <div class="page-header">
             <div>
                 <h1>Film</h1>
-                <p class="page-subtitle">Film in catalogo: <span th:text="${filmsNumber}">0</span></p>
+                <p class="page-subtitle">Film trovati: <span th:text="${filmsNumber}">0</span></p>
             </div>
             <a th:href="@{/admin/film/new}" class="btn btn-primary" sec:authorize="hasAuthority('ADMIN')">Aggiungi un
                 film</a>
         </div>
 
+        <!-- BARRA DI RICERCA -->
+        <form class="search-bar" th:action="@{/film}" method="get">
+            <input type="text" name="q" th:value="${q}" placeholder="Cerca un film per titolo..." autocomplete="off" />
+            <button type="submit" class="btn btn-primary">Cerca</button>
+            <a th:unless="${q.isEmpty()}" th:href="@{/film}" class="btn btn-ghost">Azzera</a>
+        </form>
+
         <div class="empty" th:if="${films.isEmpty()}">
-            Non ci sono film nel sistema.
+            <span th:if="${q.isEmpty()}">Non ci sono film nel sistema.</span>
+            <span th:unless="${q.isEmpty()}">Nessun film trovato per "<span th:text="${q}">testo</span>".</span>
         </div>
 
         <div class="grid" th:unless="${films.isEmpty()}">
@@ -45,8 +53,14 @@
                 </div>
             </article>
         </div>
-    </main>
 
+        <!-- PAGINE: 1 2 3 ... (solo se ce n'è più di una) -->
+        <nav class="pagination" th:if="${pagina.totalPages > 1}">
+            <a th:each="i : ${#numbers.sequence(0, pagina.totalPages - 1)}" th:href="@{/film(q=${q}, page=${i})}"
+                th:text="${i + 1}" th:classappend="${i == pagina.number} ? 'btn-primary' : 'btn-secondary'"
+                class="btn btn-sm">1</a>
+        </nav>
+    </main>
     <footer th:replace="~{fragments/base.html :: footer}"></footer>
 </body>
 

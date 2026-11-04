@@ -26,6 +26,11 @@ import it.uniroma3.siw_festival.repository.AttoreRepository;
 import it.uniroma3.siw_festival.repository.FestivalRepository;
 import it.uniroma3.siw_festival.repository.FilmRepository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -227,4 +232,15 @@ public class FilmService {
         return filmRepository.findByFestivalsId(festivalId);
     }
 
+    // Per avere le pagine nella lista dei film
+    @Transactional(readOnly = true)
+    public Page<Film> cercaPagina(String testo, int pagina) {
+        String ricerca = "";
+        if (testo != null) {
+            ricerca = testo.trim(); // trim solo se il testo esiste
+        }
+        Pageable richiesta = PageRequest.of(Math.max(pagina, 0), 16,
+                Sort.by(Sort.Order.asc("titolo").ignoreCase()));
+        return filmRepository.findByTitoloContainingIgnoreCase(ricerca, richiesta);
+    }
 }

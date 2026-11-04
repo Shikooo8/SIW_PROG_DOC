@@ -2,6 +2,8 @@ package it.uniroma3.siw_festival.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -27,5 +29,8 @@ public interface FilmRepository extends CrudRepository<Film, Long> {
     List<Film> findByFestivalsId(Long festivalId);
 
     boolean existsByIdAndFestivalsId(Long filmId, Long festivalId);
+
+    // Per la ricerca nella lista dei film 
+    Page<Film> findByTitoloContainingIgnoreCase(String titolo, Pageable pageable);
 
 }

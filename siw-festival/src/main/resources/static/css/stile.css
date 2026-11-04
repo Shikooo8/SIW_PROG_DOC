@@ -614,3 +614,8 @@ input.has-error, select.has-error, textarea.has-error { border-color: var(--dang
   .hero { grid-template-columns: 1fr; gap: 1.5rem; }
   .hero-media { max-width: 320px; }
 }
+
+/* --- Ricerca e pagine (liste) --- */
+.search-bar { display: flex; gap: .6rem; margin-bottom: 1.75rem; }
+.search-bar input { flex: 1; }
+.pagination { display: flex; justify-content: center; flex-wrap: wrap; gap: .4rem; margin-top: 2.25rem; }
