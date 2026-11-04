@@ -120,8 +120,8 @@ insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) v
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Forrest Gump', 1994, 142, 'Drammatico', 'USA', 'Robert Zemeckis');
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Parasite', 2019, 132, 'Thriller', 'Corea del Sud', 'Bong Joon-ho');
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Gladiatore', 2000, 155, 'Storico', 'USA', 'Ridley Scott');
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Avatar', 2009, 162, 'Fantascienza', 'USA', 'James Cameron');
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Titanic', 1997, 195, 'Drammatico', 'USA', 'James Cameron');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Avatar', 2009, 162, 'Fantascienza', 'USA', 'James Cameron', 'films/Avatar.jpeg');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Titanic', 1997, 195, 'Drammatico', 'USA', 'James Cameron', 'films/Titanic.jpg');
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Avengers: Endgame', 2019, 181, 'Azione', 'USA', 'Anthony e Joe Russo');
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Joker', 2019, 122, 'Drammatico', 'USA', 'Todd Phillips');
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Mad Max: Fury Road', 2015, 120, 'Azione', 'Australia', 'George Miller');

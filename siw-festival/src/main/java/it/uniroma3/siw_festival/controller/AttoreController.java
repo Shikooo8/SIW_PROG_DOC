@@ -72,14 +72,14 @@ public class AttoreController {
         // Presuppone che tu abbia un metodo findById nel Service che restituisca il attore
         Attore attore = attoreService.findById(id); 
         model.addAttribute("attore", attore);
-        return "admin/attore/edit"; 
+        return "admin/attoreEdit"; 
     }
 
     // Riceve i dati aggiornati e li salva
     @PostMapping("/admin/attori/{id}/edit")
     public String updateAttore(@PathVariable Long id, @Valid @ModelAttribute("attore") Attore attore, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "admin/attore/edit"; // Torna al form se ci sono errori di validazione
+            return "admin/attoreEdit"; // Torna al form se ci sono errori di validazione
         }
         
         // Assicurati che l'ID sia impostato in modo che JPA esegua un UPDATE e non un INSERT[cite: 6]
@@ -89,7 +89,7 @@ public class AttoreController {
             attoreService.save(attore);
         } catch (DuplicateAttoreException e) {
             bindingResult.reject("attore.duplicate");
-            return "admin/attore/edit";
+            return "admin/attoreEdit";
         }
         
         return "redirect:/admin/attori";

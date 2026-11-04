@@ -71,10 +71,13 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 ## Errori trovati
 - Gestione degli errori (proiezioni nello stesso slot temporale rimanda ad errore ma da gestire)
 - Quando si inseriscono le cose il seq number è a caso
-- Nella creazione del film c'è stato un errore ma non replicabile
-- Quando viene aggiunta una foto ad un film, si cambia l'id, credo. Si sposta, non va bene
 - Le immagini dei Festival sono lunghe e sono inguardabili così
 - In Film/form da ispezione pagina posso cambiare il tipo degli input e non è gestito bene
+
+- il login deve riportare alla finestra che si stava cliccando
+- le immagini danno nomi a caso
+- facciamo il database permanente
+
 
 # Struttura del Progetto
 
@@ -358,6 +361,8 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     *   `/sala`
         *
     *   `index.html` (aggiornato)
+*   **`/attore`**
+    *   `show.html` ()
 *   **`/authentication`**
     *   `loginForm.html` (aggiornato)
     *   `registerForm.html` (aggiornato)

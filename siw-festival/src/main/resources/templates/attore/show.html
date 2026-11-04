@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dettaglio Attore - SiwFestival</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
+</head>
+
+<body>
+    <header th:replace="~{fragments/base.html :: intestazione}"></header>
+
+    <main class="container">
+
+        <!-- INFORMAZIONI PRINCIPALI -->
+        
+            <div class="show-info">
+                <h1 th:text="${attore.nome} + ' ' + ${attore.cognome}">Nome Cognome</h1>
+
+                <dl class="meta-list">
+                    <dt>Anno di uscita</dt>
+                    <dd th:text="${attore.dataNascita}">12-21-21</dd>
+                    <dt>Nazionalità</dt>
+                    <dd th:text="${attore.nazionalità}">Nazionalità</dd>
+                </dl>
+
+                <div class="show-actions">
+                    <a th:href="@{'/admin/attore/' + ${attore.id} + '/edit'}" class="btn btn-secondary"
+                        sec:authorize="hasAuthority('ADMIN')">Modifica attore</a>
+                    <a th:href="@{/}" class="btn btn-ghost">Torna alla home</a>
+                </div>
+            </div>
+     
+
+        <!-- CAST -->
+        <!--section class="section">
+            <h2 class="section-title">Cast</h2>
+            <div class="empty" th:if="${film.interpretazioni == null or film.interpretazioni.isEmpty()}">
+                Nessun attore assegnato.
+            </div>
+            <ul class="cast-list" th:unless="${film.interpretazioni == null or film.interpretazioni.isEmpty()}">
+                <li class="cast-item" th:each="int : ${film.interpretazioni}">
+                    <a class="cast-actor" th:href="@{'/attore/' + ${int.attore.id}}"
+                        th:text="${int.attore.nome} + ' ' + ${int.attore.cognome}">Nome Cognome</a>
+                    <span class="cast-role">nel ruolo di <span th:text="${int.personaggio}">Personaggio</span></span>
+                </li>
+            </ul>
+        </section -->
+
+        
+
+    
+    </main>
+
+    <footer th:replace="~{fragments/base.html :: footer}"></footer>
+</body>
+
+</html>
