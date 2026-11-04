@@ -7,20 +7,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-
-import it.uniroma3.siw_festival.dto.FilmForm;
-import it.uniroma3.siw_festival.dto.InterpretazioneForm;
-import it.uniroma3.siw_festival.exception.CastNonValidoException;
-import it.uniroma3.siw_festival.exception.DuplicateFilmException;
-import it.uniroma3.siw_festival.exception.ImmagineNonValidaException;
-import it.uniroma3.siw_festival.model.Film;
-import it.uniroma3.siw_festival.model.Recensione;
-import it.uniroma3.siw_festival.service.FestivalService;
-import it.uniroma3.siw_festival.service.FilmService;
-import it.uniroma3.siw_festival.service.RecensioneService;
-import it.uniroma3.siw_festival.service.AttoreService;
-import jakarta.validation.Valid;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,62 +14,61 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import it.uniroma3.siw_festival.dto.FilmForm;
+import it.uniroma3.siw_festival.dto.InterpretazioneForm;
+import it.uniroma3.siw_festival.exception.CastNonValidoException;
+import it.uniroma3.siw_festival.exception.DuplicateFilmException;
+import it.uniroma3.siw_festival.exception.ImmagineNonValidaException;
+import it.uniroma3.siw_festival.model.Film;
+import it.uniroma3.siw_festival.service.FestivalService;
+import it.uniroma3.siw_festival.service.FilmService;
+import it.uniroma3.siw_festival.service.RecensioneService;
+import jakarta.validation.Valid;
+
 @Controller
 public class FilmController {
 
-    private FilmService filmService;
-    private AttoreService attoreService;
-    private FestivalService festivalService;
-    private RecensioneService recensioneService;
+    private final FilmService filmService;
+    private final FestivalService festivalService;
+    private final RecensioneService recensioneService;
 
-    // Costruttore corretto per la Dependency Injection
-    public FilmController(FilmService filmService, AttoreService attoreService, FestivalService festivalService,
+    public FilmController(FilmService filmService, FestivalService festivalService,
             RecensioneService recensioneService) {
         this.filmService = filmService;
         this.festivalService = festivalService;
-        this.attoreService = attoreService;
         this.recensioneService = recensioneService;
     }
 
-    // ============================utente
+    // ================================== PUBBLICO ==================================
 
     @GetMapping("/film")
     public String list(Model model) {
-        List<Film> filmList = filmService.findAll();
-        model.addAttribute("films", filmList);
-        model.addAttribute("filmsNumber", filmList.size());
+        List<Film> films = filmService.findAll();
+        model.addAttribute("films", films);
+        model.addAttribute("filmsNumber", films.size());
         return "film/list";
     }
 
     @GetMapping("/film/{id}")
     public String show(@PathVariable("id") Long id, Model model, Authentication authentication) {
-        Film film = filmService.findById(id); // o il metodo che già usi
-        model.addAttribute("film", film);
+        model.addAttribute("film", filmService.findById(id));
 
-        boolean loggato = authentication != null && authentication.isAuthenticated()
+        boolean loggato = authentication != null
                 && !(authentication instanceof AnonymousAuthenticationToken);
         model.addAttribute("utenteLoggato", loggato);
 
         if (loggato) {
-            Recensione recensioneUtente = recensioneService.findByFilmIdAndUsername(id, authentication.getName());
-            model.addAttribute("recensioneUtente", recensioneUtente);
+            model.addAttribute("recensioneUtente",
+                    recensioneService.findByFilmIdAndUsername(id, authentication.getName()));
         }
-
         return "film/show";
     }
 
-    // serve davvero? TODO
-    @GetMapping("/film/{id}/recensioni")
-    public String recensioni(@PathVariable Long id, Model model) {
-        Film film = filmService.findById(id);
-        model.addAttribute("film", film);
-        return "film/recensioni";
-    }
+    // ================================== ADMIN ==================================
+    // Un solo form (admin/film/form.html) per creazione e modifica
 
-    // ====================== non chiaro ==================================
-
+    // prepara la pagina: i festival già scelti servono per mostrare i badge
     private String formView(FilmForm form, Model model) {
-        // model.addAttribute("ATTORI"); //TODO why not attori
         model.addAttribute("festivalsSelezionati", festivalService.findAllById(form.getFestivalIds()));
         return "admin/film/form";
     }
@@ -96,18 +81,20 @@ public class FilmController {
     }
 
     @GetMapping("/admin/film/{id}/edit")
-    public String editForm(@PathVariable Long id, Model model) {
+    public String editForm(@PathVariable("id") Long id, Model model) {
         FilmForm form = filmService.getFilmForm(id);
         model.addAttribute("film", form);
         return formView(form, model);
     }
 
+    // bottone "Aggiungi personaggio": aggiunge una riga vuota al cast
     @PostMapping("/admin/film/cast/add")
     public String addCast(@ModelAttribute("film") FilmForm form, Model model) {
         form.getCast().add(new InterpretazioneForm());
         return formView(form, model);
     }
 
+    // bottone "Rimuovi": toglie la riga con quell'indice
     @PostMapping("/admin/film/cast/{index}/remove")
     public String removeCast(@ModelAttribute("film") FilmForm form,
             @PathVariable("index") int index, Model model) {
@@ -117,20 +104,27 @@ public class FilmController {
         return formView(form, model);
     }
 
+    // salvataggio (creazione e modifica: se il film ha un id è una modifica)
     @PostMapping("/admin/film")
-    public String salvaFilm(@Valid @ModelAttribute("filmForm") FilmForm form,
+    public String salvaFilm(@Valid @ModelAttribute("film") FilmForm form,
             BindingResult bindingResult,
             @RequestParam(value = "file", required = false) MultipartFile file,
             Model model) {
+
         if (bindingResult.hasErrors()) {
             return formView(form, model);
         }
         try {
             Film salvato = filmService.save(form, file);
             return "redirect:/film/" + salvato.getId();
+        } catch (DuplicateFilmException e) {
+            bindingResult.reject("film.duplicato");
+        } catch (CastNonValidoException e) {
+            bindingResult.reject("film.cast", e.getMessage());
         } catch (ImmagineNonValidaException e) {
             bindingResult.reject("immagine.nonValida");
-            return formView(form, model);
         }
+        // si arriva qui solo se è stata catturata un'eccezione: rimostra il form con l'errore
+        return formView(form, model);
     }
 }

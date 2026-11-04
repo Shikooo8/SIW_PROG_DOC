@@ -54,10 +54,19 @@
                     </div>
                 </div>
 
-                <div>
-                    <label for="file">Immagine:</label>
-                    <input type="file" id="file" name="file" accept="image/png, image/jpeg, image/webp" />
+                <!-- IMMAGINE -->
+                <div class="form-group">
+                    <label>Immagine</label>
+                    <div class="file-input">
+                        <input type="file" id="file" name="file" accept="image/png, image/jpeg, image/webp" hidden />
+                        <label for="file" class="btn btn-secondary btn-sm">Scegli file</label>
+                        <span class="file-nome">Nessun file selezionato</span>
+                    </div>
+                    <span class="form-hint" th:if="${film.id != null}">
+                        Se non scegli nessun file, resta l'immagine attuale.
+                    </span>
                 </div>
+
 
                 <div class="form-group">
                     <label for="regista">Regista</label>

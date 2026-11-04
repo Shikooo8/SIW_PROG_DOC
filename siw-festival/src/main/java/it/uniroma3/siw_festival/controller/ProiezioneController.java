@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+import it.uniroma3.siw_festival.exception.FilmNonPartecipanteException;
 import it.uniroma3.siw_festival.exception.OverlappingProiezioneException;
 import it.uniroma3.siw_festival.model.Proiezione;
 import it.uniroma3.siw_festival.service.FestivalService;
@@ -37,7 +38,7 @@ public class ProiezioneController {
         model.addAttribute("festivalId", festivalId);
 
         // Carica i dati per le select
-        model.addAttribute("films", filmService.findAll());
+        model.addAttribute("films", filmService.findByFestivalId(festivalId));
         model.addAttribute("sale", salaService.findAll());
 
         return "admin/proiezione/form";
@@ -50,7 +51,7 @@ public class ProiezioneController {
             Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("festivalId", festivalId);
-            model.addAttribute("films", filmService.findAll());
+            model.addAttribute("films", filmService.findByFestivalId(festivalId));
             model.addAttribute("sale", salaService.findAll());
             return "admin/proiezione/form";
         }
@@ -61,16 +62,15 @@ public class ProiezioneController {
 
         // Torna alla pagina del festival
         return "redirect:/festival/" + festivalId;
-    }
+    }//TODO da mettere i due catch dopo
 
-    
     @GetMapping("/admin/proiezione/{id}/edit")
     public String editProiezioneForm(@PathVariable Long id, Model model) {
         // Recupera la proiezione esistente dal DB
         Proiezione proiezione = proiezioneService.findById(id);
-        
+
         model.addAttribute("proiezione", proiezione);
-        model.addAttribute("films", filmService.findAll());
+        model.addAttribute("films", filmService.findByFestivalId(proiezione.getFestival().getId()));
         model.addAttribute("sale", salaService.findAll());
 
         // Ritorna il percorso esatto da te richiesto
@@ -87,7 +87,7 @@ public class ProiezioneController {
         proiezione.setId(id);
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("films", filmService.findAll());
+            model.addAttribute("films", filmService.findByFestivalId(proiezione.getFestival().getId()));
             model.addAttribute("sale", salaService.findAll());
             return "admin/proiezione/formEdit";
         }
@@ -108,12 +108,17 @@ public class ProiezioneController {
             // Se scatta l'eccezione, il salvataggio si blocca e si torna alla form con
             // l'errore
             bindingResult.reject("proiezione.overlapping", "La sala è già occupata in questa data e fascia oraria.");
-            model.addAttribute("films", filmService.findAll());
+            model.addAttribute("films", filmService.findByFestivalId(proiezione.getFestival().getId()));
             model.addAttribute("sale", salaService.findAll());
             return "admin/proiezione/formEdit";
+        } catch (FilmNonPartecipanteException e) {
+            bindingResult.reject("proiezione.filmNonPartecipante", e.getMessage());
+            model.addAttribute("films", filmService.findByFestivalId(proiezione.getFestival().getId()));
+            model.addAttribute("sale", salaService.findAll());
+            return "admin/proiezione/formEdit";
+
         }
     }
-
 
     @PostMapping("/admin/proiezione/{id}/delete")
     public String deleteProiezione(@PathVariable Long id) {

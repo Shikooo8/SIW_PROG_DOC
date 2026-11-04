@@ -74,7 +74,7 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 - Nella creazione del film c'è stato un errore ma non replicabile
 - Quando viene aggiunta una foto ad un film, si cambia l'id, credo. Si sposta, non va bene
 - Le immagini dei Festival sono lunghe e sono inguardabili così
-
+- In Film/form da ispezione pagina posso cambiare il tipo degli input e non è gestito bene
 
 # Struttura del Progetto
 
@@ -130,14 +130,12 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 *   **`FilmController`**
     *   `@GetMapping("/film")` ➔ `return "film/list"`
     *   `@GetMapping("/film/{id}")` ➔ `return "film/show"`
-    *   `@GetMapping("/film/{id}/recensioni")` ➔ `return "film/recensioni";`
-    *   `String formView(Model model)`  ➔ `return "admin/film/form";`
-    *   `@GetMapping("/admin/film/new")`  ➔ `return formView(model);`
-    *   `@GetMapping("/admin/film/{id}/edit")`  ➔ `return formView(model);`
-    *   `@PostMapping("/admin/film/cast/add")String addCast`  ➔ `return formView(model);`
-    *   `@PostMapping("/admin/film/{index}/remove") String removeCast`  ➔ `return formView(model);`
-    *   `@PostMapping("/admin/film")String save`  ➔ `return "redirect:/film/" + salvato.getId();`
-  
+    *   `private String formView(FilmForm form, Model model)` ➔ `return "admin/film/form"`
+    *   `@GetMapping("/admin/film/new")` ➔ `return formView(form, model)`
+    *   `@GetMapping("/admin/film/{id}/edit")` ➔ `return formView(form, model)`
+    *   `@PostMapping("/admin/film/cast/add")` ➔ `return formView(form, model)`
+    *   `@PostMapping("/admin/film/cast/{index}/remove")` ➔ `return formView(form, model)`
+    *   `@PostMapping("/admin/film")` ➔ `return "redirect:/film/" + salvato.getId()` *(con errori: `return formView(form, model)`)*
 *   **`GlobalBindingConfig`**
     *   `InitBinder (WebDataBinder binder)`
 
@@ -188,6 +186,7 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 *   **`DuplicateRecensioneException`**
 *   **`DuplicateSalaException`**
 *   **`DuplicateUtenteException`**
+*   **`FilmNonPartecipanteException`**
 *   **`FilmNotFoundException`**
 *   **`GlobalExceptionHandler`**
 *   **`ImmagineNonValidaException`**
@@ -231,6 +230,7 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     *   `boolean existsByTitoloAndAnnoAndIdNot(String titolo, Integer anno, Long id);`
     *   `List<Film> findTop15ByTitoloStartingWithIgnoreCaseOrderByTitoloAsc(String prefisso);`
     *   `List<Film> findByFestivalsId(Long festivalId)`
+    *   `boolean existsByIdAndFestivalsId(Long filmId Long festivalId)`
 
 *   **`ProiezioneRepository`**
     *   `List<Proiezione> findBySalaIdAndData(Long salaId, LocalDate data);`

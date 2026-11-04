@@ -60,7 +60,7 @@ insert into utente (id, username, password, ruolo) values (nextval('utente_seq')
 -- FESTIVAL (15 festival)
 -- ==========================================
 insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno, immagine) values (nextval('festival_seq'), 'Festival del Cinema di Roma', 'Roma', 'Un grande festival internazionale', '2026-10-01', '2026-10-10', 2026, 'festivals/RFF.webp');
-insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno, immagine) values (nextval('festival_seq'), 'Venezia Classic', 'Venezia', 'Retrospettive', '2026-09-01', '2026-09-10', 2026, 'festivals/VC.jpeg');
+insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno, immagine) values (nextval('festival_seq'), 'Venezia Classic', 'Venezia', 'Retrospettive', '2026-09-01', '2026-09-10', 2026, 'festivals/VC.jpg');
 insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno, immagine) values (nextval('festival_seq'), 'Tokyo on Fest!', 'Tokyo', 'Grande evento specializzato in animazione', '2026-05-01', '2026-05-16', 2026, 'festivals/TOF.jpeg');
 insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno) values (nextval('festival_seq'), 'Grande Venezuela Film', 'Caracas', 'Il festival più grande del Venezuela', '2025-12-10', '2025-12-20', 2025);
 insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno, immagine) values (nextval('festival_seq'), 'Cannes Film Festival', 'Cannes', 'Il più prestigioso festival europeo', '2026-05-12', '2026-05-23', 2026, 'festivals/CFF.jpg');

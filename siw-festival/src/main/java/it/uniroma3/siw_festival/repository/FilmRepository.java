@@ -26,4 +26,6 @@ public interface FilmRepository extends CrudRepository<Film, Long> {
     // film collegati a un festival (serve per la pagina di modifica del festival)
     List<Film> findByFestivalsId(Long festivalId);
 
+    boolean existsByIdAndFestivalsId(Long filmId, Long festivalId);
+
 }
