@@ -315,6 +315,8 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     *   `stile.css` (nuovo)
     *   `style.css`
 *   **`/images`**
+*   **`/js`**
+    *   `picker.js`
 *   **`/react`**
 
 ###  `/templates`

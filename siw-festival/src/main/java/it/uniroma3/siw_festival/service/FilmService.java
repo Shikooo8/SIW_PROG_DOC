@@ -120,7 +120,7 @@ public class FilmService {
         return filmRepository.save(film); // cascade ALL salva le interpretazioni
     }
 
-    //TODO ho lasciato l'altro save, che viene usato dal festival
+    // TODO ho lasciato l'altro save, che viene usato dal festival
     @Transactional
     public Film save(Film film) throws DuplicateFilmException {
         if (film.getId() == null) {
@@ -138,25 +138,33 @@ public class FilmService {
     }
 
     private Attore risolviAttore(InterpretazioneForm riga) {
-        if (riga.getAttoreId() != null) {
+
+        // caso 1: attore scelto dall'elenco
+        if (!riga.isNuovoAttore()) {
+            if (riga.getAttoreId() == null) {
+                throw new CastNonValidoException("Per il personaggio '" + riga.getPersonaggio()
+                        + "' scegli un attore dall'elenco oppure spunta 'Nuovo attore'");
+            }
             return attoreRepository.findById(riga.getAttoreId())
                     .orElseThrow(() -> new CastNonValidoException("Attore non trovato"));
         }
+
+        // caso 2: nuovo attore
         String nome = riga.getNome() == null ? "" : riga.getNome().trim();
         String cognome = riga.getCognome() == null ? "" : riga.getCognome().trim();
         if (nome.isEmpty() || cognome.isEmpty()) {
             throw new CastNonValidoException("Per il personaggio '" + riga.getPersonaggio()
-                    + "' scegli un attore dall'elenco oppure inserisci nome e cognome di un nuovo attore");
+                    + "' inserisci nome e cognome del nuovo attore");
         }
         if (attoreRepository.existsByNomeAndCognome(nome, cognome)) {
             throw new CastNonValidoException("L'attore " + nome + " " + cognome
-                    + " esiste già: sceglilo dall'elenco");
+                    + " esiste già: toglilo da 'Nuovo attore' e cercalo nell'elenco");
         }
         Attore nuovo = new Attore();
         nuovo.setNome(nome);
         nuovo.setCognome(cognome);
         nuovo.setDataNascita(riga.getDataNascita());
-        nuovo.setNazionalità(riga.getNazionalita()); // adatta al nome reale del tuo setter
+        nuovo.setNazionalità(riga.getNazionalita());
         return attoreRepository.save(nuovo);
     }
 

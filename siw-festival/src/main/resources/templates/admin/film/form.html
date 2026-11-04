@@ -99,37 +99,47 @@
                                 th:errors="*{cast[__${iter.index}__].personaggio}"></span>
                         </div>
 
-                        <div class="form-group picker" th:data-url="@{/admin/ricerca/attori}">
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" class="nuovo-attore-check"
+                                    th:field="*{cast[__${iter.index}__].nuovoAttore}" />
+                                Nuovo attore (non è nell'elenco)
+                            </label>
+                        </div>
+
+                        <!-- Attore dall'elenco: visibile solo se NON è spuntato "Nuovo attore" -->
+                        <div class="form-group picker" th:hidden="${riga.nuovoAttore}"
+                            th:data-url="@{/admin/ricerca/attori}">
                             <label>Attore</label>
                             <input type="hidden" class="picker-id" th:field="*{cast[__${iter.index}__].attoreId}" />
                             <input type="text" class="picker-search" th:field="*{cast[__${iter.index}__].attoreLabel}"
-                                placeholder="Cerca un attore, oppure lascia vuoto per crearne uno nuovo"
-                                autocomplete="off" />
+                                placeholder="Cerca un attore..." autocomplete="off" />
                             <ul class="picker-list" hidden></ul>
                         </div>
 
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label th:attr="for=${'cast' + iter.index + '.nome'}">Nome</label>
-                                <input type="text" th:field="*{cast[__${iter.index}__].nome}" />
+                        <!-- Nuovo attore: visibile solo se è spuntato "Nuovo attore" -->
+                        <div class="nuovo-attore-box" th:hidden="${!riga.nuovoAttore}">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Nome</label>
+                                    <input type="text" th:field="*{cast[__${iter.index}__].nome}" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Cognome</label>
+                                    <input type="text" th:field="*{cast[__${iter.index}__].cognome}" />
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label th:attr="for=${'cast' + iter.index + '.cognome'}">Cognome</label>
-                                <input type="text" th:field="*{cast[__${iter.index}__].cognome}" />
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Data di nascita</label>
+                                    <input type="date" th:field="*{cast[__${iter.index}__].dataNascita}" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Nazionalità</label>
+                                    <input type="text" th:field="*{cast[__${iter.index}__].nazionalita}" />
+                                </div>
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label th:attr="for=${'cast' + iter.index + '.dataNascita'}">Data di nascita</label>
-                                <input type="date" th:field="*{cast[__${iter.index}__].dataNascita}" />
-                            </div>
-                            <div class="form-group">
-                                <label th:attr="for=${'cast' + iter.index + '.nazionalita'}">Nazionalità</label>
-                                <input type="text" th:field="*{cast[__${iter.index}__].nazionalita}" />
-                            </div>
-                        </div>
-                        <span class="form-hint">Nome, cognome e gli altri dati servono solo se non scegli un attore
-                            dall'elenco.</span>
                     </div>
                 </div>
 
