@@ -14,32 +14,59 @@
     <main class="container">
         <div class="alert alert-success" th:if="${param.login}">Accesso effettuato.</div>
         <div class="alert alert-info" th:if="${param.logout}">Hai effettuato l'uscita.</div>
-        <div class="page-header">
+
+        <!-- FESTIVAL IN EVIDENZA -->
+        <section class="hero" th:if="${festivalInEvidenza != null}">
+            <div class="hero-media">
+                <img th:src="${festivalInEvidenza.immagine != null} ? @{/uploads/{p}(p=${festivalInEvidenza.immagine})} : @{/images/placeholder.jpg}"
+                    th:alt="${festivalInEvidenza.nome}" />
+            </div>
+            <div>
+                <h1 class="hero-title" th:text="${festivalInEvidenza.nome}">Nome Festival</h1>
+                <p class="hero-meta">
+                    <span th:text="${festivalInEvidenza.città}">Città</span> ·
+                    <span th:text="${festivalInEvidenza.anno}">2026</span>
+                </p>
+                <p class="hero-text" th:if="${festivalInEvidenza.descrizione != null}"
+                    th:text="${#strings.abbreviate(festivalInEvidenza.descrizione, 220)}">Descrizione</p>
+                <div class="show-actions">
+                    <a class="btn btn-primary" th:href="@{'/festival/' + ${festivalInEvidenza.id}}">Scopri il
+                        festival</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- se non ci sono festival: intestazione semplice -->
+        <div class="page-header" th:unless="${festivalInEvidenza != null}">
             <div>
                 <h1>SiwFestival</h1>
                 <p class="page-subtitle">Festival, film e proiezioni in un unico posto.</p>
             </div>
         </div>
 
-        <div class="grid grid-wide">
-            <article class="card card-plain">
-                <h3 class="card-title"><a th:href="@{/festival}">Elenco festival</a></h3>
-                <p class="card-meta">Festival disponibili: <span th:text="${festisvalNUmber}">0</span></p>
-                <p class="card-text">Consulta i festival, i film partecipanti e il programma delle proiezioni.</p>
-            </article>
+        <!-- ESPLORA (quello che c'era già) -->
+        <section class="section">
+            <h2 class="section-title">Esplora</h2>
+            <div class="grid grid-wide">
+                <article class="card card-plain">
+                    <h3 class="card-title"><a th:href="@{/festival}">Elenco festival</a></h3>
+                    <p class="card-meta">Festival disponibili: <span th:text="${festisvalNUmber}">0</span></p>
+                    <p class="card-text">Consulta i festival, i film partecipanti e il programma delle proiezioni.</p>
+                </article>
 
-            <article class="card card-plain">
-                <h3 class="card-title"><a th:href="@{/film}">Elenco film</a></h3>
-                <p class="card-meta">Film disponibili: <span th:text="${filmFNumber}">0</span></p>
-                <p class="card-text">Scopri cast, registi, recensioni e proiezioni di ogni film.</p>
-            </article>
+                <article class="card card-plain">
+                    <h3 class="card-title"><a th:href="@{/film}">Elenco film</a></h3>
+                    <p class="card-meta">Film disponibili: <span th:text="${filmFNumber}">0</span></p>
+                    <p class="card-text">Scopri cast, registi, recensioni e proiezioni di ogni film.</p>
+                </article>
 
-            <article class="card card-plain" sec:authorize="hasAuthority('ADMIN')">
-                <h3 class="card-title"><a th:href="@{/admin/sale}">Gestione sale</a></h3>
-                <p class="card-text">Inserisci e modifica le sale in cui si svolgono le proiezioni.</p>
-                <div class="card-tags"><span class="badge badge-violet">Solo admin</span></div>
-            </article>
-        </div>
+                <article class="card card-plain" sec:authorize="hasAuthority('ADMIN')">
+                    <h3 class="card-title"><a th:href="@{/admin/sale}">Gestione sale</a></h3>
+                    <p class="card-text">Inserisci e modifica le sale in cui si svolgono le proiezioni.</p>
+                    <div class="card-tags"><span class="badge badge-violet">Solo admin</span></div>
+                </article>
+            </div>
+        </section>
     </main>
 
     <footer th:replace="~{fragments/base.html :: footer}"></footer>

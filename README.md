@@ -220,6 +220,7 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     `Festival findByIdWithProiezioni(@Param("id") Long id);`
     *   `boolean existsByNomeAndAnnoAndIdNot(String nome, Integer anno, Long id);`
     *   `List<Festival> findTop15ByNomeStartingWithIgnoreCaseOrderByNomeAsc(String prefisso);`
+    *   `@Query(value = "SELECT * FROM festival ORDER BY RANDOM() LIMIT 1", nativeQuery = true)    Optional<Festival> findRandom()`
 
 
 *   **`FilmRepository`**
@@ -266,6 +267,7 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     *   `private void controllaDuplicati(Festival festival)`
     *   `List<Festival> cerca(String prefisso)`
     *   `List<Festival> findAllById(List<Long> ids)`
+    *   `Festival findRandom()`
 
 *   **`FileStorageService`**
 

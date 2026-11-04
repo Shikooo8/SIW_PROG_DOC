@@ -144,4 +144,9 @@ public class FestivalService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public Festival findRandom() {
+        return festivalRepository.findRandom().orElse(null); // null se non ci sono festival
+    }
+
 }

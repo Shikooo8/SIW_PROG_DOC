@@ -20,17 +20,12 @@ public class HomeController {
 
     @GetMapping("/")
     public String getHome(Model model) {
-        Long filmNumber = this.filmService.count();                         //qui si usa COUNT sul service, non la lista!!!!!!!!!!!!
+        Long filmNumber = this.filmService.count(); // qui si usa COUNT sul service, non la lista!!!!!!!!!!!!
         Long festivalNumber = this.festivalService.count();
         model.addAttribute("filmFNumber", filmNumber);
         model.addAttribute("festisvalNUmber", festivalNumber);
-
+        model.addAttribute("festivalInEvidenza", festivalService.findRandom());
         return "index"; // nome del componente HTML che mostrerà con placeholder
     }
-
-    //=============== AUTENTICAZIONE ==============
-
-
-    
 
 }

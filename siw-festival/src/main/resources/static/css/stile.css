@@ -582,3 +582,35 @@ input.has-error, select.has-error, textarea.has-error { border-color: var(--dang
 /* input file: bottone "Scegli file" + nome del file */
 .file-input { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
 .file-nome { color: var(--text-muted); font-size: .9rem; }
+
+/* --- Home: festival in evidenza --- */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(240px, 380px) 1fr;
+  gap: 3rem;
+  align-items: center;
+  padding: 3rem 0 2rem;
+}
+.hero-media {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  box-shadow: var(--shadow-card), 0 0 80px -20px rgba(138, 92, 246, .6);
+}
+/* contain: l'immagine si vede sempre intera, mai ritagliata */
+.hero-media img { width: 100%; height: auto; max-height: 75vh; object-fit: contain; }
+.hero-title {
+  font-size: clamp(3rem, 8vw, 6.5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  margin-bottom: 1rem;
+}
+.hero-meta { font-size: 1.2rem; color: var(--blue-bright); margin-bottom: 1rem; }
+.hero-text { color: var(--text-muted); font-size: 1.1rem; max-width: 52ch; }
+
+@media (max-width: 800px) {
+  .hero { grid-template-columns: 1fr; gap: 1.5rem; }
+  .hero-media { max-width: 320px; }
+}

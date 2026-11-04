@@ -1,6 +1,7 @@
 package it.uniroma3.siw_festival.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -19,4 +20,8 @@ public interface FestivalRepository extends CrudRepository<Festival, Long> {
     boolean existsByNomeAndAnnoAndIdNot(String nome, Integer anno, Long id);
 
     List<Festival> findTop15ByNomeStartingWithIgnoreCaseOrderByNomeAsc(String prefisso);
+
+    // il DB sceglie un festival a caso (RANDOM() è di Postgres)
+    @Query(value = "SELECT * FROM festival ORDER BY RANDOM() LIMIT 1", nativeQuery = true)
+    Optional<Festival> findRandom();
 }
