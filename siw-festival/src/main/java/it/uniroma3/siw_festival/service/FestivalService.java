@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw_festival.exception.DuplicateFestivalException;
 import it.uniroma3.siw_festival.model.Festival;
@@ -15,8 +16,11 @@ public class FestivalService {
 
     private FestivalRepository festivalRepository;
 
-    public FestivalService(FestivalRepository festivalRepository) {
+    private FileStorageService fileStorageService;
+
+    public FestivalService(FestivalRepository festivalRepository, FileStorageService fileStorageService) {
         this.festivalRepository = festivalRepository;
+        this.fileStorageService = fileStorageService;
 
     }
 
@@ -52,6 +56,23 @@ public class FestivalService {
             }
         }
         return festivalRepository.save(festival);
+    }
+
+    @Transactional
+    public Festival save(Festival festival, MultipartFile file) throws DuplicateFestivalException {
+        String vecchia = null;
+        if (festival.getId() != null) {
+            vecchia = findById(festival.getId()).getImmagine(); // in modifica conserviamo l'immagine attuale
+            festival.setImmagine(vecchia);
+        }
+        if (file != null && !file.isEmpty()) {
+            festival.setImmagine(fileStorageService.store(file, "festivals"));
+        }
+        Festival salvato = save(festival); // il tuo save con il controllo duplicati
+        if (file != null && !file.isEmpty()) {
+            fileStorageService.delete(vecchia);
+        }
+        return salvato;
     }
 
     @Transactional(readOnly = true)

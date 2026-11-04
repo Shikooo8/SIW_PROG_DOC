@@ -29,6 +29,7 @@ import it.uniroma3.siw_festival.repository.FilmRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class FilmService {
@@ -36,12 +37,13 @@ public class FilmService {
     private FilmRepository filmRepository;
     private FestivalRepository festivalRepository;
     private AttoreRepository attoreRepository;
+    private FileStorageService fileStorageService;
 
-    public FilmService(FilmRepository filmRepository, FestivalRepository festivalRepository,
-            AttoreRepository attoreRepository) {
+    public FilmService(FilmRepository filmRepository, FestivalRepository festivalRepository, AttoreRepository attoreRepository, FileStorageService fileStorageService) {
         this.festivalRepository = festivalRepository;
         this.filmRepository = filmRepository;
         this.attoreRepository = attoreRepository;
+        this.fileStorageService = fileStorageService;
     }
 
     // PREVEDE ERRORE 404
@@ -118,6 +120,18 @@ public class FilmService {
         film.getInterpretazioni().addAll(nuovoCast);
 
         return filmRepository.save(film); // cascade ALL salva le interpretazioni
+    }
+
+    @Transactional
+    public Film save(FilmForm form, MultipartFile file) {
+        Film film = save(form); // la tua logica esistente
+        if (file != null && !file.isEmpty()) {
+            String vecchia = film.getImmagine();
+            film.setImmagine(fileStorageService.store(file, "films"));
+            film = filmRepository.save(film);
+            fileStorageService.delete(vecchia); // null se era il primo caricamento
+        }
+        return film;
     }
 
     // TODO ho lasciato l'altro save, che viene usato dal festival

@@ -14,7 +14,7 @@
     </header>
 
     <div class="nav-container">
-        <form th:action="@{/admin/festival/new}" method="POST" th:object="${festival}" class="form-box">
+        <form th:action="@{/admin/festival/new}" method="POST" th:object="${festival}" class="form-box" enctype="multipart/form-data">
             <div th:if="${#fields.hasGlobalErrors()}" class="global-error">
                 <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore generico</p>
             </div>
@@ -22,6 +22,10 @@
             <!-- I campi standard -->
             <div class="form-group"><label class="form-label">Nome:</label><input type="text" th:field="*{nome}" class="input-field" /><span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error-text"></span></div>
             <div class="form-group"><label class="form-label">Anno:</label><input type="number" th:field="*{anno}" class="input-field" /><span th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}" class="error-text"></span></div>
+            <div>
+  <label for="file">Immagine:</label>
+  <input type="file" id="file" name="file" accept="image/png, image/jpeg, image/webp" />
+</div>
             <div class="form-group"><label class="form-label">Città:</label><input type="text" th:field="*{città}" class="input-field" /><span th:if="${#fields.hasErrors('città')}" th:errors="*{città}" class="error-text"></span></div>
             <div class="form-group"><label class="form-label">Data inizio:</label><input type="date" th:field="*{dataInizio}" class="input-field" /></div>
             <div class="form-group"><label class="form-label">Data fine:</label><input type="date" th:field="*{dataFine}" class="input-field" /></div>

@@ -79,36 +79,36 @@ insert into festival (id, nome, città, descrizione, data_inizio, data_fine, ann
 -- FILM (50 Film: Originali, Musical, Romance, Anime, Cult)
 -- ==========================================
 -- Originali
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Inception', 2010, 148, 'Fantascienza', 'USA', 'Christopher Nolan');
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Pulp Fiction', 1994, 154, 'Crime', 'USA', 'Quentin Tarantino');
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Oppenheimer', 2023, 180, 'Biografico', 'USA', 'Christopher Nolan');
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Barbie', 2023, 114, 'Commedia', 'USA', 'Greta Gerwig');
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'La città incantata', 2001, 125, 'Animazione', 'Giappone', 'Hayao Miyazaki');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Inception', 2010, 148, 'Fantascienza', 'USA', 'Christopher Nolan', 'films/Inception.jpg');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Pulp Fiction', 1994, 154, 'Crime', 'USA', 'Quentin Tarantino','films/PulpFiction.jpg');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Oppenheimer', 2023, 180, 'Biografico', 'USA', 'Christopher Nolan','films/Oppenheimer.jpg');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Barbie', 2023, 114, 'Commedia', 'USA', 'Greta Gerwig','films/Barbie.jpeg');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'La città incantata', 2001, 125, 'Animazione', 'Giappone', 'Hayao Miyazaki','films/LaCittàIncatata.jpg');
 -- Musical
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'La La Land', 2016, 128, 'Musical', 'USA', 'Damien Chazelle');
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'The Greatest Showman', 2017, 105, 'Musical', 'USA', 'Michael Gracey');
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Les Misérables', 2012, 158, 'Musical', 'UK', 'Tom Hooper');
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Chicago', 2002, 113, 'Musical', 'USA', 'Rob Marshall');
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Grease', 1978, 110, 'Musical', 'USA', 'Randal Kleiser');
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Moulin Rouge!', 2001, 127, 'Musical', 'Australia', 'Baz Luhrmann');
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'West Side Story', 2021, 156, 'Musical', 'USA', 'Steven Spielberg');
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Mamma Mia!', 2008, 108, 'Musical', 'UK', 'Phyllida Lloyd');
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'The Sound of Music', 1965, 174, 'Musical', 'USA', 'Robert Wise');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'La La Land', 2016, 128, 'Musical', 'USA', 'Damien Chazelle','films/LaLaLand.jpg');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'The Greatest Showman', 2017, 105, 'Musical', 'USA', 'Michael Gracey','films/TheGreatestShowman.jpg');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Les Misérables', 2012, 158, 'Musical', 'UK', 'Tom Hooper',,'films/LesMiserables.jpg');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Chicago', 2002, 113, 'Musical', 'USA', 'Rob Marshall',,'films/Chicago.jpg');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Grease', 1978, 110, 'Musical', 'USA', 'Randal Kleiser','films/Grease.jpg');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Moulin Rouge!', 2001, 127, 'Musical', 'Australia', 'Baz Luhrmann','films/MoulinRouge.jpg');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'West Side Story', 2021, 156, 'Musical', 'USA', 'Steven Spielberg','films/WestSideStory.jpg');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Mamma Mia!', 2008, 108, 'Musical', 'UK', 'Phyllida Lloyd','films/MammaMia.jpg');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'The Sound of Music', 1965, 174, 'Musical', 'USA', 'Robert Wise','films/theSoundOfMuics.jpg');
 -- Orgoglio e Pregiudizio & Romance/Drama
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Orgoglio e pregiudizio', 2005, 129, 'Drammatico', 'UK', 'Joe Wright');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Orgoglio e pregiudizio', 2005, 129, 'Drammatico', 'UK', 'Joe Wright','films/OrgoglioePregiudizio.jpg');
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Espiazione', 2007, 123, 'Drammatico', 'UK', 'Joe Wright');
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Ritratto della giovane in fiamme', 2019, 122, 'Drammatico', 'Francia', 'Céline Sciamma');
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Chiamami col tuo nome', 2017, 132, 'Drammatico', 'Italia', 'Luca Guadagnino');
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Ragione e sentimento', 1995, 136, 'Drammatico', 'UK', 'Ang Lee');
 -- Anime
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Your Name.', 2016, 106, 'Animazione', 'Giappone', 'Makoto Shinkai');
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Il castello errante di Howl', 2004, 119, 'Animazione', 'Giappone', 'Hayao Miyazaki');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Your Name.', 2016, 106, 'Animazione', 'Giappone', 'Makoto Shinkai','films/YourName.jpg');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Il castello errante di Howl', 2004, 119, 'Animazione', 'Giappone', 'Hayao Miyazaki','films/IlCasterlloErrantediHowl.jpeg');
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Principessa Mononoke', 1997, 134, 'Animazione', 'Giappone', 'Hayao Miyazaki');
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Akira', 1988, 124, 'Animazione', 'Giappone', 'Katsuhiro Otomo');
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Il mio vicino Totoro', 1988, 86, 'Animazione', 'Giappone', 'Hayao Miyazaki');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Akira', 1988, 124, 'Animazione', 'Giappone', 'Katsuhiro Otomo','films/Akiraa.jpg');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Il mio vicino Totoro', 1988, 86, 'Animazione', 'Giappone', 'Hayao Miyazaki','films/Totoro.jpg');
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Ghost in the Shell', 1995, 83, 'Animazione', 'Giappone', 'Mamoru Oshii');
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Perfect Blue', 1997, 81, 'Animazione', 'Giappone', 'Satoshi Kon');
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'A Silent Voice', 2016, 130, 'Animazione', 'Giappone', 'Naoko Yamada');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'A Silent Voice', 2016, 130, 'Animazione', 'Giappone', 'Naoko Yamada', 'films/ASilentVoice.jpg');
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Weathering with You', 2019, 112, 'Animazione', 'Giappone', 'Makoto Shinkai');
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Suzume', 2022, 122, 'Animazione', 'Giappone', 'Makoto Shinkai');
 -- Cult, Blockbuster e Altri

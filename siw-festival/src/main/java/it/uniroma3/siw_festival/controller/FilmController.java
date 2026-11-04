@@ -12,6 +12,7 @@ import it.uniroma3.siw_festival.dto.FilmForm;
 import it.uniroma3.siw_festival.dto.InterpretazioneForm;
 import it.uniroma3.siw_festival.exception.CastNonValidoException;
 import it.uniroma3.siw_festival.exception.DuplicateFilmException;
+import it.uniroma3.siw_festival.exception.ImmagineNonValidaException;
 import it.uniroma3.siw_festival.model.Film;
 import it.uniroma3.siw_festival.model.Recensione;
 import it.uniroma3.siw_festival.service.FestivalService;
@@ -24,6 +25,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class FilmController {
@@ -115,18 +118,18 @@ public class FilmController {
     }
 
     @PostMapping("/admin/film")
-    public String save(@Valid @ModelAttribute("film") FilmForm form, BindingResult bindingResult, Model model) {
+    public String salvaFilm(@Valid @ModelAttribute("filmForm") FilmForm form,
+            BindingResult bindingResult,
+            @RequestParam(value = "file", required = false) MultipartFile file,
+            Model model) {
         if (bindingResult.hasErrors()) {
             return formView(form, model);
         }
         try {
-            Film salvato = filmService.save(form);
+            Film salvato = filmService.save(form, file);
             return "redirect:/film/" + salvato.getId();
-        } catch (DuplicateFilmException e) {
-            bindingResult.reject("film.duplicato");
-            return formView(form, model);
-        } catch (CastNonValidoException e) {
-            bindingResult.reject("film.cast", e.getMessage());
+        } catch (ImmagineNonValidaException e) {
+            bindingResult.reject("immagine.nonValida");
             return formView(form, model);
         }
     }

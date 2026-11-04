@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <title>Dettaglio Film - SiwFestival</title>
     <link rel="stylesheet" th:href="@{/css/stile.css}" />
     <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
 </head>
+
 <body>
     <header th:replace="~{fragments/base.html :: intestazione}"></header>
 
@@ -15,8 +16,10 @@
         <!-- INFORMAZIONI PRINCIPALI -->
         <div class="show">
             <div class="show-media">
+                <img th:src="${film.immagine != null} ? @{/uploads/{p}(p=${film.immagine})} : @{/images/placeholder.jpg}"
+                    th:alt="${film.titolo}" />
                 <!-- con le immagini: <img th:src="${film.urlImage}" th:alt="${film.titolo}"> -->
-                <div class="card-media card-media-empty" th:text="${film.titolo.substring(0,1)}">F</div>
+                <!--div class="card-media card-media-empty" th:text="${film.titolo.substring(0,1)}">F</div-->
             </div>
 
             <div class="show-info">
@@ -26,16 +29,21 @@
                 </p>
 
                 <dl class="meta-list">
-                    <dt>Anno di uscita</dt><dd th:text="${film.anno}">2026</dd>
-                    <dt>Genere</dt><dd th:text="${film.genere}">Genere</dd>
-                    <dt>Durata</dt><dd><span th:text="${film.durata}">120</span> min</dd>
-                    <dt>Paese di produzione</dt><dd th:text="${film.paeseProduzione}">Italia</dd>
+                    <dt>Anno di uscita</dt>
+                    <dd th:text="${film.anno}">2026</dd>
+                    <dt>Genere</dt>
+                    <dd th:text="${film.genere}">Genere</dd>
+                    <dt>Durata</dt>
+                    <dd><span th:text="${film.durata}">120</span> min</dd>
+                    <dt>Paese di produzione</dt>
+                    <dd th:text="${film.paeseProduzione}">Italia</dd>
                 </dl>
 
                 <div class="show-actions">
-                    <a th:href="@{'/react/film/' + ${film.id} + '/programmazione'}" class="btn btn-primary">Vedi programmazione</a>
+                    <a th:href="@{'/react/film/' + ${film.id} + '/programmazione'}" class="btn btn-primary">Vedi
+                        programmazione</a>
                     <a th:href="@{'/admin/film/' + ${film.id} + '/edit'}" class="btn btn-secondary"
-                       sec:authorize="hasAuthority('ADMIN')">Modifica film</a>
+                        sec:authorize="hasAuthority('ADMIN')">Modifica film</a>
                     <a th:href="@{/film}" class="btn btn-ghost">Torna ai film</a>
                 </div>
             </div>
@@ -50,7 +58,7 @@
             <ul class="cast-list" th:unless="${film.interpretazioni == null or film.interpretazioni.isEmpty()}">
                 <li class="cast-item" th:each="int : ${film.interpretazioni}">
                     <a class="cast-actor" th:href="@{'/attore/' + ${int.attore.id}}"
-                       th:text="${int.attore.nome} + ' ' + ${int.attore.cognome}">Nome Cognome</a>
+                        th:text="${int.attore.nome} + ' ' + ${int.attore.cognome}">Nome Cognome</a>
                     <span class="cast-role">nel ruolo di <span th:text="${int.personaggio}">Personaggio</span></span>
                 </li>
             </ul>
@@ -63,8 +71,8 @@
                 Questo film non partecipa a nessun festival.
             </div>
             <div class="card-tags" th:unless="${film.festivals == null or film.festivals.isEmpty()}">
-                <a class="badge" th:each="festival : ${film.festivals}"
-                   th:href="@{'/festival/' + ${festival.id}}" th:text="${festival.nome}">Nome Festival</a>
+                <a class="badge" th:each="festival : ${film.festivals}" th:href="@{'/festival/' + ${festival.id}}"
+                    th:text="${festival.nome}">Nome Festival</a>
             </div>
         </section>
 
@@ -83,7 +91,7 @@
                     <div class="review-head">
                         <span class="review-author" th:text="${recensione.utente.username}">Username</span>
                         <span class="review-date" th:if="${recensione.data != null}"
-                              th:text="${#temporals.format(recensione.data, 'dd/MM/yyyy HH:mm')}">01/01/2026</span>
+                            th:text="${#temporals.format(recensione.data, 'dd/MM/yyyy HH:mm')}">01/01/2026</span>
                         <span class="review-score"><span th:text="${recensione.voto}">10</span>/10</span>
                     </div>
                     <p class="review-text" th:text="${recensione.testo}">Testo della recensione...</p>
@@ -93,14 +101,14 @@
             <div class="show-actions">
                 <div th:if="${utenteLoggato}" class="show-actions">
                     <a th:if="${recensioneUtente == null}" class="btn btn-primary"
-                       th:href="@{'/film/' + ${film.id} + '/recensione/new'}">Scrivi una recensione</a>
+                        th:href="@{'/film/' + ${film.id} + '/recensione/new'}">Scrivi una recensione</a>
 
                     <a th:if="${recensioneUtente != null}" class="btn btn-secondary"
-                       th:href="@{'/recensione/' + ${recensioneUtente.id} + '/edit'}">Modifica la tua recensione</a>
+                        th:href="@{'/recensione/' + ${recensioneUtente.id} + '/edit'}">Modifica la tua recensione</a>
                     <form th:if="${recensioneUtente != null}"
-                          th:action="@{'/recensione/' + ${recensioneUtente.id} + '/delete'}" method="post">
+                        th:action="@{'/recensione/' + ${recensioneUtente.id} + '/delete'}" method="post">
                         <button type="submit" class="btn btn-danger"
-                                onclick="return confirm('Sei sicuro di voler eliminare la tua recensione?');">
+                            onclick="return confirm('Sei sicuro di voler eliminare la tua recensione?');">
                             Elimina la tua recensione
                         </button>
                     </form>
@@ -115,4 +123,5 @@
 
     <footer th:replace="~{fragments/base.html :: footer}"></footer>
 </body>
+
 </html>

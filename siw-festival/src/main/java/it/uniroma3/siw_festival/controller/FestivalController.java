@@ -7,10 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw_festival.model.Festival;
 import it.uniroma3.siw_festival.model.Film;
 import it.uniroma3.siw_festival.exception.DuplicateFestivalException;
+import it.uniroma3.siw_festival.exception.ImmagineNonValidaException;
 import it.uniroma3.siw_festival.service.FestivalService;
 import it.uniroma3.siw_festival.service.FilmService;
 import jakarta.validation.Valid;
@@ -51,15 +54,20 @@ public class FestivalController {
     }
 
     @PostMapping("/admin/festival/new")
-    public String saveNew(@Valid @ModelAttribute("festival") Festival festival, BindingResult bindingResult) {
+    public String newFestival(@Valid @ModelAttribute("festival") Festival festival,
+            BindingResult bindingResult,
+            @RequestParam(value = "file", required = false) MultipartFile file) {
         if (bindingResult.hasErrors()) {
             return "admin/festival/form";
         }
         try {
-            this.festivalService.save(festival); // Effettua la INSERT[cite: 5]
+            festivalService.save(festival, file);
             return "redirect:/festival";
         } catch (DuplicateFestivalException e) {
             bindingResult.reject("festival.duplicate");
+            return "admin/festival/form";
+        } catch (ImmagineNonValidaException e) {
+            bindingResult.reject("immagine.nonValida");
             return "admin/festival/form";
         }
     }
@@ -74,7 +82,7 @@ public class FestivalController {
 
     @PostMapping("/admin/festival/{id}/edit")
     public String saveEdit(@PathVariable Long id, @Valid @ModelAttribute("festival") Festival festival,
-            BindingResult bindingResult, Model model) {
+            BindingResult bindingResult, Model model, @RequestParam(value = "file", required = false) MultipartFile file) {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("films", filmService.findAll());
@@ -83,7 +91,6 @@ public class FestivalController {
 
         try {
             festival.setId(id);
-
             // 1. Recuperiamo il festival originale dal DB per conoscere la situazione
             // precedente
             Festival oldFestival = festivalService.findById(id);
@@ -111,7 +118,7 @@ public class FestivalController {
             }
 
             // 4. Infine salviamo le modifiche del festival
-            this.festivalService.save(festival);
+            this.festivalService.save(festival, file);
             return "redirect:/festival";
 
         } catch (DuplicateFestivalException e) {
@@ -120,4 +127,5 @@ public class FestivalController {
             return "admin/festival/formEdit";
         }
     }
+
 }

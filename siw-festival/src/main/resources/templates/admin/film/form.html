@@ -15,7 +15,7 @@
         <div class="form-card">
             <h1 th:text="${film.id == null} ? 'Aggiungi un film' : 'Modifica il film'">Film</h1>
 
-            <form th:action="@{/admin/film}" method="post" th:object="${film}">
+            <form th:action="@{/admin/film}" method="post" th:object="${film}" enctype="multipart/form-data">
                 <!-- bottone di default: Invio nei campi di testo salva, invece di premere "Rimuovi" -->
                 <button type="submit" hidden aria-hidden="true" tabindex="-1">Prova</button>
                 <input type="hidden" th:field="*{id}" />
@@ -52,6 +52,11 @@
                         <label for="paeseProduzione">Paese di produzione</label>
                         <input type="text" id="paeseProduzione" th:field="*{paeseProduzione}" />
                     </div>
+                </div>
+
+                <div>
+                    <label for="file">Immagine:</label>
+                    <input type="file" id="file" name="file" accept="image/png, image/jpeg, image/webp" />
                 </div>
 
                 <div class="form-group">

@@ -21,11 +21,11 @@ public class Film {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    @NotBlank 
+
+    @NotBlank
     private String titolo;
-    
-    @NotNull 
+
+    @NotNull
     @Min(1890)
     @NotFutureYear
     private Integer anno;
@@ -35,30 +35,36 @@ public class Film {
     private Integer durata;
 
     private String genere;
-    
+
     private String paeseProduzione;
 
     @OneToMany(mappedBy = "film")
-    private List<Proiezione> proiezioni;        // un film può avere più proiezioni
-    
-    @ManyToMany 
-    private List<Festival> festivals = new ArrayList<>();;           // un film può partecipare a uno o più festival
-    
-    private String regista;                    // ogni film ha un regista
-    
+    private List<Proiezione> proiezioni; // un film può avere più proiezioni
+
+    @ManyToMany
+    private List<Festival> festivals = new ArrayList<>();; // un film può partecipare a uno o più festival
+
+    private String regista; // ogni film ha un regista
+
     @OneToMany(mappedBy = "film")
-    private List<Recensione> recensioni;        // un film può avere più recensioni
+    private List<Recensione> recensioni; // un film può avere più recensioni
 
-    @OneToMany(mappedBy = "film", cascade = CascadeType.ALL, orphanRemoval = true) 
-    private List<Interpretazione> interpretazioni = new ArrayList<>();;
+    @OneToMany(mappedBy = "film", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Interpretazione> interpretazioni = new ArrayList<>();
 
+    private String immagine; // percorso relativo
 
-//==================== EQUALS & HASHCODE ==============    
+    // ==================== EQUALS & HASHCODE ==============
 
+    // =================== GETTERS & SETTERS ===============
 
+    public String getImmagine() {
+        return immagine;
+    }
 
-//=================== GETTERS & SETTERS ===============
-
+    public void setImmagine(String immagine) {
+        this.immagine = immagine;
+    }
 
     public String getTitolo() {
         return titolo;
@@ -178,7 +184,5 @@ public class Film {
     public void setInterpretazioni(List<Interpretazione> interpretazioni) {
         this.interpretazioni = interpretazioni;
     }
-
-    
 
 }

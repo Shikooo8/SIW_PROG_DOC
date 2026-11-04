@@ -16,9 +16,11 @@
         <!-- INFORMAZIONI PRINCIPALI -->
         <div class="show show-wide">
             <div class="show-media">
+                <img th:src="${film.immagine != null} ? @{/uploads/{p}(p=${film.immagine})} : @{/images/placeholder.jpg}"
+                    th:alt="${film.titolo}" />
                 <!-- con le immagini: <img th:src="${festival.urlImage}" th:alt="${festival.nome}"> -->
-                <div class="card-media card-media-wide card-media-empty" th:text="${festival.nome.substring(0,1)}">F
-                </div>
+                <!--div class="card-media card-media-wide card-media-empty" th:text="${festival.nome.substring(0,1)}">F
+                </div-->
             </div>
 
             <div class="show-info">

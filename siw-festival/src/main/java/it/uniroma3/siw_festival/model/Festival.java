@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,37 +19,43 @@ public class Festival {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    @NotBlank 
+
+    @NotBlank
     private String nome;
-    
-    @NotNull 
+
+    @NotNull
     private Integer anno;
-    
-    @NotBlank 
+
+    @NotBlank
     private String città;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private java.time.LocalDate dataInizio;
-    
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private java.time.LocalDate dataFine;
-    
+
     private String descrizione;
 
     @ManyToMany(mappedBy = "festivals")
-    private List<Film> film;                    // un festival presenta più film
+    private List<Film> film; // un festival presenta più film
 
     @OneToMany(mappedBy = "festival")
-    private List<Proiezione> proiezioni;        // un festival prevede più proiezioni
+    private List<Proiezione> proiezioni; // un festival prevede più proiezioni
 
+    private String immagine; // percorso relativo, es. "films/uuid.jpg"
 
-//==================== EQUALS & HASHCODE ==============    
+    // ==================== EQUALS & HASHCODE ==============
 
+    // =================== GETTERS & SETTERS ===============
 
+    public String getImmagine() {
+        return immagine;
+    }
 
-
-//=================== GETTERS & SETTERS ===============
+    public void setImmagine(String immagine) {
+        this.immagine = immagine;
+    }
 
     public String getNome() {
         return nome;
@@ -155,5 +160,4 @@ public class Festival {
         this.proiezioni = proiezioni;
     }
 
-    
 }

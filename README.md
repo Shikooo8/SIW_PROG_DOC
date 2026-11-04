@@ -72,6 +72,8 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 - Gestione degli errori (proiezioni nello stesso slot temporale rimanda ad errore ma da gestire)
 - Quando si inseriscono le cose il seq number è a caso
 - Nella creazione del film c'è stato un errore ma non replicabile
+- Quando viene aggiunta una foto ad un film, si cambia l'id, credo. Si sposta, non va bene
+- Non prende i JPEG
 
 
 # Struttura del Progetto
@@ -92,6 +94,8 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     *   `addCorsMappings(CorsRegistry registry)`
 *   **`OpenApiConfig`**
     *   `OpenAPI openAPI()`
+*   **`WebConfig`**
+    *   `void addResourceHandlers(...)`
 
 ### `/controller`
 *   **`/rest`**
@@ -185,6 +189,7 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 *   **`DuplicateUtenteException`**
 *   **`FilmNotFoundException`**
 *   **`GlobalExceptionHandler`**
+*   **`ImmagineNonValidaException`**
 *   **`OverlappingProiezioneException`**
 *   **`RecensioneNotFoundException`**
 *   **`RecenzioneUnauthorizedException`**
@@ -192,8 +197,8 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 
 ###  `/model`
 *   **`Attore`**: `Long id`, `String nome`, `String cognome`, `java.time.LocalDate dataNascita`, `String nazionalità`, `@JsonIgnore @OneToMany(mappedBy = "attore") List<Interpretazione> interpretazioni;`
-*   **`Festival`**: `Long id`, `String nome`, `Integer anno`, `String città`, `java.time.LocalDate dataInizio`, `java.time.LocalDate dataFine`, `String descrizione`, `@ManyToMany(mappedBy = "festivals") List<Film> film`,`@OneToMany(mappedBy = "festival") List<Proiezione> proiezioni`
-*   **`Film`**: `Long id`, `String titolo`, `Integer anno`,`Integner durata`, `String genere`, `String paeseProduzione`, `@OneToMany(mappedBy = "film") List<Proiezione> proiezioni`, `@ManyToMany List<Festival> festivals`, `String regista`, `@OneToMany(mappedBy = "film") List<Recensione> recensioni`, `@OneToMany(mappedBy = "film", cascade = CascadeType.ALL, orphanRemoval = true)List<Interpretazione> interpretazioni;`
+*   **`Festival`**: `Long id`, `String nome`, `Integer anno`, `String città`, `java.time.LocalDate dataInizio`, `java.time.LocalDate dataFine`, `String descrizione`, `@ManyToMany(mappedBy = "festivals") List<Film> film`,`@OneToMany(mappedBy = "festival") List<Proiezione> proiezioni`, `String immagine;`
+*   **`Film`**: `Long id`, `String titolo`, `Integer anno`,`Integner durata`, `String genere`, `String paeseProduzione`, `@OneToMany(mappedBy = "film") List<Proiezione> proiezioni`, `@ManyToMany List<Festival> festivals`, `String regista`, `@OneToMany(mappedBy = "film") List<Recensione> recensioni`, `@OneToMany(mappedBy = "film", cascade = CascadeType.ALL, orphanRemoval = true)List<Interpretazione> interpretazioni`, `String immagine;`
 *   **`Interpretazione`**: `Long id`, `@ManyToOne(optional = false) Attore attore;`, `    @JsonIgnore@ManyToOne(optional = false) Film film;`,  `@NotBlank String personaggio;`     
 *   **`Proiezione`**: `Long id`, `java.time.LocalDate data`, `java.time.LocalTime ora`, `@Enumerated(EnumType.STRING) StatoProiezione stato`, `@JsonIgnore @ManyToOne Festival festival`, `@JsonIgnore @NotNull @ManyToOne Film film`,  `@JsonIgnore @NotNull @ManyToOne Sala sala`
 *   **`Recensione`**: `Long id`, ` @NotBlank String testo`,
@@ -215,6 +220,7 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     `Festival findByIdWithProiezioni(@Param("id") Long id);`
     *   `boolean existsByNomeAndAnnoAndIdNot(String nome, Integer anno, Long id);`
     *   `List<Festival> findTop15ByNomeStartingWithIgnoreCaseOrderByNomeAsc(String prefisso);`
+
 
 *   **`FilmRepository`**
     *   `boolean existsByTitoloAndAnno(String titolo, Integer anno)`
@@ -252,8 +258,11 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     *   `List<Festival> findAll`
     *   `Long count()`
     *   `Festival save(Festival film) throws DuplicateFestivalException`
+    *   `Festival save(FestivalForm festival, MultipartFile file)`
     *   `List<Festival> cerca(String prefisso)`
     *   `List<Festival> findAllById(List<Long> ids)`
+
+*   **`FileStorageService`**
 
 *   **`FilmService`**
     *   `Film findById(Long id)`
@@ -261,6 +270,7 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     *   `List<Film> findAll`
     *   `Long count()`
     *   `Film save(FilmForm film)`
+    *   `Film save(FilmForm film, MultipartFile file)`
     *   `Film save(Film film) throws DuplicateFilmException`
     *   `Attore risolviAttore(InterpretazioneForm)`
     *   `FilmForm getFilmForm(Long id)`
@@ -309,7 +319,7 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 *   **`import.sql`**
 
 ###  `/messages`
-*   `messages.properties` ➔ `film.duplicate`,`film.duplicato`, `NotBlank`, `NotNull`, `typeMismatch`, `typeMismatch.java.lang.Integer`, `NotBlank.film.titolo`, `Min.anno`, `festival.duplicate`
+*   `messages.properties` ➔ `film.duplicate`,`film.duplicato`, `NotBlank`, `NotNull`, `typeMismatch`, `typeMismatch.java.lang.Integer`, `NotBlank.film.titolo`, `Min.anno`, `festival.duplicate`, `immagine.nonValida`
 ###  `/static`
 *   **`/css`**
     *   `stile.css` (nuovo)
