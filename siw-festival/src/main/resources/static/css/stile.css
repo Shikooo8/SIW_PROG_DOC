@@ -555,6 +555,7 @@ input.has-error, select.has-error, textarea.has-error { border-color: var(--dang
 
 .picker-list {
   position: absolute;
+  top: 100%;            
   left: 0;
   right: 0;
   z-index: 20;
@@ -575,3 +576,9 @@ input.has-error, select.has-error, textarea.has-error { border-color: var(--dang
 /* la "x" dentro il badge */
 .chip-x { margin-left: .4rem; padding: 0; border: 0; background: none; color: inherit; font-size: 1rem; line-height: 1; cursor: pointer; }
 .chip-x:hover { color: var(--danger); }
+
+
+
+/* input file: bottone "Scegli file" + nome del file */
+.file-input { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
+.file-nome { color: var(--text-muted); font-size: .9rem; }

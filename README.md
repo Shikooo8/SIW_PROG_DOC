@@ -47,6 +47,9 @@ programmare due proiezioni nella stessa sala nello stesso intervallo temporale.
 
 Quando viene modificato e creato un film, il regista sarà una semplice stringa, mentre per le interpretazioni ci sarà un "aggiungi nuovo personaggio", come stringa, a cui va associato un attore fra quelli del sistema oppure uno nuovo.
 
+- Da gestire meglio le associazioni in creazione e modifica : ovvero mostrare l'intero elenco di attori e o film o festival non è efficiente, bisogna caricarne in parte e fare in modo che possano aumentare oppure il filtro per nome
+- Nella modifica/creazione di un film i campi per un nuovo attore devono essere visibili solo con la scelta nuovo attore
+
 ### Obiettivi finali
 
 - paginazione
@@ -66,9 +69,6 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 - Aggiungere le immagini per Film e Festival
 
 ## Errori trovati
-- Da gestire meglio le associazioni in creazione e modifica : ovvero mostrare l'intero elenco di attori e o film o festival non è efficiente, bisogna caricarne in parte e fare in modo che possano aumentare oppure il filtro per nome
-- Nella modifica/creazione di un film i campi per un nuovo attore devono essere visibili solo con la scelta nuovo attore
-- La modifica di proiezioni non trovata
 - Gestione degli errori (proiezioni nello stesso slot temporale rimanda ad errore ma da gestire)
 - Quando si inseriscono le cose il seq number è a caso
 - Nella creazione del film c'è stato un errore ma non replicabile
@@ -105,7 +105,8 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     *    **`FilmRestController`**
         *   `@RequestMapping("/api/films")`
         *   `@GetMapping("{id}/screenings")`
-*    **`RicercaRestController`**
+        *   `@GetMapping("/film") List<Opzione> cercaFilm`
+    *    **`RicercaRestController`**
         *   `@GetMapping("/admin/ricerca/festival") List<Opzione> cercaFestival`
         *   `@GetMapping("/admin/ricerca/attori") List<Opzione> cercaAttori`
 
@@ -228,6 +229,8 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     *    `@Query("SELECT f FROM Film f LEFT JOIN FETCH f.interpretazioni i LEFT JOIN FETCH i.attore WHERE f.id = :id")Film findByIdWithCast(@Param("id") Long id);`
     `Film findByIdWithProiezioni(@Param("id") Long id);`
     *   `boolean existsByTitoloAndAnnoAndIdNot(String titolo, Integer anno, Long id);`
+    *   `List<Film> findTop15ByTitoloStartingWithIgnoreCaseOrderByTitoloAsc(String prefisso);`
+    *   `List<Film> findByFestivalsId(Long festivalId)`
 
 *   **`ProiezioneRepository`**
     *   `List<Proiezione> findBySalaIdAndData(Long salaId, LocalDate data);`
@@ -257,8 +260,10 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     *   `Festival findByIdWithProiezioni(Long id)`
     *   `List<Festival> findAll`
     *   `Long count()`
-    *   `Festival save(Festival film) throws DuplicateFestivalException`
-    *   `Festival save(FestivalForm festival, MultipartFile file)`
+    *   `Festival save(Festival film, List<Long> filmIds) throws DuplicateFestivalException`
+    *   `Festival save(FestivalForm festival, MultipartFile file, List<Long> filmIds)`
+    *   `private Festival salva(Festival festival, List<Long> filmIds)`
+    *   `private void controllaDuplicati(Festival festival)`
     *   `List<Festival> cerca(String prefisso)`
     *   `List<Festival> findAllById(List<Long> ids)`
 
@@ -274,6 +279,9 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     *   `Film save(Film film) throws DuplicateFilmException`
     *   `Attore risolviAttore(InterpretazioneForm)`
     *   `FilmForm getFilmForm(Long id)`
+    *   `List<Film> cerca(String prefisso)`
+    *   `List<Film> findAllById(List<Long> ids) `
+    *   `List<Film> findByFestivalId(Long festivalId)`
 
 *   **`ProiezioneService`**
     *   `Proiezione findById(Long id)`

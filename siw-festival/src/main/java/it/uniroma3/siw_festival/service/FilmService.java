@@ -39,7 +39,8 @@ public class FilmService {
     private AttoreRepository attoreRepository;
     private FileStorageService fileStorageService;
 
-    public FilmService(FilmRepository filmRepository, FestivalRepository festivalRepository, AttoreRepository attoreRepository, FileStorageService fileStorageService) {
+    public FilmService(FilmRepository filmRepository, FestivalRepository festivalRepository,
+            AttoreRepository attoreRepository, FileStorageService fileStorageService) {
         this.festivalRepository = festivalRepository;
         this.filmRepository = filmRepository;
         this.attoreRepository = attoreRepository;
@@ -207,6 +208,23 @@ public class FilmService {
             form.getCast().add(r);
         }
         return form;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Film> cerca(String prefisso) {
+        return filmRepository.findTop15ByTitoloStartingWithIgnoreCaseOrderByTitoloAsc(prefisso.trim());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Film> findAllById(List<Long> ids) {
+        List<Film> lista = new ArrayList<>();
+        filmRepository.findAllById(ids).forEach(lista::add);
+        return lista;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Film> findByFestivalId(Long festivalId) {
+        return filmRepository.findByFestivalsId(festivalId);
     }
 
 }

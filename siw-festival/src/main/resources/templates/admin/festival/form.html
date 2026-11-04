@@ -2,41 +2,98 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Nuovo Festival - Gestione</title>
-    <link rel="stylesheet" th:href="@{/css/style.css?version=4}" />
-            <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
-
+    <title>Festival - Gestione</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
 </head>
 <body>
-    <header>
-        <h1>Aggiungi un nuovo Festival</h1>
-        <p><a th:href="@{/festival}" class="header-link">Annulla e torna all'elenco</a></p>
-    </header>
+    <header th:replace="~{fragments/base.html :: intestazione}"></header>
 
-    <div class="nav-container">
-        <form th:action="@{/admin/festival/new}" method="POST" th:object="${festival}" class="form-box" enctype="multipart/form-data">
-            <div th:if="${#fields.hasGlobalErrors()}" class="global-error">
-                <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore generico</p>
-            </div>
+    <main class="container">
+        <div class="form-card">
+            <!-- condizione ? testo se vera : testo se falsa -->
+            <h1 th:text="${festival.id == null} ? 'Aggiungi un festival' : 'Modifica il festival'">Festival</h1>
 
-            <!-- I campi standard -->
-            <div class="form-group"><label class="form-label">Nome:</label><input type="text" th:field="*{nome}" class="input-field" /><span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error-text"></span></div>
-            <div class="form-group"><label class="form-label">Anno:</label><input type="number" th:field="*{anno}" class="input-field" /><span th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}" class="error-text"></span></div>
-            <div>
-  <label for="file">Immagine:</label>
-  <input type="file" id="file" name="file" accept="image/png, image/jpeg, image/webp" />
-</div>
-            <div class="form-group"><label class="form-label">Città:</label><input type="text" th:field="*{città}" class="input-field" /><span th:if="${#fields.hasErrors('città')}" th:errors="*{città}" class="error-text"></span></div>
-            <div class="form-group"><label class="form-label">Data inizio:</label><input type="date" th:field="*{dataInizio}" class="input-field" /></div>
-            <div class="form-group"><label class="form-label">Data fine:</label><input type="date" th:field="*{dataFine}" class="input-field" /></div>
-            <div class="form-group"><label class="form-label">Descrizione:</label><textarea th:field="*{descrizione}" class="input-field" rows="4"></textarea></div>
+            <form th:action="@{/admin/festival}" method="post" th:object="${festival}" enctype="multipart/form-data">
+                <input type="hidden" th:field="*{id}" />
 
-            <hr style="width: 100%; border: 0; border-top: 1px solid #eee;" />
+                <div class="alert alert-error" th:if="${#fields.hasGlobalErrors()}">
+                    <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore</p>
+                </div>
 
-            
+                <div class="form-group">
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" th:field="*{nome}" />
+                    <span class="field-error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+                </div>
 
-            <button type="submit" class="nav-button">Salva Festival</button>
-        </form>
-    </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="anno">Anno</label>
+                        <input type="number" id="anno" th:field="*{anno}" />
+                        <span class="field-error" th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="citta">Città</label>
+                        <input type="text" id="citta" th:field="*{città}" />
+                        <span class="field-error" th:if="${#fields.hasErrors('città')}" th:errors="*{città}"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dataInizio">Data inizio</label>
+                        <input type="date" id="dataInizio" th:field="*{dataInizio}" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dataFine">Data fine</label>
+                        <input type="date" id="dataFine" th:field="*{dataFine}" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="descrizione">Descrizione</label>
+                    <textarea id="descrizione" rows="4" th:field="*{descrizione}"></textarea>
+                </div>
+
+                <!-- IMMAGINE -->
+                <div class="form-group">
+                    <label>Immagine</label>
+                    <div class="file-input">
+                        <input type="file" id="file" name="file" accept="image/png, image/jpeg, image/webp" hidden />
+                        <label for="file" class="btn btn-secondary btn-sm">Scegli file</label>
+                        <span class="file-nome">Nessun file selezionato</span>
+                    </div>
+                    <span class="form-hint" th:if="${festival.id != null}">
+                        Se non scegli nessun file, resta l'immagine attuale.
+                    </span>
+                </div>
+
+                <!-- FILM PARTECIPANTI -->
+                <h2 class="section-title">Film partecipanti</h2>
+                <div class="form-group picker" th:data-url="@{/admin/ricerca/film}"
+                     data-multiple="true" data-name="filmIds">
+                    <div class="picker-selected">
+                        <span class="badge" th:each="f : ${filmSelezionati}">
+                            <span th:text="${f.titolo + ' (' + f.anno + ')'}">Film</span>
+                            <button type="button" class="chip-x" title="Togli">×</button>
+                            <input type="hidden" name="filmIds" th:value="${f.id}" />
+                        </span>
+                    </div>
+                    <input type="text" class="picker-search" placeholder="Cerca un film..." autocomplete="off" />
+                    <ul class="picker-list" hidden></ul>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Salva festival</button>
+                    <a th:href="@{/festival}" class="btn btn-ghost">Annulla</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer th:replace="~{fragments/base.html :: footer}"></footer>
+
+    <script th:src="@{/js/picker.js}"></script>
 </body>
 </html>

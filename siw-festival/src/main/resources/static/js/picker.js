@@ -115,3 +115,17 @@ document.querySelectorAll(".nuovo-attore-check").forEach(function (casella) {
     }
   });
 });
+
+// input file: mostra il nome del file scelto
+document.querySelectorAll(".file-input").forEach(function (blocco) {
+  const campo = blocco.querySelector('input[type="file"]');
+  const nome = blocco.querySelector(".file-nome");
+
+  campo.addEventListener("change", function () {
+    if (campo.files.length > 0) {
+      nome.textContent = campo.files[0].name;
+    } else {
+      nome.textContent = "Nessun file selezionato";
+    }
+  });
+});

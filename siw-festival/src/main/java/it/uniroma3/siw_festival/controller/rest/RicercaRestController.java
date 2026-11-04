@@ -10,18 +10,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.uniroma3.siw_festival.model.Attore;
 import it.uniroma3.siw_festival.model.Festival;
+import it.uniroma3.siw_festival.model.Film;
 import it.uniroma3.siw_festival.service.AttoreService;
 import it.uniroma3.siw_festival.service.FestivalService;
+import it.uniroma3.siw_festival.service.FilmService;
 
 @RestController
 public class RicercaRestController {
 
     private final FestivalService festivalService;
     private final AttoreService attoreService;
+    private FilmService filmService;
 
-    public RicercaRestController(FestivalService festivalService, AttoreService attoreService) {
+    public RicercaRestController(FestivalService festivalService, AttoreService attoreService, FilmService filmService) {
         this.festivalService = festivalService;
         this.attoreService = attoreService;
+        this.filmService = filmService;
     }
 
     // un "record" è una classe immutabile compatta: crea da solo costruttore e getter
@@ -41,6 +45,15 @@ public class RicercaRestController {
         List<Opzione> risultato = new ArrayList<>();
         for (Attore a : attoreService.cerca(q)) {
             risultato.add(new Opzione(a.getId(), a.getNome() + " " + a.getCognome()));
+        }
+        return risultato;
+    }
+
+     @GetMapping("admin/ricerca/film")
+        public List<Opzione> cercaFilm(@RequestParam(defaultValue = "") String q) {
+        List<Opzione> risultato = new ArrayList<>();
+        for (Film f : filmService.cerca(q)) {
+            risultato.add(new Opzione(f.getId(), f.getTitolo() + " (" + f.getAnno() + ")"));
         }
         return risultato;
     }
