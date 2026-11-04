@@ -21,13 +21,6 @@ public class AuthController {
         this.utenteService = utenteService;
     }
 
-
-    @GetMapping("/admin/index")
-    public String adminPort(Model model) {
-  
-        return "/admin/index"; 
-    }
-
     @GetMapping("/login")
     public String showLoginForm(Model model) {
         return "authentication/loginForm";

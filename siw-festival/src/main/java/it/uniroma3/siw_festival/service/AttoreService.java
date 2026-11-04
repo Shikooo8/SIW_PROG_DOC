@@ -49,4 +49,17 @@ public class AttoreService {
                 .findTop15ByCognomeStartingWithIgnoreCaseOrNomeStartingWithIgnoreCaseOrderByCognomeAscNomeAsc(p, p);
     }
 
+    @Transactional
+    public Attore update(Long id, Attore dati) throws DuplicateAttoreException {
+        if (attoreRepository.existsByNomeAndCognomeAndIdNot(dati.getNome(), dati.getCognome(), id)) {
+            throw new DuplicateAttoreException(dati.getNome(),dati.getCognome());
+        }
+        Attore attore = this.findById(id); // carico quello esistente dal DB
+        attore.setNome(dati.getNome());
+        attore.setCognome(dati.getCognome());
+        attore.setDataNascita(dati.getDataNascita());
+        attore.setNazionalità(dati.getNazionalità());
+        return attoreRepository.save(attore);
+    }
+
 }

@@ -12,9 +12,11 @@ import it.uniroma3.siw_festival.model.Recensione;
 public interface RecensioneRepository extends CrudRepository<Recensione, Long> {
     List<Recensione> findByFilmId(Long filmId);
 
-
     @Query("SELECT r FROM Recensione r WHERE r.film.id = :filmId AND r.utente.username = :username")
-Optional<Recensione> findByFilmIdAndUsername(@Param("filmId") Long filmId, @Param("username") String username);
+    Optional<Recensione> findByFilmIdAndUsername(@Param("filmId") Long filmId, @Param("username") String username);
 
     boolean existsByFilmTitoloAndFilmAnnoAndUtenteUsername(String filmTitolo, Integer filmAnno, String username);
+
+    @Query("SELECT AVG(r.voto) FROM Recensione r WHERE r.film.id = :filmId")
+    Double mediaVotoByFilmId(@Param("filmId") Long filmId);
 }

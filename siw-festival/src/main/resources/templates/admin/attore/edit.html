@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifica Attore</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
+</head>
+<body>
+    <div class="nav-container" style="flex-direction: column; align-items: center;">
+        <h2>Modifica Attore</h2>
+
+        <div class="form-box">
+            <form th:action="@{'/admin/attore/' + ${attore.id} + '/edit'}" method="POST" th:object="${attore}">
+
+                <div th:if="${#fields.hasGlobalErrors()}">
+                    <p class="error-text" th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Nome:</label>
+                    <input type="text" th:field="*{nome}" class="input-field" required/>
+                    <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error-text"></span>
+                </div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label class="form-label">Cognome:</label>
+                    <input type="text" th:field="*{cognome}" class="input-field" required/>
+                    <span th:if="${#fields.hasErrors('cognome')}" th:errors="*{cognome}" class="error-text"></span>
+                </div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label class="form-label">Data di nascita:</label>
+                    <input type="date" th:field="*{dataNascita}" class="input-field"/>
+                    <span th:if="${#fields.hasErrors('dataNascita')}" th:errors="*{dataNascita}" class="error-text"></span>
+                </div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label class="form-label">Nazionalità:</label>
+                    <input type="text" th:field="*{nazionalità}" class="input-field"/>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <button type="submit" class="nav-button">Aggiorna Attore</button>
+                    <a th:href="@{'/attore/' + ${attore.id}}" style="margin-left: 15px; color: #002244;">Annulla</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

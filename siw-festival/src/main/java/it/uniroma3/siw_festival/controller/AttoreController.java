@@ -16,14 +16,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-
-
-@Controller 
+@Controller
 public class AttoreController {
 
     private AttoreService attoreService;
 
-    public AttoreController(AttoreService attoreService){
+    public AttoreController(AttoreService attoreService) {
         this.attoreService = attoreService;
     }
 
@@ -45,14 +43,15 @@ public class AttoreController {
     @GetMapping("/admin/attori")
     public String manageAttori(Model model) {
         model.addAttribute("attori", attoreService.findAll());
-        model.addAttribute("nuovoAttore", new Attore()); 
-        return "admin/attore/manage"; 
+        model.addAttribute("nuovoAttore", new Attore());
+        return "admin/attore/manage";
     }
 
     // Salva il nuovo attore
     @PostMapping("/admin/attori")
-    public String saveAttore(@Valid @ModelAttribute("nuovoAttore") Attore attore, BindingResult bindingResult, Model model) {
-        if(bindingResult.hasErrors()) {
+    public String saveAttore(@Valid @ModelAttribute("nuovoAttore") Attore attore, BindingResult bindingResult,
+            Model model) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute("attori", attoreService.findAll());
             return "admin/attore/manage";
         }
@@ -67,34 +66,26 @@ public class AttoreController {
     }
 
     // Mostra il form di modifica precompilato
-    @GetMapping("/admin/attori/{id}/edit")
-    public String editAttoreForm(@PathVariable Long id, Model model) {
-        // Presuppone che tu abbia un metodo findById nel Service che restituisca il attore
-        Attore attore = attoreService.findById(id); 
-        model.addAttribute("attore", attore);
-        return "admin/attoreEdit"; 
+    @GetMapping("/admin/attore/{id}/edit")
+    public String editForm(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("attore", attoreService.findById(id));
+        return "admin/attore/edit";
     }
 
-    // Riceve i dati aggiornati e li salva
-    @PostMapping("/admin/attori/{id}/edit")
-    public String updateAttore(@PathVariable Long id, @Valid @ModelAttribute("attore") Attore attore, BindingResult bindingResult) {
+    @PostMapping("/admin/attore/{id}/edit")
+    public String edit(@PathVariable("id") Long id,
+            @Valid @ModelAttribute("attore") Attore attore,
+            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "admin/attoreEdit"; // Torna al form se ci sono errori di validazione
+            return "admin/attore/edit";
         }
-        
-        // Assicurati che l'ID sia impostato in modo che JPA esegua un UPDATE e non un INSERT[cite: 6]
-        attore.setId(id);
-        
         try {
-            attoreService.save(attore);
+            attoreService.update(id, attore);
+            return "redirect:/attore/" + id;
         } catch (DuplicateAttoreException e) {
             bindingResult.reject("attore.duplicate");
-            return "admin/attoreEdit";
+            return "admin/attore/edit";
         }
-        
-        return "redirect:/admin/attori";
     }
- 
-    
-    
+
 }

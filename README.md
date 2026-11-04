@@ -4,17 +4,16 @@ Progetto dato dal docente per il corso di Sistemi Informativi sul Web per la ses
 
 ## Descrizione Progetto
 
-
 Il sistema gestisce uno o più festival cinematografici. Per ogni festival vengono registrati i film partecipanti, gli attori, le sale cinematografiche e le proiezioni programmate.
 
 I film possono partecipare a uno o più festival e, nell’ambito di ciascun festival, possono essere presentati attraverso una o più proiezioni.
 
 Il sistema distingue tra utenti generici, utenti registrati e utenti amministratori. Gli utenti registrati possono inserire recensioni relative ai film, mentre gli amministratori possono accedere alle funzionalità di gestione del festival.
 
-Le funzionalità delle proiezioni sono gestite da REACT
+Le visualizzazione delle proiezioni sono gestite da REACT.
 
 
-### Funzionalità pubbliche (da controllare)
+### Funzionalità pubbliche (finito)
 - visualizzazione dell’elenco dei festival
 - visualizzazione del dettaglio di un festival
 - visualizzazione dei film partecipanti a un festival
@@ -24,7 +23,7 @@ Le funzionalità delle proiezioni sono gestite da REACT
 - Il dettaglio di un festival deve permettere di accedere ai film e alle proiezioni associate.
 - Il dettaglio di un film deve mostrare almeno le informazioni sul film, il regista, i festival ai quali partecipa, le eventuali proiezioni e le recensioni.
 
-### Funzionalità utenti registrati (da controllare)
+### Funzionalità utenti registrati (finito)
 - inserimento di al massimo una sola recensione per utente relativa a ciascun film
 - modifica di una propria recensione
 - eliminazione di una propria recensione
@@ -52,11 +51,11 @@ Quando viene modificato e creato un film, il regista sarà una semplice stringa,
 
 ### Obiettivi finali
 
-- paginazione
-- ricerca e filtri
-- ricerca dei film per titolo o genere 
+- paginazione (fatto)
+- ricerca e filtri (fatto)
+- ricerca dei film per titolo o genere (fatto)
 - ricerca delle proiezioni per data
-- upload di locandine o immagini
+- upload di locandine o immagini (fatto)
 - statistiche sulle recensioni
 - documentazione delle API REST
 - autenticazione con OAuth
@@ -65,8 +64,7 @@ Cerchiamo di mantenere tutto con un codice non troppo complesso e leggibile.
 
 ### Stile
 Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
-- Assegnare una palette fissa e utillizzare un unico CSS con tutte le classi grafiche
-- Aggiungere le immagini per Film e Festival
+
 
 ## Errori trovati
 - Gestione degli errori (proiezioni nello stesso slot temporale rimanda ad errore ma da gestire)
@@ -117,7 +115,6 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 *   **`AttoreController`**
 
 *   **`AuthController`**
-    *   `@GetMapping("/admin/index")` ➔ `return "/admin/index"`
     *   `@GetMapping("/login")` ➔ `return "authentication/loginForm"`
     *   `@GetMapping("/register")` ➔ `return "authentication/registerForm"`
     *   `@PostMapping("/register")` ➔ ` return "redirect:/login?registered=true"`
@@ -217,6 +214,7 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 
 *   **`AttoreRepository`**
     *   `boolean existsByNomeAndCognome(...)`
+    *   `boolean existsByNomeAndCognomeAndIdNot(String nome, String cognome, Long id);`
     *   `List<Attore>findTop15ByCognomeStartingWithIgnoreCaseOrNomeStartingWithIgnoreCaseOrderByCognomeAscNomeAsc(String cognome, String nome);`
 
 *   **`FestivalRepository`**
@@ -246,7 +244,9 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     *    `List<Proiezione> findBySalaAndData(Sala sala, LocalDate data);`
 
 *   **`RecensioneRepository`**
+    *    `@Query("SELECT AVG(r.voto) FROM Recensione r WHERE r.film.id = :filmId") Double mediaVotoByFilmId(@Param("filmId") Long filmId)`
     
+
 *   **`SalaRepository`**
 
 *   **`UtenteRepository`**
@@ -261,6 +261,7 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     *   `Attore save(Attore attore)`
     *   `void deleteById(Long id)`
     *   `List<Attore> cerca(String prefisso)`
+    *   `Attore update(Long id, Attore dati) `
 
 *   **`FestivalService`**
     *   `Festival findById(Long id)`
@@ -311,6 +312,7 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     *   `void verificaProprietario(Recensione recensione, String username)`
     *   `Utente getUtenteByUsername(String username)`
     *   `Recensione findByFilmIdAndUsername(Long filmId, String username)`
+    *   `Double mediaVoti(Long filmId)`
 
 
 *   **`SalaService`**
@@ -359,8 +361,7 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
         *   `form.html`
         *   `formEdit.html`
     *   `/sala`
-        *
-    *   `index.html` (aggiornato)
+    
 *   **`/attore`**
     *   `show.html` ()
 *   **`/authentication`**

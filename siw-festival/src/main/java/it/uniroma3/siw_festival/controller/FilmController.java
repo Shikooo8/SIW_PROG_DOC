@@ -1,7 +1,5 @@
 package it.uniroma3.siw_festival.controller;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -60,6 +58,7 @@ public class FilmController {
     @GetMapping("/film/{id}")
     public String show(@PathVariable("id") Long id, Model model, Authentication authentication) {
         model.addAttribute("film", filmService.findById(id));
+        model.addAttribute("mediaVoti", recensioneService.mediaVoti(id));
 
         boolean loggato = authentication != null
                 && !(authentication instanceof AnonymousAuthenticationToken);

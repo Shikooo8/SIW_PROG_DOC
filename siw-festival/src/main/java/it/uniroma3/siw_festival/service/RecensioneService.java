@@ -92,4 +92,9 @@ public class RecensioneService {
     public Recensione findByFilmIdAndUsername(Long filmId, String username) {
         return recensioneRepository.findByFilmIdAndUsername(filmId, username).orElse(null);
     }
+
+    @Transactional(readOnly = true)
+    public Double mediaVoti(Long filmId) {
+        return recensioneRepository.mediaVotoByFilmId(filmId);
+    }
 }

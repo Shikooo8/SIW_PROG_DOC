@@ -78,10 +78,20 @@
 
         <!-- RECENSIONI -->
         <section class="section">
-            <h2 class="section-title">
-                Recensioni (<span th:text="${film.recensioni != null ? #lists.size(film.recensioni) : 0}">0</span>)
-            </h2>
+            <div class="section-head">
+                <h2 class="section-title">Recensioni</h2>
 
+                <div class="review-stats" th:unless="${film.recensioni == null or film.recensioni.isEmpty()}">
+                    <div class="stat">
+                        <span class="stat-value" th:text="${#lists.size(film.recensioni)}">0</span>
+                        <span class="stat-label">recensioni</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" th:text="${#numbers.formatDecimal(mediaVoti, 1, 1)}">0,0</span>
+                        <span class="stat-label">voto medio su 10</span>
+                    </div>
+                </div>
+            </div>
             <div class="empty" th:if="${film.recensioni == null or film.recensioni.isEmpty()}">
                 Nessuna recensione presente per questo film.
             </div>

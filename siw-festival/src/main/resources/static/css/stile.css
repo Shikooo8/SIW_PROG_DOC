@@ -619,3 +619,26 @@ input.has-error, select.has-error, textarea.has-error { border-color: var(--dang
 .search-bar { display: flex; gap: .6rem; margin-bottom: 1.75rem; }
 .search-bar input { flex: 1; }
 .pagination { display: flex; justify-content: center; flex-wrap: wrap; gap: .4rem; margin-top: 2.25rem; }
+
+
+.section-head {
+    display: flex;
+    justify-content: space-between; /* titolo a sinistra, riquadro a destra */
+    align-items: center;
+    flex-wrap: wrap;                /* su mobile va a capo invece di rompersi */
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+.section-head .section-title { margin: 0; }
+
+.review-stats {
+    display: flex;
+    gap: 1.5rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 12px;
+    background: #e0f2fe;   /* <-- SOSTITUISCI col celestino che usi negli altri riquadri */
+    color: #0c4a6e;        /* testo scuro per restare leggibile sul chiaro */
+}
+.stat { display: flex; flex-direction: column; align-items: center; }
+.stat-value { font-size: 1.4rem; font-weight: 700; }
+.stat-label { font-size: 0.75rem; opacity: 0.8; }
