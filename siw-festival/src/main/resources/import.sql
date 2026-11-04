@@ -59,16 +59,16 @@ insert into utente (id, username, password, ruolo) values (nextval('utente_seq')
 -- ==========================================
 -- FESTIVAL (15 festival)
 -- ==========================================
-insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno) values (nextval('festival_seq'), 'Festival del Cinema di Roma', 'Roma', 'Un grande festival internazionale', '2026-10-01', '2026-10-10', 2026);
-insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno) values (nextval('festival_seq'), 'Venezia Classic', 'Venezia', 'Retrospettive', '2026-09-01', '2026-09-10', 2026);
-insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno) values (nextval('festival_seq'), 'Tokyo on Fest!', 'Tokyo', 'Grande evento specializzato in animazione', '2026-05-01', '2026-05-16', 2026);
+insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno, immagine) values (nextval('festival_seq'), 'Festival del Cinema di Roma', 'Roma', 'Un grande festival internazionale', '2026-10-01', '2026-10-10', 2026, 'festivals/RFF.webp');
+insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno, immagine) values (nextval('festival_seq'), 'Venezia Classic', 'Venezia', 'Retrospettive', '2026-09-01', '2026-09-10', 2026, 'festivals/VC.jpeg');
+insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno, immagine) values (nextval('festival_seq'), 'Tokyo on Fest!', 'Tokyo', 'Grande evento specializzato in animazione', '2026-05-01', '2026-05-16', 2026, 'festivals/TOF.jpeg');
 insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno) values (nextval('festival_seq'), 'Grande Venezuela Film', 'Caracas', 'Il festival più grande del Venezuela', '2025-12-10', '2025-12-20', 2025);
-insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno) values (nextval('festival_seq'), 'Cannes Film Festival', 'Cannes', 'Il più prestigioso festival europeo', '2026-05-12', '2026-05-23', 2026);
-insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno) values (nextval('festival_seq'), 'Sundance Film Festival', 'Park City', 'Il meglio del cinema indipendente', '2026-01-20', '2026-01-30', 2026);
-insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno) values (nextval('festival_seq'), 'Berlinale', 'Berlino', 'Festival internazionale del cinema di Berlino', '2026-02-15', '2026-02-25', 2026);
-insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno) values (nextval('festival_seq'), 'TIFF', 'Toronto', 'Toronto International Film Festival', '2026-09-05', '2026-09-15', 2026);
-insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno) values (nextval('festival_seq'), 'Annecy Festival', 'Annecy', 'Il più importante festival di animazione al mondo', '2026-06-09', '2026-06-15', 2026);
-insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno) values (nextval('festival_seq'), 'Locarno Film Festival', 'Locarno', 'Cinema d autore sotto le stelle', '2026-08-05', '2026-08-15', 2026);
+insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno, immagine) values (nextval('festival_seq'), 'Cannes Film Festival', 'Cannes', 'Il più prestigioso festival europeo', '2026-05-12', '2026-05-23', 2026, 'festivals/CFF.jpg');
+insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno, immagine) values (nextval('festival_seq'), 'Sundance Film Festival', 'Park City', 'Il meglio del cinema indipendente', '2026-01-20', '2026-01-30', 2026, 'festivals/SFF.jpeg');
+insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno, immagine) values (nextval('festival_seq'), 'Berlinale', 'Berlino', 'Festival internazionale del cinema di Berlino', '2026-02-15', '2026-02-25', 2026, 'festivals/B.jpg');
+insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno, immagine) values (nextval('festival_seq'), 'TIFF', 'Toronto', 'Toronto International Film Festival', '2026-09-05', '2026-09-15', 2026, , 'festivals/TIFF.png');
+insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno, immagine) values (nextval('festival_seq'), 'Annecy Festival', 'Annecy', 'Il più importante festival di animazione al mondo', '2026-06-09', '2026-06-15', 2026, 'festivals/AF.jpeg');
+insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno, immagine) values (nextval('festival_seq'), 'Locarno Film Festival', 'Locarno', 'Cinema d autore sotto le stelle', '2026-08-05', '2026-08-15', 2026, 'festivals/LFF.png');
 insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno) values (nextval('festival_seq'), 'Sitges Film Festival', 'Sitges', 'Festival internazionale del cinema fantastico', '2026-10-05', '2026-10-15', 2026);
 insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno) values (nextval('festival_seq'), 'BFI London Film Festival', 'Londra', 'Rassegna autunnale di grande prestigio', '2026-10-07', '2026-10-18', 2026);
 insert into festival (id, nome, città, descrizione, data_inizio, data_fine, anno) values (nextval('festival_seq'), 'Tribeca Film Festival', 'New York', 'Festival newyorkese fondato da De Niro', '2026-04-15', '2026-04-26', 2026);
@@ -83,7 +83,7 @@ insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, i
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Pulp Fiction', 1994, 154, 'Crime', 'USA', 'Quentin Tarantino','films/PulpFiction.jpg');
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Oppenheimer', 2023, 180, 'Biografico', 'USA', 'Christopher Nolan','films/Oppenheimer.jpg');
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Barbie', 2023, 114, 'Commedia', 'USA', 'Greta Gerwig','films/Barbie.jpeg');
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'La città incantata', 2001, 125, 'Animazione', 'Giappone', 'Hayao Miyazaki','films/LaCittàIncatata.jpg');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'La città incantata', 2001, 125, 'Animazione', 'Giappone', 'Hayao Miyazaki','films/LaCittaIncantata.jpg');
 -- Musical
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'La La Land', 2016, 128, 'Musical', 'USA', 'Damien Chazelle','films/LaLaLand.jpg');
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'The Greatest Showman', 2017, 105, 'Musical', 'USA', 'Michael Gracey','films/TheGreatestShowman.jpg');
@@ -102,12 +102,12 @@ insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) v
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Ragione e sentimento', 1995, 136, 'Drammatico', 'UK', 'Ang Lee');
 -- Anime
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Your Name.', 2016, 106, 'Animazione', 'Giappone', 'Makoto Shinkai','films/YourName.jpg');
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Il castello errante di Howl', 2004, 119, 'Animazione', 'Giappone', 'Hayao Miyazaki','films/IlCasterlloErrantediHowl.jpeg');
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Principessa Mononoke', 1997, 134, 'Animazione', 'Giappone', 'Hayao Miyazaki');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Il castello errante di Howl', 2004, 119, 'Animazione', 'Giappone', 'Hayao Miyazaki','films/IlCastelloErrantediHowl.jpeg');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Principessa Mononoke', 1997, 134, 'Animazione', 'Giappone', 'Hayao Miyazaki', 'films/LaPrincipessaMononoke.jpg');
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Akira', 1988, 124, 'Animazione', 'Giappone', 'Katsuhiro Otomo','films/Akiraa.jpg');
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Il mio vicino Totoro', 1988, 86, 'Animazione', 'Giappone', 'Hayao Miyazaki','films/Totoro.jpg');
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Ghost in the Shell', 1995, 83, 'Animazione', 'Giappone', 'Mamoru Oshii');
-insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Perfect Blue', 1997, 81, 'Animazione', 'Giappone', 'Satoshi Kon');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Ghost in the Shell', 1995, 83, 'Animazione', 'Giappone', 'Mamoru Oshii', 'films/GhostInTheShell.webp');
+insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'Perfect Blue', 1997, 81, 'Animazione', 'Giappone', 'Satoshi Kon', 'films/PerfectBlue.jpg');
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista, immagine) values (nextval('film_seq'), 'A Silent Voice', 2016, 130, 'Animazione', 'Giappone', 'Naoko Yamada', 'films/ASilentVoice.jpg');
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Weathering with You', 2019, 112, 'Animazione', 'Giappone', 'Makoto Shinkai');
 insert into film (id, titolo, anno, durata, genere, paese_produzione, regista) values (nextval('film_seq'), 'Suzume', 2022, 122, 'Animazione', 'Giappone', 'Makoto Shinkai');

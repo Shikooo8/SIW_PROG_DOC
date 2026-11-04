@@ -73,7 +73,7 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 - Quando si inseriscono le cose il seq number è a caso
 - Nella creazione del film c'è stato un errore ma non replicabile
 - Quando viene aggiunta una foto ad un film, si cambia l'id, credo. Si sposta, non va bene
-- Non prende i JPEG
+- Le immagini dei Festival sono lunghe e sono inguardabili così
 
 
 # Struttura del Progetto

@@ -28,8 +28,8 @@
         <div class="grid grid-wide" th:unless="${festivals.isEmpty()}">
             <article class="card" th:each="festival : ${festivals}">
                 <div class="card-media card-media-wide"><img
-                        th:src="${film.immagine != null} ? @{/uploads/{p}(p=${film.immagine})} : @{/images/placeholder.jpg}"
-                        th:alt="${film.titolo}" /></div>
+                        th:src="${festival.immagine != null} ? @{/uploads/{p}(p=${festival.immagine})} : @{/images/placeholder.jpg}"
+                        th:alt="${festival.nome}" /></div>
                 <!--div class="card-media card-media-wide card-media-empty" th:text="${festival.nome.substring(0,1)}">F
                 </div-->
                 <div class="card-body">
@@ -53,4 +53,4 @@
     <footer th:replace="~{fragments/base.html :: footer}"></footer>
 </body>
 
-</html>
+</html> 

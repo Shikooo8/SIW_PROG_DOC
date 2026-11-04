@@ -1,11 +1,11 @@
 package it.uniroma3.siw_festival.service;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Set;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -21,9 +21,6 @@ public class FileStorageService {
 
     private static final Logger logger = LoggerFactory.getLogger(FileStorageService.class);
 
-    private static final Set<String> ESTENSIONI = Set.of("jpg", "jpeg", "png", "webp");
-    private static final Set<String> CONTENT_TYPES = Set.of("image/jpeg", "image/png", "image/webp");
-
     private final Path root;
 
     public FileStorageService(@Value("${app.upload-dir}") String uploadDir) throws IOException {
@@ -36,23 +33,20 @@ public class FileStorageService {
         if (file == null || file.isEmpty()) {
             return null;
         }
-        if (!CONTENT_TYPES.contains(file.getContentType())) {
-            throw new ImmagineNonValidaException("Sono ammesse solo immagini JPG, PNG o WEBP");
-        }
-        String estensione = estensione(file.getOriginalFilename());
-        if (!ESTENSIONI.contains(estensione)) {
-            throw new ImmagineNonValidaException("Estensione non ammessa");
-        }
-        // il nome originale NON viene mai usato: evita path traversal e collisioni
-        String nomeFile = UUID.randomUUID() + "." + estensione;
         try {
+            String estensione = rilevaEstensione(file);   // "jpg", "png" o "webp", oppure null
+            if (estensione == null) {
+                throw new ImmagineNonValidaException("Sono ammesse solo immagini JPG/JPEG, PNG o WEBP");
+            }
+            // il nome originale NON viene mai usato: evita path traversal e collisioni
+            String nomeFile = UUID.randomUUID() + "." + estensione;
             Path cartella = root.resolve(sottocartella);
             Files.createDirectories(cartella);
             file.transferTo(cartella.resolve(nomeFile));
+            return sottocartella + "/" + nomeFile;
         } catch (IOException e) {
             throw new UncheckedIOException("Impossibile salvare l'immagine", e);
         }
-        return sottocartella + "/" + nomeFile;
     }
 
     /** Cancella un file dato il percorso relativo salvato nel DB. */
@@ -71,10 +65,27 @@ public class FileStorageService {
         }
     }
 
-    private String estensione(String nomeOriginale) {
-        if (nomeOriginale == null || !nomeOriginale.contains(".")) {
-            return "";
+    /**
+     * Riconosce il formato dai primi byte (magic number), ignorando nome file e Content-Type.
+     * JPEG (anche .jpeg/.jfif) inizia con FF D8 FF; PNG con 89 'PNG'; WEBP con 'RIFF'....'WEBP'.
+     */
+    private String rilevaEstensione(MultipartFile file) throws IOException {
+        byte[] h = new byte[12];
+        try (InputStream in = file.getInputStream()) {
+            if (in.readNBytes(h, 0, 12) < 12) {
+                return null;   // file troppo corto per essere un'immagine
+            }
         }
-        return nomeOriginale.substring(nomeOriginale.lastIndexOf('.') + 1).toLowerCase();
+        if ((h[0] & 0xFF) == 0xFF && (h[1] & 0xFF) == 0xD8 && (h[2] & 0xFF) == 0xFF) {
+            return "jpg";
+        }
+        if ((h[0] & 0xFF) == 0x89 && h[1] == 'P' && h[2] == 'N' && h[3] == 'G') {
+            return "png";
+        }
+        if (h[0] == 'R' && h[1] == 'I' && h[2] == 'F' && h[3] == 'F'
+                && h[8] == 'W' && h[9] == 'E' && h[10] == 'B' && h[11] == 'P') {
+            return "webp";
+        }
+        return null;
     }
 }
