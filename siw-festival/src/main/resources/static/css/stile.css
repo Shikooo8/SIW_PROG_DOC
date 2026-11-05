@@ -412,6 +412,9 @@ button[type="submit"]:hover {
 .screening-what { color: var(--text); }
 .screening-what small { display: block; color: var(--text-muted); }
 
+.screening-cancelled { opacity: .6; }
+.screening-cancelled .screening-what { text-decoration: line-through; }
+
 /* recensioni */
 .review-list { display: flex; flex-direction: column; gap: 1rem; }
 .review {

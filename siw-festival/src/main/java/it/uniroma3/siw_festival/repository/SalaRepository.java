@@ -10,4 +10,10 @@ public interface SalaRepository extends CrudRepository<Sala, Long>{
 
     boolean existsByNomeAndIdNot(String nome, Long id);
 
+    boolean existsByNomeIgnoreCase(String nome);
+
+    boolean existsByNomeIgnoreCaseAndIdNot(String nome, Long id);
+
+
+
 }

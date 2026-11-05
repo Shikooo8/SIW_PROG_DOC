@@ -1,14 +1,9 @@
-// src/components/ProgrammazioneFestival.tsx
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import type { ProiezioneDTO } from '../types';
 import { getProiezioniByFestival } from '../services/festivalService';
-
-function statusClass(stato: string) {
-    if (stato === 'SCHEDULED') return 'status-badge status-scheduled';
-    if (stato === 'CANCELLED') return 'status-badge status-cancelled';
-    return 'status-badge status-default';
-}
+import Layout from './Layout';
+import ProiezioneCard from './ProiezioneCard.tsx';
 
 export default function ProgrammazioneFestival() {
     const { id } = useParams<{ id: string }>();
@@ -17,52 +12,35 @@ export default function ProgrammazioneFestival() {
 
     useEffect(() => {
         if (id) {
-            getProiezioniByFestival(id).then(data => {
-                setProiezioni(data);
-                setLoading(false);
-            });
+            getProiezioniByFestival(id)
+                .then(setProiezioni)
+                .finally(() => setLoading(false));
         }
     }, [id]);
 
-    if (loading) {
-        return <p className="loading-message">Caricamento programmazione...</p>;
-    }
-
     return (
-        <div>
-            <header className="react-header">
-                <h1>Programmazione Festival</h1>
-            </header>
-
-            <div className="page-container">
-                <div className="back-link-wrapper">
-                    <a href={`/festival/${id}`} className="nav-button">
-                        Torna al dettaglio
-                    </a>
+        <Layout>
+            <div className="page-header">
+                <div>
+                    <h1>Programmazione</h1>
+                    <p className="page-subtitle">Tutte le proiezioni del festival</p>
                 </div>
-
-                {proiezioni.length === 0 ? (
-                    <p className="empty-message">
-                        Nessuna proiezione programmata per questo festival.
-                    </p>
-                ) : (
-                    <div className="screening-grid">
-                        {proiezioni.map((p) => (
-                            <div key={p.id} className="screening-card">
-                                <p className="screening-film-title">{p.filmTitolo}</p>
-                                <p className="screening-sala">{p.salaNome}</p>
-                                <p className="screening-info">
-                                    <strong>Data:</strong> {p.data}
-                                </p>
-                                <p className="screening-info">
-                                    <strong>Ora:</strong> {p.ora}
-                                </p>
-                                <span className={statusClass(p.stato)}>{p.stato}</span>
-                            </div>
-                        ))}
-                    </div>
-                )}
+                <a className="btn btn-secondary btn-sm" href={`/festival/${id}`}>
+                    ← Torna al festival
+                </a>
             </div>
-        </div>
+
+            {loading ? (
+                <p className="empty">Caricamento programmazione...</p>
+            ) : proiezioni.length === 0 ? (
+                <p className="empty">Nessuna proiezione programmata per questo festival.</p>
+            ) : (
+                <ul className="screening-list">
+                    {proiezioni.map((p) => (
+                        <ProiezioneCard key={p.id} proiezione={p} titolo={p.filmTitolo} />
+                    ))}
+                </ul>
+            )}
+        </Layout>
     );
 }

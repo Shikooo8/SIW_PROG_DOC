@@ -12,4 +12,10 @@ export default defineConfig({
       input: path.resolve(__dirname, "index.html"),
     },
   },
+  server: {
+    proxy: {
+      "/css": "http://localhost:8080",
+      "/images": "http://localhost:8080",
+    },
+  },
 });

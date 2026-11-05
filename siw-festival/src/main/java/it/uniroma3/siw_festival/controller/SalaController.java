@@ -4,57 +4,88 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import jakarta.validation.Valid;
+import it.uniroma3.siw_festival.exception.DuplicateSalaException;
+import it.uniroma3.siw_festival.exception.SalaInUsoException;
 import it.uniroma3.siw_festival.model.Sala;
 import it.uniroma3.siw_festival.service.SalaService;
 
 @Controller
 public class SalaController {
 
+    private final SalaService salaService;
 
-    private SalaService salaService;
-
-    public SalaController(SalaService salaService){
+    public SalaController(SalaService salaService) {
         this.salaService = salaService;
     }
 
-    // Mostra la lista e il form di creazione vuoto
+    // Lista sale
     @GetMapping("/admin/sale")
     public String manageSale(Model model) {
         model.addAttribute("sale", salaService.findAll());
-        model.addAttribute("nuovaSala", new Sala());
         return "admin/sala/manage";
     }
 
-    // Salva la nuova sala
-    @PostMapping("/admin/sale")
-    public String saveSala(@Valid @ModelAttribute("nuovaSala") Sala sala, BindingResult bindingResult, Model model) {
-        if(bindingResult.hasErrors()) {
-            model.addAttribute("sale", salaService.findAll());
-            return "admin/sala/manage";
+    // Form di creazione
+    @GetMapping("/admin/sala/new")
+    public String newSalaForm(Model model) {
+        model.addAttribute("sala", new Sala());
+        model.addAttribute("formAction", "/admin/sala/new");
+        return "admin/sala/form";
+    }
+
+    @PostMapping("/admin/sala/new")
+    public String createSala(@Valid @ModelAttribute("sala") Sala sala,
+            BindingResult bindingResult, Model model) {
+        model.addAttribute("formAction", "/admin/sala/new");
+        if (bindingResult.hasErrors()) {
+            return "admin/sala/form";
         }
-        // Se hai una DuplicateSalaException nel service gestiscila nel catch come per il regista
-        salaService.save(sala);
+        try {
+            salaService.save(sala);
+        } catch (DuplicateSalaException e) {
+            bindingResult.rejectValue("nome", "sala.duplicate", "Esiste già una sala con questo nome");
+            return "admin/sala/form";
+        }
         return "redirect:/admin/sale";
     }
 
-  
-
-    // Mostra il form di modifica
-    @GetMapping("/admin/sale/{id}/edit")
+    // Form di modifica (stesso template della creazione)
+    @GetMapping("/admin/sala/{id}/edit")
     public String editSalaForm(@PathVariable Long id, Model model) {
         model.addAttribute("sala", salaService.findById(id));
-        return "admin/sala/edit";
+        model.addAttribute("formAction", "/admin/sala/" + id + "/edit");
+        return "admin/sala/form";
     }
 
-    // Riceve i dati aggiornati e li salva (l'ID sovrascrive il record esistente)
-    @PostMapping("/admin/sale/{id}/edit")
-    public String updateSala(@PathVariable Long id, @Valid @ModelAttribute("sala") Sala sala, BindingResult bindingResult) {
+    @PostMapping("/admin/sala/{id}/edit")
+    public String updateSala(@PathVariable Long id,
+            @Valid @ModelAttribute("sala") Sala sala,
+            BindingResult bindingResult, Model model) {
+        model.addAttribute("formAction", "/admin/sala/" + id + "/edit");
         if (bindingResult.hasErrors()) {
-            return "admin/sala/edit";
+            return "admin/sala/form";
         }
         sala.setId(id);
-        salaService.save(sala);
+        try {
+            salaService.save(sala);
+        } catch (DuplicateSalaException e) {
+            bindingResult.rejectValue("nome", "sala.duplicate", "Esiste già una sala con questo nome");
+            return "admin/sala/form";
+        }
+        return "redirect:/admin/sale";
+    }
+
+    // Elimina (solo se non ci sono proiezioni)
+    @PostMapping("/admin/sala/{id}/delete")
+    public String deleteSala(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            salaService.deleteById(id);
+        } catch (SalaInUsoException e) {
+            redirectAttributes.addFlashAttribute("errore", e.getMessage());
+        }
         return "redirect:/admin/sale";
     }
 }

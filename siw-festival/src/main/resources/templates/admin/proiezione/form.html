@@ -37,14 +37,24 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="sala">Sala</label>
-                    <select id="sala" th:field="*{sala}" required>
+                    <label for="salaCerca">Sala</label>
+
+                    <div class="picker">
+                        <input type="text" id="salaCerca" placeholder="Cerca o scegli la sala..." autocomplete="off">
+                        <ul class="picker-list" id="salaList" hidden>
+                            <li th:each="s : ${sale}" th:attr="data-id=${s.id}" th:text="${s.nome}"></li>
+                            <li class="picker-empty" id="salaVuota" hidden>Nessuna sala trovata</li>
+                        </ul>
+                    </div>
+
+                    <!-- il select vero: nascosto, è lui che viene inviato -->
+                    <select id="sala" th:field="*{sala}" hidden>
                         <option value="">-- Seleziona la sala --</option>
                         <option th:each="s : ${sale}" th:value="${s.id}" th:text="${s.nome}"></option>
                     </select>
+
                     <span class="field-error" th:if="${#fields.hasErrors('sala')}" th:errors="*{sala}"></span>
                 </div>
-
                 <div class="form-row">
                     <div class="form-group">
                         <label for="data">Data</label>
@@ -86,6 +96,49 @@
 
     <script th:if="${erroreSovrapposizione}">
         document.getElementById('erroreDialog').showModal();
+    </script>
+    <script>
+        const select = document.getElementById('sala');
+        const cerca = document.getElementById('salaCerca');
+        const lista = document.getElementById('salaList');
+        const vuota = document.getElementById('salaVuota');
+        const voci = lista.querySelectorAll('li[data-id]');
+
+        // in modifica (o dopo un errore) mostra la sala già scelta
+        if (select.value) {
+            cerca.value = select.options[select.selectedIndex].text;
+        }
+
+        function filtra() {
+            const testo = cerca.value.toLowerCase();
+            let visibili = 0;
+            voci.forEach(li => {
+                const ok = li.textContent.toLowerCase().includes(testo);
+                li.hidden = !ok;
+                if (ok) visibili++;
+            });
+            vuota.hidden = visibili > 0;
+        }
+
+        cerca.addEventListener('focus', () => { cerca.select(); filtra(); lista.hidden = false; });
+        cerca.addEventListener('input', () => {
+            select.value = '';          // se riscrivo, la scelta precedente non vale più
+            filtra();
+            lista.hidden = false;
+        });
+
+        voci.forEach(li => {
+            li.addEventListener('click', () => {
+                select.value = li.dataset.id;
+                cerca.value = li.textContent;
+                lista.hidden = true;
+            });
+        });
+
+        // click fuori dal selettore: chiude la lista
+        document.addEventListener('click', e => {
+            if (!e.target.closest('.picker')) lista.hidden = true;
+        });
     </script>
 </body>
 

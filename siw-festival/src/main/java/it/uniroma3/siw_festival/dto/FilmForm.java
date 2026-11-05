@@ -3,17 +3,19 @@ package it.uniroma3.siw_festival.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.uniroma3.siw_festival.validation.NotFutureYear;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public class FilmForm {
     private Long id;
     @NotBlank
+    @Size(max = 200)
     private String titolo;
-    @NotNull @Min(1888) @Max(2100)
+    @NotNull @Min(1888) @NotFutureYear 
     private Integer anno;
     @NotNull @Min(1)
     private Integer durata;

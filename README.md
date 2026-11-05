@@ -10,7 +10,7 @@ I film possono partecipare a uno o più festival e, nell’ambito di ciascun fes
 
 Il sistema distingue tra utenti generici, utenti registrati e utenti amministratori. Gli utenti registrati possono inserire recensioni relative ai film, mentre gli amministratori possono accedere alle funzionalità di gestione del festival.
 
-Le visualizzazione delle proiezioni sono gestite da REACT.
+Le visualizzazione delle proiezioni sono gestite da REACT. -> npm run build
 
 
 ### Funzionalità pubbliche (finito)
@@ -69,9 +69,9 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 
 ### Errori importanti
 - In Film/form, da ispezione pagina, posso cambiare il tipo degli input e non è gestito bene
-- il login deve riportare alla finestra che si stava cliccando
-- Mostra proiezioni (REACT con la grafica sbagliata)
-- Nella scelta della sala in Proiezioni, la finestra è troppo grande e copre la scelta. Deve essere alta 5 scelte e sempre sotto la barra
+- modifica sale non funziona 
+- non prende le date nel modifica
+- non posso cancellare le cose
 
 ### Preferenze da cambiare
 - Quando si inseriscono le cose il seq number è a caso (+1 mentre negli insert +50)
@@ -79,6 +79,7 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 - Alle immagini vengono dati nomi a caso quando vengono inserite nel databse
 - Date in formato americano (no)
 - errore in proiezione diverso fra crea e modifica
+- Elenco sale ordinato 
 
 # Struttura del Progetto
 
@@ -198,6 +199,7 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 *   **`OverlappingProiezioneException`**
 *   **`RecensioneNotFoundException`**
 *   **`RecenzioneUnauthorizedException`**
+*   **`SalaInUsoException`**
 
 
 ###  `/model`
@@ -245,12 +247,17 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
     *   `List<Proiezione> findByFestivalId(Long festivalId);`
     *   `Proiezione findBySalaAndDataAndOra(Sala sala, LocalDate data, LocalTime ora);`
     *    `List<Proiezione> findBySalaAndData(Sala sala, LocalDate data);`
+    *    `boolean existsBySalaId(Long salaId);`
 
 *   **`RecensioneRepository`**
     *    `@Query("SELECT AVG(r.voto) FROM Recensione r WHERE r.film.id = :filmId") Double mediaVotoByFilmId(@Param("filmId") Long filmId)`
     
 
 *   **`SalaRepository`**
+    *   `boolean existsByNome(String nome);`
+    *   `boolean existsByNomeAndIdNot(String nome, Long id);`
+    *   `boolean existsByNomeIgnoreCase(String nome);`
+    *   `boolean existsByNomeIgnoreCaseAndIdNot(String nome, Long id);`
 
 *   **`UtenteRepository`**
     *   `boolean existsByUsername(String username);`

@@ -42,46 +42,48 @@ public class SecurityConfiguration {
     return new BCryptPasswordEncoder();
   }
 
- @Bean
-protected SecurityFilterChain configure(final HttpSecurity httpSecurity) throws Exception {
+  @Bean
+  protected SecurityFilterChain configure(final HttpSecurity httpSecurity) throws Exception {
 
     httpSecurity.csrf(csrf -> csrf
         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-        .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
-    );
+        .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()));
 
     httpSecurity.addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
 
     httpSecurity.authorizeHttpRequests(authorize -> {
-        authorize.requestMatchers(HttpMethod.GET, "/", "/fragments", "/api/festivals/**", "/festival/**",
-                "/register", "/registerForm", "/uploads/**", "/login", "/css/**", "/images/**", "/react/**", "/attore/**","/attori/**",
-                "/favicon.ico", "/film/**", "/api/film/**", "/api/films/**", "/api/utente/me").permitAll();
-        authorize.requestMatchers(HttpMethod.POST, "/register", "/registerForm", "/login").permitAll();
+      authorize.requestMatchers(HttpMethod.GET, "/", "/fragments", "/api/festivals/**", "/festival/**",
+          "/register", "/registerForm", "/uploads/**", "/login", "/css/**", "/images/**", "/react/**", "/attore/**",
+          "/attori/**",
+          "/favicon.ico", "/film/**", "/api/film/**", "/api/films/**", "/api/utente/me").permitAll();
+      authorize.requestMatchers(HttpMethod.POST, "/register", "/registerForm", "/login").permitAll();
 
-        authorize.requestMatchers(HttpMethod.POST, "/api/film/*/recensione").hasAnyAuthority("USER", "ADMIN");
-        authorize.requestMatchers(HttpMethod.PUT, "/api/recensione/**").hasAnyAuthority("USER", "ADMIN");
-        authorize.requestMatchers(HttpMethod.DELETE, "/api/recensione/**").hasAnyAuthority("USER", "ADMIN");
+      authorize.requestMatchers(HttpMethod.POST, "/api/film/*/recensione").hasAnyAuthority("USER", "ADMIN");
+      authorize.requestMatchers(HttpMethod.PUT, "/api/recensione/**").hasAnyAuthority("USER", "ADMIN");
+      authorize.requestMatchers(HttpMethod.DELETE, "/api/recensione/**").hasAnyAuthority("USER", "ADMIN");
 
-        authorize.requestMatchers(HttpMethod.GET, "/admin/**").hasAnyAuthority(Utente.ADMIN_ROLE);
-        authorize.requestMatchers(HttpMethod.POST, "/admin/**").hasAnyAuthority(Utente.ADMIN_ROLE);
-        authorize.anyRequest().authenticated();
+      authorize.requestMatchers(HttpMethod.GET, "/admin/**").hasAnyAuthority(Utente.ADMIN_ROLE);
+      authorize.requestMatchers(HttpMethod.POST, "/admin/**").hasAnyAuthority(Utente.ADMIN_ROLE);
+      authorize.anyRequest().authenticated();
     });
 
     httpSecurity.formLogin(form -> {
-        form.loginPage("/login").permitAll();
-        // form.defaultSuccessUrl("/", true);
-        form.defaultSuccessUrl("/?login=true", true);
-        form.failureUrl("/login?error=true");
+      form.loginPage("/login").permitAll();
+      // form.defaultSuccessUrl("/", true);
+      form.loginPage("/login").permitAll();
+      form.successHandler(new LoginSuccessHandler()); // al posto di defaultSuccessUrl("/success", true)
+      form.failureUrl("/login?error=true");
+      form.failureUrl("/login?error=true");
     });
 
     httpSecurity.logout(logout -> {
-        logout.logoutUrl("/logout");
-        // logout.logoutSuccessUrl("/");
-        logout.logoutSuccessUrl("/?logout=true");
-        logout.invalidateHttpSession(true);
-        logout.deleteCookies("JSESSIONID");
-        logout.clearAuthentication(true);
-        logout.permitAll();
+      logout.logoutUrl("/logout");
+      // logout.logoutSuccessUrl("/");
+      logout.logoutSuccessUrl("/?logout=true");
+      logout.invalidateHttpSession(true);
+      logout.deleteCookies("JSESSIONID");
+      logout.clearAuthentication(true);
+      logout.permitAll();
     });
     return httpSecurity.build();
   }

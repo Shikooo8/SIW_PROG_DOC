@@ -12,10 +12,14 @@
     <header th:replace="~{fragments/base.html :: intestazione}"></header>
 
     <main class="container">
-
-        <!-- ELENCO SALE -->
         <section class="section">
             <h2 class="section-title">Gestione Sale</h2>
+
+            <div class="show-actions">
+                <a class="btn btn-primary" th:href="@{/admin/sala/new}">Aggiungi nuova sala</a>
+            </div>
+
+            <div class="error-text" th:if="${errore}" th:text="${errore}">Errore</div>
 
             <div class="empty" th:if="${sale == null or sale.isEmpty()}">
                 Nessuna sala presente.
@@ -37,42 +41,21 @@
                             <td th:text="${s.indirizzo}">Indirizzo</td>
                             <td th:text="${s.capienza}">100</td>
                             <td>
-                                <a class="btn btn-secondary" th:href="@{'/admin/sala/' + ${s.id} + '/edit'}">Modifica</a>
+                                <div class="show-actions">
+                                    <a class="btn btn-secondary"
+                                       th:href="@{/admin/sala/{id}/edit(id=${s.id})}">Modifica</a>
+
+                                    <form th:action="@{/admin/sala/{id}/delete(id=${s.id})}" method="POST"
+                                          style="display:inline"
+                                          onsubmit="return confirm('Sei sicuro di voler eliminare questa sala?');">
+                                        <button type="submit" class="btn btn-danger">Elimina</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-        </section>
-
-        <!-- NUOVA SALA -->
-        <section class="section">
-            <h2 class="section-title">Nuova sala</h2>
-
-            <form th:action="@{/admin/sale}" method="POST" th:object="${nuovaSala}" class="form">
-
-                <div class="form-group">
-                    <label class="form-label" for="nome">Nome sala</label>
-                    <input type="text" id="nome" th:field="*{nome}" class="input-field" required />
-                    <span class="error-text" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="indirizzo">Indirizzo</label>
-                    <input type="text" id="indirizzo" th:field="*{indirizzo}" class="input-field" />
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="capienza">Capienza</label>
-                    <input type="number" id="capienza" th:field="*{capienza}" class="input-field" required min="1" />
-                    <span class="error-text" th:if="${#fields.hasErrors('capienza')}" th:errors="*{capienza}"></span>
-                </div>
-
-                <div class="show-actions">
-                    <button type="submit" class="btn btn-primary">Salva sala</button>
-                    <a th:href="@{/}" class="btn btn-ghost">Torna alla home</a>
-                </div>
-            </form>
         </section>
     </main>
 

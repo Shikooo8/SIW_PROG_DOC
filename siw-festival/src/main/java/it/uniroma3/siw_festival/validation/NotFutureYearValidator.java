@@ -11,6 +11,6 @@ public class NotFutureYearValidator implements ConstraintValidator<NotFutureYear
     if (value == null) {
       return true;
     }
-    return !(value >= LocalDate.now().getYear());
+    return !(value > LocalDate.now().getYear());
   }
 }

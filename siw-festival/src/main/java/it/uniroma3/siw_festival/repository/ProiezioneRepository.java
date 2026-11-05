@@ -18,4 +18,6 @@ public interface ProiezioneRepository extends CrudRepository<Proiezione, Long> {
     Proiezione findBySalaAndDataAndOra(Sala sala, LocalDate data, LocalTime ora);
 
     List<Proiezione> findBySalaAndData(Sala sala, LocalDate data);
+
+    boolean existsBySalaId(Long salaId);
 }
