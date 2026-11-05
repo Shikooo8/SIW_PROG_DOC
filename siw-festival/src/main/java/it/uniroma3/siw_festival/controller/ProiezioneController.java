@@ -56,13 +56,25 @@ public class ProiezioneController {
             return "admin/proiezione/form";
         }
 
-        // Associa la proiezione al festival in cui ci troviamo
-        proiezione.setFestival(festivalService.findById(festivalId));
-        proiezioneService.save(proiezione);
+        try {
+            proiezione.setFestival(festivalService.findById(festivalId));
+            proiezioneService.save(proiezione);
+            return "redirect:/festival/" + festivalId;
+        } catch (OverlappingProiezioneException e) {
+            model.addAttribute("erroreSovrapposizione", e.getMessage());
+            model.addAttribute("festivalId", festivalId);
+            model.addAttribute("films", filmService.findByFestivalId(festivalId));
+            model.addAttribute("sale", salaService.findAll());
+            return "admin/proiezione/form";
+        } catch (FilmNonPartecipanteException e) {
+            bindingResult.reject("proiezione.filmNonPartecipante", e.getMessage());
+            model.addAttribute("films", filmService.findByFestivalId(proiezione.getFestival().getId()));
+            model.addAttribute("sale", salaService.findAll());
+            return "admin/proiezione/form";
 
-        // Torna alla pagina del festival
-        return "redirect:/festival/" + festivalId;
-    }//TODO da mettere i due catch dopo
+        }
+
+    }
 
     @GetMapping("/admin/proiezione/{id}/edit")
     public String editProiezioneForm(@PathVariable Long id, Model model) {

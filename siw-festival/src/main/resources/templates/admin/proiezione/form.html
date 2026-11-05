@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Programma Proiezione - SiwFestival</title>
     <link rel="stylesheet" th:href="@{/css/stile.css}" />
     <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
 </head>
+
 <body>
     <header th:replace="~{fragments/base.html :: intestazione}"></header>
 
@@ -18,9 +20,8 @@
                 <a th:href="@{'/admin/festival/' + ${festivalId} + '/edit'}">Aggiungili al festival</a> e poi torna qui.
             </div>
 
-            <form th:unless="${films.isEmpty()}"
-                  th:action="@{'/admin/festival/' + ${festivalId} + '/proiezione/new'}"
-                  method="post" th:object="${proiezione}">
+            <form th:unless="${films.isEmpty()}" th:action="@{'/admin/festival/' + ${festivalId} + '/proiezione/new'}"
+                method="post" th:object="${proiezione}">
 
                 <div class="alert alert-error" th:if="${#fields.hasGlobalErrors()}">
                     <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore</p>
@@ -61,7 +62,7 @@
                     <label for="stato">Stato</label>
                     <select id="stato" th:field="*{stato}" required>
                         <option th:each="statoOpt : ${T(it.uniroma3.siw_festival.model.StatoProiezione).values()}"
-                                th:value="${statoOpt}" th:text="${statoOpt}">SCHEDULED</option>
+                            th:value="${statoOpt}" th:text="${statoOpt}">SCHEDULED</option>
                     </select>
                     <span class="field-error" th:if="${#fields.hasErrors('stato')}" th:errors="*{stato}"></span>
                 </div>
@@ -75,5 +76,17 @@
     </main>
 
     <footer th:replace="~{fragments/base.html :: footer}"></footer>
+    <dialog id="erroreDialog" th:if="${erroreSovrapposizione}">
+        <h3>Impossibile salvare la proiezione</h3>
+        <p th:text="${erroreSovrapposizione}">Sala occupata...</p>
+        <form method="dialog">
+            <button type="submit">Chiudi</button>
+        </form>
+    </dialog>
+
+    <script th:if="${erroreSovrapposizione}">
+        document.getElementById('erroreDialog').showModal();
+    </script>
 </body>
+
 </html>

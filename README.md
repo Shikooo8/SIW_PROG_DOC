@@ -28,19 +28,19 @@ Le visualizzazione delle proiezioni sono gestite da REACT.
 - modifica di una propria recensione
 - eliminazione di una propria recensione
 
-### Funzionalità riservate all’amministratore (da controllare )
+### Funzionalità riservate all’amministratore (in corso)
 - creazione e modifica di un festival               
 - inserimento e modifica di un film                 
-- inserimento e modifica di un di un attore (DA FARE)       
+- inserimento e modifica di un di un attore     
 - associazione di un film a un festival             
-- inserimento e modifica di una sala                
+- inserimento e modifica di una sala (da controllarre)                
 - programmazione di una proiezione                  
-- modifica o cancellazione di una proiezione        
+- modifica o cancellazione di una proiezione (da controllare)     
 - eliminazione di un film da un festival 
 Il sistema deve verificare la consistenza delle operazioni effettuate. Ad esempio, non deve essere possibile
 programmare due proiezioni nella stessa sala nello stesso intervallo temporale.
 
-### Funzionalità nuove (da implementare e controllare)
+### Funzionalità nuove (fatto)
 - ogni film ha più attori, ciascuno dei quali interpreta un personaggio (ad es. Marlon Brando nel Film il padrino interpreta il personaggio di don Vito Corleone)
 - un attore può aver recitato in più film, in ogni film interpreta un personaggio
 
@@ -50,32 +50,35 @@ Quando viene modificato e creato un film, il regista sarà una semplice stringa,
 - Nella modifica/creazione di un film i campi per un nuovo attore devono essere visibili solo con la scelta nuovo attore
 
 ### Obiettivi finali
-
+Cerchiamo di mantenere tutto con un codice non troppo complesso e leggibile.
 - paginazione (fatto)
 - ricerca e filtri (fatto)
 - ricerca dei film per titolo o genere (fatto)
-- ricerca delle proiezioni per data
+- ricerca delle proiezioni per data (da fare)
 - upload di locandine o immagini (fatto)
-- statistiche sulle recensioni
-- documentazione delle API REST
-- autenticazione con OAuth
-- deployment su una piattaforma cloud
-Cerchiamo di mantenere tutto con un codice non troppo complesso e leggibile.
+- statistiche sulle recensioni (fatto)
+- documentazione delle API REST (da fare)
+- autenticazione con OAuth (da fare)
+- deployment su una piattaforma cloud (da fare)
 
 ### Stile
 Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 
 
-## Errori trovati
-- Gestione degli errori (proiezioni nello stesso slot temporale rimanda ad errore ma da gestire)
-- Quando si inseriscono le cose il seq number è a caso
-- Le immagini dei Festival sono lunghe e sono inguardabili così
-- In Film/form da ispezione pagina posso cambiare il tipo degli input e non è gestito bene
+## Errori attuali
 
+### Errori importanti
+- In Film/form, da ispezione pagina, posso cambiare il tipo degli input e non è gestito bene
 - il login deve riportare alla finestra che si stava cliccando
-- le immagini danno nomi a caso
-- facciamo il database permanente
+- Mostra proiezioni (REACT con la grafica sbagliata)
+- Nella scelta della sala in Proiezioni, la finestra è troppo grande e copre la scelta. Deve essere alta 5 scelte e sempre sotto la barra
 
+### Preferenze da cambiare
+- Quando si inseriscono le cose il seq number è a caso (+1 mentre negli insert +50)
+- Le immagini dei Festival sono lunghe e sono inguardabili così
+- Alle immagini vengono dati nomi a caso quando vengono inserite nel databse
+- Date in formato americano (no)
+- errore in proiezione diverso fra crea e modifica
 
 # Struttura del Progetto
 
