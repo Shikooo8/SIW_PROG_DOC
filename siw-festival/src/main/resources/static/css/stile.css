@@ -17,7 +17,7 @@
    ========================================================================== */
 
 @import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700&display=swap");
-
+@import url('https://fonts.googleapis.com/css2?family=Tiny5&display=swap');
 /* 1. TOKEN ================================================================= */
 :root {
   /* neri (con una punta di blu) */
@@ -60,6 +60,7 @@
   --shadow-focus: 0 0 0 3px rgba(106,166,255,.45);
 
   --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-display2:'Tiny5', sans-serif; /* o monospace */
   --font-body:    "DM Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
 
   --maxw: 1160px;
@@ -140,23 +141,42 @@ hr { border: 0; border-top: 1px solid var(--border-soft); margin: 2rem 0; }
   gap: 1.5rem;
 }
 .brand {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 1.25rem;
-  letter-spacing: -0.03em;
-  color: var(--text);
+  font-family: var(--font-display2);
+  font-weight: 600;
+  font-size: 2rem;
+  letter-spacing: 0.1em;
+  color: #ffffff; /* Testo bianco */
   display: inline-flex;
   align-items: center;
   gap: .55rem;
+  
+  /* Alone violetto elettrico stratificato (dal più intenso al più sfumato) */
+  text-shadow: 
+    0 0 5px rgba(189, 0, 255, 0.8),
+    0 0 15px rgba(189, 0, 255, 0.5),
+    0 0 25px rgba(189, 0, 255, 0.3);
+    
+  transition: text-shadow 0.3s ease-in-out; /* Preparazione per l'effetto hover */
 }
-.brand::before {            /* piccolo logo: pellicola blu-viola */
-  content: "";
-  width: 1.15rem;
-  height: 1.15rem;
-  border-radius: 5px;
-  background: var(--gradient);
-  box-shadow: 0 0 18px rgba(61,123,255,.7);
+
+/* Effetto opzionale: il neon si accende di più al passaggio del mouse */
+.brand:hover {
+  text-shadow: 
+    0 0 8px rgba(189, 0, 255, 1),
+    0 0 20px rgba(189, 0, 255, 0.8),
+    0 0 35px rgba(189, 0, 255, 0.5);
 }
+
+/* 
+  .brand::before {            /* piccolo logo: pellicola blu-viola 
+    content: "";
+    width: 1.15rem;
+    height: 1.15rem;
+    border-radius: 5px;
+    background: var(--gradient);
+    box-shadow: 0 0 18px rgba(61,123,255,.7);
+  }
+*/
 .brand:hover { color: #fff; }
 
 .nav-links { display: flex; gap: .25rem; margin-left: auto; align-items: center; flex-wrap: wrap; }
@@ -440,7 +460,7 @@ button[type="submit"]:hover {
 .review-text { margin: 0; color: var(--text-muted); }
 
 /* tabelle (area admin) */
-.table-wrap { overflow-x: auto; border: 1px solid var(--border-soft); border-radius: var(--radius-md); }
+.table-wrap { overflow-x: auto; border: 1px solid var(--border-soft); border-radius: var(--radius-md); margin-top: 1.2rem; }
 .table { width: 100%; border-collapse: collapse; background: var(--surface); }
 .table th, .table td { padding: .8rem 1rem; text-align: left; border-bottom: 1px solid var(--border-soft); }
 .table th { color: var(--text-faint); font-weight: 500; font-size: .88rem; background: var(--bg-elev); }
@@ -502,6 +522,7 @@ input.has-error, select.has-error, textarea.has-error { border-color: var(--dang
   border: 1px solid var(--border);
   background: var(--surface-2);
   margin-bottom: 1.2rem;
+  margin-top: 1.2rem;
   font-size: .95rem;
 }
 .alert-error   { color: #ffd3dc; background: rgba(255,107,136,.1); border-color: rgba(255,107,136,.45); }

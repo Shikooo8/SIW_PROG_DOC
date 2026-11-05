@@ -19,7 +19,7 @@
                 <a class="btn btn-primary" th:href="@{/admin/sala/new}">Aggiungi nuova sala</a>
             </div>
 
-            <div class="error-text" th:if="${errore}" th:text="${errore}">Errore</div>
+            <div class="alert alert-error" th:if="${errore}" th:text="${errore}">Errore</div>
 
             <div class="empty" th:if="${sale == null or sale.isEmpty()}">
                 Nessuna sala presente.

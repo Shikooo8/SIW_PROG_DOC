@@ -69,9 +69,7 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 
 ### Errori importanti
 - In Film/form, da ispezione pagina, posso cambiare il tipo degli input e non è gestito bene
-- modifica sale non funziona 
 - non prende le date nel modifica
-- non posso cancellare le cose
 
 ### Preferenze da cambiare
 - Quando si inseriscono le cose il seq number è a caso (+1 mentre negli insert +50)

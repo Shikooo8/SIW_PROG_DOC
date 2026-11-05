@@ -2,6 +2,8 @@ package it.uniroma3.siw_festival.model;
 
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -23,6 +25,7 @@ public class Attore {
     @NotBlank 
     private String cognome;
     
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private java.time.LocalDate dataNascita;
     
     private String nazionalità;

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Modifica Proiezione - SiwFestival</title>
     <link rel="stylesheet" th:href="@{/css/stile.css}" />
     <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
 </head>
+
 <body>
     <header th:replace="~{fragments/base.html :: intestazione}"></header>
 
@@ -13,8 +15,8 @@
         <div class="form-card">
             <h1>Modifica la proiezione</h1>
 
-            <form th:action="@{'/admin/proiezione/' + ${proiezione.id} + '/edit'}"
-                  method="post" th:object="${proiezione}">
+            <form th:action="@{'/admin/proiezione/' + ${proiezione.id} + '/edit'}" method="post"
+                th:object="${proiezione}">
 
                 <div class="alert alert-error" th:if="${#fields.hasGlobalErrors()}">
                     <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">Errore</p>
@@ -42,7 +44,7 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="data">Data</label>
-                        <input type="date" id="data" th:field="*{data}" required />
+                        <input type="date" th:field="*{data}" class="input-field" required />
                         <span class="field-error" th:if="${#fields.hasErrors('data')}" th:errors="*{data}"></span>
                     </div>
                     <div class="form-group">
@@ -56,7 +58,7 @@
                     <label for="stato">Stato</label>
                     <select id="stato" th:field="*{stato}" required>
                         <option th:each="statoOpt : ${T(it.uniroma3.siw_festival.model.StatoProiezione).values()}"
-                                th:value="${statoOpt}" th:text="${statoOpt}"></option>
+                            th:value="${statoOpt}" th:text="${statoOpt}"></option>
                     </select>
                     <span class="field-error" th:if="${#fields.hasErrors('stato')}" th:errors="*{stato}"></span>
                 </div>
@@ -71,4 +73,5 @@
 
     <footer th:replace="~{fragments/base.html :: footer}"></footer>
 </body>
+
 </html>

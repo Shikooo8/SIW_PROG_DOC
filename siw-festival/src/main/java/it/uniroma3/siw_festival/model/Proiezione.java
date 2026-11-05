@@ -1,5 +1,7 @@
 package it.uniroma3.siw_festival.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -17,9 +19,10 @@ public class Proiezione {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private java.time.LocalDate data;
-    
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
     private java.time.LocalTime ora;
     
     @Enumerated(EnumType.STRING)
