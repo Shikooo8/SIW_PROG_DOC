@@ -32,5 +32,8 @@ build/
 ### VS Code ###
 .vscode/
 
+.env
+
 # Ignora il file 
 contesto_siw_settembre_2026.md
+

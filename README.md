@@ -68,16 +68,31 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 ## Errori attuali
 
 ### Errori importanti
-- In Film/form, da ispezione pagina, posso cambiare il tipo degli input e non è gestito bene
-- non prende le date nel modifica
+- In Film/form, da ispezione pagina, posso cambiare il tipo degli input e non è gestito bene e se aggiungo un attore non mi carica più la foto
 
 ### Preferenze da cambiare
 - Quando si inseriscono le cose il seq number è a caso (+1 mentre negli insert +50)
 - Le immagini dei Festival sono lunghe e sono inguardabili così
 - Alle immagini vengono dati nomi a caso quando vengono inserite nel databse
-- Date in formato americano (no)
+- Date in formato americano 
 - errore in proiezione diverso fra crea e modifica
 - Elenco sale ordinato 
+
+### Le modifiche da ricordare
+
+- mettere un enum al posto di string
+- modifica di un mapping JPA
+- implementazione di una nuova query
+- aggiunta di un caso d’uso
+- modifica di una regola di business
+- aggiunta o modifica di un metodo del Service Layer
+- modifica della gestione transazionale
+- aggiunta di un endpoint REST
+- modifica della configurazione di Spring Security
+- modifica della strategia di fetch
+- individuazione e correzione di un problema N+1
+- modifica di una componente React
+
 
 # Struttura del Progetto
 

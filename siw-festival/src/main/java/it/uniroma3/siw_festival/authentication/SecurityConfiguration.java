@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import it.uniroma3.siw_festival.model.Utente;
+import it.uniroma3.siw_festival.service.CustomOidcUserService;
 
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -43,7 +44,7 @@ public class SecurityConfiguration {
   }
 
   @Bean
-  protected SecurityFilterChain configure(final HttpSecurity httpSecurity) throws Exception {
+  protected SecurityFilterChain configure(final HttpSecurity httpSecurity, CustomOidcUserService oidcService) throws Exception {
 
     httpSecurity.csrf(csrf -> csrf
         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
@@ -55,7 +56,7 @@ public class SecurityConfiguration {
       authorize.requestMatchers(HttpMethod.GET, "/", "/fragments", "/api/festivals/**", "/festival/**",
           "/register", "/registerForm", "/uploads/**", "/login", "/css/**", "/images/**", "/react/**", "/attore/**",
           "/attori/**",
-          "/favicon.ico", "/film/**", "/api/film/**", "/api/films/**", "/api/utente/me").permitAll();
+          "/SF.png", "/film/**", "/api/film/**", "/api/films/**", "/api/utente/me").permitAll();
       authorize.requestMatchers(HttpMethod.POST, "/register", "/registerForm", "/login").permitAll();
 
       authorize.requestMatchers(HttpMethod.POST, "/api/film/*/recensione").hasAnyAuthority("USER", "ADMIN");
@@ -76,6 +77,12 @@ public class SecurityConfiguration {
       form.failureUrl("/login?error=true");
     });
 
+       httpSecurity.oauth2Login(oauth -> {
+        oauth.loginPage("/login");
+        oauth.userInfoEndpoint(u -> u.oidcUserService(oidcService));
+        oauth.defaultSuccessUrl("/", true);
+    });
+
     httpSecurity.logout(logout -> {
       logout.logoutUrl("/logout");
       // logout.logoutSuccessUrl("/");
@@ -86,5 +93,8 @@ public class SecurityConfiguration {
       logout.permitAll();
     });
     return httpSecurity.build();
+
+
+   
   }
 }

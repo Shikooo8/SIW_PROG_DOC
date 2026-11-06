@@ -1,4 +1,4 @@
-package it.uniroma3.siw_festival.controller;
+package it.uniroma3.siw_festival.controller.rest;
 
 import java.util.Map;
 

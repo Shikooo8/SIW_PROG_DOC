@@ -2,7 +2,6 @@ package it.uniroma3.siw_festival.authentication;
 
 import java.io.IOException;
 
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import jakarta.servlet.ServletException;

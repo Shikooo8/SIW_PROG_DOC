@@ -54,26 +54,14 @@
                     </div>
                 </div>
 
-                <!-- IMMAGINE -->
-                <div class="form-group">
-                    <label>Immagine</label>
-                    <div class="file-input">
-                        <input type="file" id="file" name="file" accept="image/png, image/jpeg, image/webp" hidden />
-                        <label for="file" class="btn btn-secondary btn-sm">Scegli file</label>
-                        <span class="file-nome">Nessun file selezionato</span>
-                    </div>
-                    <span class="form-hint" th:if="${film.id != null}">
-                        Se non scegli nessun file, resta l'immagine attuale.
-                    </span>
-                </div>
-
-
+                
+                
                 <div class="form-group">
                     <label for="regista">Regista</label>
                     <input type="text" id="regista" th:field="*{regista}" />
                     <span class="field-error" th:if="${#fields.hasErrors('regista')}" th:errors="*{regista}"></span>
                 </div>
-
+                
                 <!-- FESTIVAL -->
                 <h2 class="section-title">Festival</h2>
                 <div class="form-group picker" th:data-url="@{/admin/ricerca/festival}" data-multiple="true"
@@ -100,7 +88,7 @@
                         <div class="review-head">
                             <span class="review-author" th:text="'Personaggio ' + ${iter.count}">Personaggio 1</span>
                             <button type="submit" th:formaction="@{'/admin/film/cast/' + ${iter.index} + '/remove'}"
-                                class="btn btn-danger btn-sm" formnovalidate>Rimuovi</button>
+                            class="btn btn-danger btn-sm" formnovalidate>Rimuovi</button>
                         </div>
 
                         <input type="hidden" th:field="*{cast[__${iter.index}__].id}" />
@@ -112,15 +100,15 @@
                                 th:if="${#fields.hasErrors('cast[__${iter.index}__].personaggio')}"
                                 th:errors="*{cast[__${iter.index}__].personaggio}"></span>
                         </div>
-
+                        
                         <div class="form-group">
                             <label>
                                 <input type="checkbox" class="nuovo-attore-check"
-                                    th:field="*{cast[__${iter.index}__].nuovoAttore}" />
+                                th:field="*{cast[__${iter.index}__].nuovoAttore}" />
                                 Nuovo attore (non è nell'elenco)
                             </label>
                         </div>
-
+                        
                         <!-- Attore dall'elenco: visibile solo se NON è spuntato "Nuovo attore" -->
                         <div class="form-group picker" th:hidden="${riga.nuovoAttore}"
                             th:data-url="@{/admin/ricerca/attori}">
@@ -128,10 +116,10 @@
                             <input type="hidden" class="picker-id" th:field="*{cast[__${iter.index}__].attoreId}" />
                             <input type="text" class="picker-search" th:field="*{cast[__${iter.index}__].attoreLabel}"
                                 placeholder="Cerca un attore..." autocomplete="off" />
-                            <ul class="picker-list" hidden></ul>
-                        </div>
-
-                        <!-- Nuovo attore: visibile solo se è spuntato "Nuovo attore" -->
+                                <ul class="picker-list" hidden></ul>
+                            </div>
+                            
+                            <!-- Nuovo attore: visibile solo se è spuntato "Nuovo attore" -->
                         <div class="nuovo-attore-box" th:hidden="${!riga.nuovoAttore}">
                             <div class="form-row">
                                 <div class="form-group">
@@ -159,9 +147,22 @@
 
                 <div class="form-actions">
                     <button type="submit" th:formaction="@{/admin/film/cast/add}" class="btn btn-secondary"
-                        formnovalidate>Aggiungi un nuovo personaggio</button>
+                    formnovalidate>Aggiungi un nuovo personaggio</button>
                 </div>
+                <!-- IMMAGINE -->
+                <div class="form-group">
 
+                    <h2 margin-top=2rem class="section-title">Immmagine</h2>
+                    <div class="file-input">
+                        <input type="file" id="file" name="file" accept="image/png, image/jpeg, image/webp" hidden />
+                        <label for="file" class="btn btn-secondary btn-sm">Scegli file</label>
+                        <span class="file-nome">Nessun file selezionato</span>
+                    </div>
+                    <span class="form-hint" th:if="${film.id != null}">
+                        Se non scegli nessun file, resta l'immagine attuale.
+                    </span>
+                </div>
+                
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Salva film</button>
                     <a th:href="@{/film}" class="btn btn-ghost">Annulla</a>
