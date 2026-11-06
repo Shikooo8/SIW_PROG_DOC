@@ -55,8 +55,9 @@ public class SecurityConfiguration {
     httpSecurity.authorizeHttpRequests(authorize -> {
       authorize.requestMatchers(HttpMethod.GET, "/", "/fragments", "/api/festivals/**", "/festival/**",
           "/register", "/registerForm", "/uploads/**", "/login", "/css/**", "/images/**", "/react/**", "/attore/**",
-          "/attori/**",
+          "/attori/**",    "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**",
           "/SF.png", "/film/**", "/api/film/**", "/api/films/**", "/api/utente/me").permitAll();
+
       authorize.requestMatchers(HttpMethod.POST, "/register", "/registerForm", "/login").permitAll();
 
       authorize.requestMatchers(HttpMethod.POST, "/api/film/*/recensione").hasAnyAuthority("USER", "ADMIN");

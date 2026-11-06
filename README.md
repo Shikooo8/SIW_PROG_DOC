@@ -57,8 +57,8 @@ Cerchiamo di mantenere tutto con un codice non troppo complesso e leggibile.
 - ricerca delle proiezioni per data (da fare)
 - upload di locandine o immagini (fatto)
 - statistiche sulle recensioni (fatto)
-- documentazione delle API REST (da fare)
-- autenticazione con OAuth (da fare)
+- documentazione delle API REST (fatto?)
+- autenticazione con OAuth (fatto)
 - deployment su una piattaforma cloud (da fare)
 
 ### Stile
@@ -69,8 +69,12 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 
 ### Errori importanti
 - In Film/form, da ispezione pagina, posso cambiare il tipo degli input e non è gestito bene e se aggiungo un attore non mi carica più la foto
+- gestione pagine errore 500 e 404
 
 ### Preferenze da cambiare
+- Mettere una post su react (modifica delle proiezioni direttamente da lì)
+- Controllo che tutta la logica applicativa sia nei service e non nei controller.
+- In service ci devono essere transazioni lettura vs scrittura
 - Quando si inseriscono le cose il seq number è a caso (+1 mentre negli insert +50)
 - Le immagini dei Festival sono lunghe e sono inguardabili così
 - Alle immagini vengono dati nomi a caso quando vengono inserite nel databse

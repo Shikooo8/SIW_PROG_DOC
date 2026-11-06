@@ -9,12 +9,12 @@ import io.swagger.v3.oas.models.info.Info;
 @Configuration
 public class OpenApiConfig {
 
+
     @Bean
     public OpenAPI openAPI() {
-        return new OpenAPI()
-            .info(new Info()
-                .title("SIW Movie API")
-                .version("v1")
-                .description("API REST per la gestione di SIW FESTIVAL"));
+    return new OpenAPI().info(new Info()
+        .title("SIW Festival API")
+        .version("v1")
+        .description("API REST per festival, film e proiezioni"));
     }
 }
