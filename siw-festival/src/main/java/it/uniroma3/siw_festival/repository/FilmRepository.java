@@ -33,4 +33,12 @@ public interface FilmRepository extends CrudRepository<Film, Long> {
     // Per la ricerca nella lista dei film 
     Page<Film> findByTitoloContainingIgnoreCase(String titolo, Pageable pageable);
 
+
+    //PER I TEST
+
+     @Query("SELECT f from Film f JOIN f.festivals festivals WHERE festivals.id = :festivalId")
+    List<Film> findByFestivalId(@Param("festivalId") Long festivalId);
+
+    @Query("SELECT DISTINCT f FROM Film f JOIN FETCH f.interpretazioni JOIN f.festivals festival WHERE festival.id = :festivalId ")
+    List<Film> findByFestivalIdWithInterpretazioni(@Param("festivalId") Long festivalId);
 }

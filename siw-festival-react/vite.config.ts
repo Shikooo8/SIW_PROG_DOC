@@ -14,8 +14,10 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/css": "https://siw-festival.onrender.com",
-      "/images": "https://siw-festival.onrender.com",
+      // "/css": "https://siw-festival.onrender.com",
+      // "/images": "https://siw-festival.onrender.com",
+      "/css": "https://localhost:8080",
+      "/images": "https://localhost:8080",
     },
   },
 });

@@ -33,7 +33,7 @@ Le visualizzazione delle proiezioni sono gestite da REACT. -> npm run build
 - inserimento e modifica di un film                 
 - inserimento e modifica di un di un attore     
 - associazione di un film a un festival             
-- inserimento e modifica di una sala (da controllarre)                
+- inserimento e modifica di una sala                 
 - programmazione di una proiezione                  
 - modifica o cancellazione di una proiezione (da controllare)     
 - eliminazione di un film da un festival 
@@ -46,7 +46,7 @@ programmare due proiezioni nella stessa sala nello stesso intervallo temporale.
 
 Quando viene modificato e creato un film, il regista sarà una semplice stringa, mentre per le interpretazioni ci sarà un "aggiungi nuovo personaggio", come stringa, a cui va associato un attore fra quelli del sistema oppure uno nuovo.
 
-- Da gestire meglio le associazioni in creazione e modifica : ovvero mostrare l'intero elenco di attori e o film o festival non è efficiente, bisogna caricarne in parte e fare in modo che possano aumentare oppure il filtro per nome
+- Le associazioni in creazione e modifica : ovvero mostrare l'intero elenco di attori e o film o festival non è efficiente, bisogna caricarne in parte e fare in modo che possano aumentare oppure il filtro per nome
 - Nella modifica/creazione di un film i campi per un nuovo attore devono essere visibili solo con la scelta nuovo attore
 
 ### Obiettivi finali
@@ -59,17 +59,17 @@ Cerchiamo di mantenere tutto con un codice non troppo complesso e leggibile.
 - statistiche sulle recensioni (fatto)
 - documentazione delle API REST (fatto?)
 - autenticazione con OAuth (fatto)
-- deployment su una piattaforma cloud (da fare)
+- deployment su una piattaforma cloud (caricamento su PI)
 
 ### Stile
 Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
-
 
 ## Errori attuali
 
 ### Errori importanti
 - In Film/form, da ispezione pagina, posso cambiare il tipo degli input e non è gestito bene e se aggiungo un attore non mi carica più la foto
 - gestione pagine errore 500 e 404
+
 
 ### Preferenze da cambiare
 - Mettere una post su react (modifica delle proiezioni direttamente da lì)
