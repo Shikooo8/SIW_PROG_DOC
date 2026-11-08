@@ -9,14 +9,16 @@ export default function ProgrammazioneFestival() {
     const { id } = useParams<{ id: string }>();
     const [proiezioni, setProiezioni] = useState<ProiezioneDTO[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [data, setData] = useState<string>(''); // "YYYY-MM-DD", '' = nessun filtro
 
     useEffect(() => {
         if (id) {
-            getProiezioniByFestival(id)
+            setLoading(true);
+            getProiezioniByFestival(id, data)
                 .then(setProiezioni)
                 .finally(() => setLoading(false));
         }
-    }, [id]);
+    }, [id, data]);
 
     return (
         <Layout>
@@ -30,10 +32,29 @@ export default function ProgrammazioneFestival() {
                 </a>
             </div>
 
+            <div className="filter-bar">
+                <label htmlFor="filtro-data">Cerca per data: </label>
+                <input
+                    id="filtro-data"
+                    type="date"
+                    value={data}
+                    onChange={(e) => setData(e.target.value)}
+                />
+                {data && (
+                    <button className="btn btn-secondary btn-sm" onClick={() => setData('')}>
+                        Mostra tutte
+                    </button>
+                )}
+            </div>
+
             {loading ? (
                 <p className="empty">Caricamento programmazione...</p>
             ) : proiezioni.length === 0 ? (
-                <p className="empty">Nessuna proiezione programmata per questo festival.</p>
+                <p className="empty">
+                    {data
+                        ? 'Nessuna proiezione in questa data.'
+                        : 'Nessuna proiezione programmata per questo festival.'}
+                </p>
             ) : (
                 <ul className="screening-list">
                     {proiezioni.map((p) => (

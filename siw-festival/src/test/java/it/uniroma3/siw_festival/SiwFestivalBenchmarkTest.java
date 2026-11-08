@@ -53,13 +53,15 @@ public class SiwFestivalBenchmarkTest {
         public void compareFetchStrategies() {
                 SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
                 Statistics statistics = sessionFactory.getStatistics();
-                statistics.clear();
 
                 // =========================
                 // STRATEGIA 1 - LAZY
                 // =========================
-
+                
+                entityManager.flush();
                 statistics.clear();
+                entityManager.clear();
+
 
                 long startLazy = System.nanoTime();
 
@@ -93,6 +95,7 @@ public class SiwFestivalBenchmarkTest {
                 // STRATEGIA 2 - JOIN FETCH
                 // =========================
 
+                entityManager.flush();
                 statistics.clear();
                 entityManager.clear();
 
@@ -102,7 +105,7 @@ public class SiwFestivalBenchmarkTest {
 
                 int personaggiJoin = 0;
 
-                for (Film film : filmsLazy) {
+                for (Film film : filmsJoin) {
                         if (!film.getInterpretazioni().isEmpty()) {
                                 for (Interpretazione interpretazione : film.getInterpretazioni())
                                         interpretazione.getPersonaggio();

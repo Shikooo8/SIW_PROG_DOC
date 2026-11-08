@@ -1,5 +1,6 @@
 package it.uniroma3.siw_festival.service;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -95,6 +96,11 @@ public class ProiezioneService {
 
         // Se il ciclo finisce senza eccezioni, la sala è libera!
         return proiezioneRepository.save(nuovaProiezione);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Proiezione> findProiezioniByFestivalIdAndData(Long festivalId, LocalDate data) {
+    return this.proiezioneRepository.findByFestivalIdAndData(festivalId, data);
     }
 
 }
