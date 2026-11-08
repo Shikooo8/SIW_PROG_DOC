@@ -1,6 +1,35 @@
-# Sistemi Informativi sul Web
+# SIW Festival
 
 Progetto dato dal docente per il corso di Sistemi Informativi sul Web per la sessione Novembre 2026
+
+## Comandi utili
+
+Esecuzione :
+```sh
+cd siw-festival/
+./mvnw spring-boot:run
+```
+
+Esecuzione test : 
+```sh
+cd siw-festival/
+./mvnw -q test -Dtest=SiwFestivalBenchmarkTest#compareFetchStrategies
+```
+
+### Documentazione API REST
+Per poterlo vedere serve nelle `application.properties`
+```sh
+springdoc.api-docs.enabled=true
+```
+
+**Percorso doc API:** 
+```
+http://localhost:8080/v3/api-docs
+```
+**Percorso Swagger:** 
+```
+http://localhost:8080/swagger-ui/index.html
+```
 
 ## Descrizione Progetto
 
@@ -13,7 +42,7 @@ Il sistema distingue tra utenti generici, utenti registrati e utenti amministrat
 Le visualizzazione delle proiezioni sono gestite da REACT. -> npm run build
 
 
-### Funzionalità pubbliche (finito)
+### Funzionalità pubbliche
 - visualizzazione dell’elenco dei festival
 - visualizzazione del dettaglio di un festival
 - visualizzazione dei film partecipanti a un festival
@@ -23,24 +52,24 @@ Le visualizzazione delle proiezioni sono gestite da REACT. -> npm run build
 - Il dettaglio di un festival deve permettere di accedere ai film e alle proiezioni associate.
 - Il dettaglio di un film deve mostrare almeno le informazioni sul film, il regista, i festival ai quali partecipa, le eventuali proiezioni e le recensioni.
 
-### Funzionalità utenti registrati (finito)
+### Funzionalità utenti registrati
 - inserimento di al massimo una sola recensione per utente relativa a ciascun film
 - modifica di una propria recensione
 - eliminazione di una propria recensione
 
-### Funzionalità riservate all’amministratore (in corso)
+### Funzionalità riservate all’amministratore
 - creazione e modifica di un festival               
 - inserimento e modifica di un film                 
 - inserimento e modifica di un di un attore     
 - associazione di un film a un festival             
 - inserimento e modifica di una sala                 
 - programmazione di una proiezione                  
-- modifica o cancellazione di una proiezione (da controllare)     
+- modifica o cancellazione di una proiezione   
 - eliminazione di un film da un festival 
 Il sistema deve verificare la consistenza delle operazioni effettuate. Ad esempio, non deve essere possibile
 programmare due proiezioni nella stessa sala nello stesso intervallo temporale.
 
-### Funzionalità nuove (fatto)
+### Funzionalità nuove 
 - ogni film ha più attori, ciascuno dei quali interpreta un personaggio (ad es. Marlon Brando nel Film il padrino interpreta il personaggio di don Vito Corleone)
 - un attore può aver recitato in più film, in ogni film interpreta un personaggio
 
@@ -51,15 +80,18 @@ Quando viene modificato e creato un film, il regista sarà una semplice stringa,
 
 ### Obiettivi finali
 Cerchiamo di mantenere tutto con un codice non troppo complesso e leggibile.
-- paginazione (fatto)
-- ricerca e filtri (fatto)
-- ricerca dei film per titolo o genere (fatto)
-- ricerca delle proiezioni per data (da fare)
-- upload di locandine o immagini (fatto)
-- statistiche sulle recensioni (fatto)
-- documentazione delle API REST (fatto?)
-- autenticazione con OAuth (fatto)
+- paginazione
+- ricerca e filtri
+- ricerca dei film per titolo o genere
+- ricerca delle proiezioni per data
+- upload di locandine o immagini
+- statistiche sulle recensioni
+- documentazione delle API REST
+- autenticazione con OAuth 
 - deployment su una piattaforma cloud (caricamento su PI)
+
+
+
 
 ### Stile
 Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
@@ -67,9 +99,7 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 ## Errori attuali
 
 ### Errori importanti
-- In Film/form, da ispezione pagina, posso cambiare il tipo degli input e non è gestito bene e se aggiungo un attore non mi carica più la foto
-- gestione pagine errore 500 e 404
-
+- ...
 
 ### Preferenze da cambiare
 - Mettere una post su react (modifica delle proiezioni direttamente da lì)
@@ -77,7 +107,7 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 - In service ci devono essere transazioni lettura vs scrittura
 - Quando si inseriscono le cose il seq number è a caso (+1 mentre negli insert +50)
 - Le immagini dei Festival sono lunghe e sono inguardabili così
-- Alle immagini vengono dati nomi a caso quando vengono inserite nel databse
+- Cambiare la rinominazione delle foto
 - Date in formato americano 
 - errore in proiezione diverso fra crea e modifica
 - Elenco sale ordinato 
