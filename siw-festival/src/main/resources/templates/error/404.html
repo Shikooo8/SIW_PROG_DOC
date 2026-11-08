@@ -1,17 +1,15 @@
 <!DOCTYPE html>
-
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
-
-    <title>404 – Pagina non trovata</title>
-
-    <link rel="stylesheet" href="/css/style.css" />
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>404 · SiwFestival</title>
+    <!-- qui copia le stesse righe <link> dei font usate nelle altre pagine -->
+    <link rel="stylesheet" th:href="@{/css/stile.css}" />
 </head>
-
 <body>
-
-    <p th:text="${errorMessage}">Pagina non trovata.</p>
-
+    <header th:replace="~{fragments/base.html :: intestazione}"></header>
+    <main th:replace="~{fragments/base.html :: errorBox('404', 'Pagina non trovata', 'La pagina che cerchi non esiste o è stata spostata.')}"></main>
+    <footer th:replace="~{fragments/base.html :: footer}"></footer>
 </body>
-
 </html>

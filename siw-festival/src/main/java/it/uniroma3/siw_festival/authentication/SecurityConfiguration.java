@@ -53,6 +53,8 @@ public class SecurityConfiguration {
     httpSecurity.addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
 
     httpSecurity.authorizeHttpRequests(authorize -> {
+      authorize.requestMatchers("/error", "/error/**").permitAll();
+
       authorize.requestMatchers(HttpMethod.GET, "/", "/fragments", "/api/festivals/**", "/festival/**",
           "/register", "/registerForm", "/uploads/**", "/login", "/css/**", "/images/**", "/react/**", "/attore/**",
           "/attori/**",    "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**",

@@ -694,3 +694,29 @@ input.has-error, select.has-error, textarea.has-error { border-color: var(--dang
 #erroreDialog::backdrop {
   background: rgba(0,0,0,.6);
 }
+
+/* ---------- Pagine di errore ---------- */
+.error-page {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: .75rem;
+  padding: 4rem 1.5rem;
+}
+.error-code {
+  font-family: var(--font-display2);
+  font-size: clamp(5rem, 18vw, 10rem);
+  line-height: 1;
+  margin: 0;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 12px 40px rgba(61, 123, 255, .35));
+}
+.error-title { font-family: var(--font-display); margin: 0; }
+.error-text  { color: var(--text-muted); max-width: 46ch; margin: 0 0 1rem; }
+.error-actions { display: flex; gap: .75rem; flex-wrap: wrap; justify-content: center; }
