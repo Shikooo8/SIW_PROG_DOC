@@ -44,6 +44,9 @@ public class AttoreService {
 
     @Transactional(readOnly = true)
     public List<Attore> cerca(String prefisso) {
+        if (prefisso == null || prefisso.isBlank()) {
+            return List.of();
+        }
         String p = prefisso.trim();
         return attoreRepository
                 .findTop15ByCognomeStartingWithIgnoreCaseOrNomeStartingWithIgnoreCaseOrderByCognomeAscNomeAsc(p, p);
@@ -52,7 +55,7 @@ public class AttoreService {
     @Transactional
     public Attore update(Long id, Attore dati) throws DuplicateAttoreException {
         if (attoreRepository.existsByNomeAndCognomeAndIdNot(dati.getNome(), dati.getCognome(), id)) {
-            throw new DuplicateAttoreException(dati.getNome(),dati.getCognome());
+            throw new DuplicateAttoreException(dati.getNome(), dati.getCognome());
         }
         Attore attore = this.findById(id); // carico quello esistente dal DB
         attore.setNome(dati.getNome());

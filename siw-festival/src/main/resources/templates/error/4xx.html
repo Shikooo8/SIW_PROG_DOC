@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="it" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,9 +8,13 @@
     <!-- qui copia le stesse righe <link> dei font usate nelle altre pagine -->
     <link rel="stylesheet" th:href="@{/css/stile.css}" />
 </head>
+
 <body>
     <header th:replace="~{fragments/base.html :: intestazione}"></header>
-    <main th:replace="~{fragments/base.html :: errorBox('${status} ?: 'Errore'', 'Richiesta non valida', 'Non è stato possiblile completare la sua richiesta.')}"></main>
+    <main
+        th:replace="~{fragments/base.html :: errorBox(${status}, 'Richiesta non valida', 'Non è stato possibile completare la richiesta.')}">
+    </main>
     <footer th:replace="~{fragments/base.html :: footer}"></footer>
 </body>
+
 </html>

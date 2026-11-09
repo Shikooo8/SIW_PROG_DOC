@@ -9,7 +9,7 @@
 </head>
 <body>
     <header th:replace="~{fragments/base.html :: intestazione}"></header>
-    <main th:replace="~{fragments/base.html :: errorBox('${status} ?: 'Errore' ', 'Servizio non disponibile', 'Il server ha avuto un problema. Riprova più tardi.')}"></main>
+    <main th:replace="~{fragments/base.html :: errorBox(${status} , 'Servizio non disponibile', 'Il server ha avuto un problema. Riprova più tardi.')}"></main>
     <footer th:replace="~{fragments/base.html :: footer}"></footer>
 </body>
 </html>

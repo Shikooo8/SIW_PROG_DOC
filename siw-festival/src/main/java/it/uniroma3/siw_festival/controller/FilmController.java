@@ -1,5 +1,7 @@
 package it.uniroma3.siw_festival.controller;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -38,7 +40,8 @@ public class FilmController {
         this.recensioneService = recensioneService;
     }
 
-    // ================================== PUBBLICO ==================================
+    // ================================== PUBBLICO
+    // ==================================
 
     @GetMapping("/film")
     public String list(@RequestParam(defaultValue = "") String q,
@@ -63,7 +66,8 @@ public class FilmController {
         model.addAttribute("utenteLoggato", loggato);
 
         if (loggato) {
-            model.addAttribute("recensioneUtente", recensioneService.findByFilmIdAndUsername(id, authentication.getName()));
+            model.addAttribute("recensioneUtente",
+                    recensioneService.findByFilmIdAndUsername(id, authentication.getName()));
         }
         return "film/show";
     }
@@ -107,11 +111,9 @@ public class FilmController {
 
     // salvataggio (creazione e modifica: se il film ha un id è una modifica)
     @PostMapping("/admin/film")
-    public String salvaFilm(@Valid @ModelAttribute("film") FilmForm form,
-            BindingResult bindingResult,
-            @RequestParam(value = "file", required = false) MultipartFile file,
-            Model model) {
-
+    public String salvaFilm(@Valid @ModelAttribute("film") FilmForm form, BindingResult bindingResult, @RequestParam(value = "file", required = false) MultipartFile file, Model model) {
+        
+        validaCast(form, bindingResult);
         if (bindingResult.hasErrors()) {
             return formView(form, model);
         }
@@ -125,7 +127,28 @@ public class FilmController {
         } catch (ImmagineNonValidaException e) {
             bindingResult.reject("immagine.nonValida");
         }
-        // si arriva qui solo se è stata catturata un'eccezione: rimostra il form con l'errore
+        // si arriva qui solo se è stata catturata un'eccezione: rimostra il form con
+        // l'errore
         return formView(form, model);
+    }
+
+    private void validaCast(FilmForm form, BindingResult bindingResult) {
+        List<InterpretazioneForm> cast = form.getCast();
+        for (int i = 0; i < cast.size(); i++) {
+            InterpretazioneForm riga = cast.get(i);
+            if (riga.isNuovoAttore()) {
+                // nuovo attore: nome e cognome obbligatori
+                if (riga.getNome() == null || riga.getNome().isBlank()) {
+                    bindingResult.rejectValue("cast[" + i + "].nome", "NotBlank", "Campo obbligatorio");
+                }
+                if (riga.getCognome() == null || riga.getCognome().isBlank()) {
+                    bindingResult.rejectValue("cast[" + i + "].cognome", "NotBlank", "Campo obbligatorio");
+                }
+            } else if (riga.getAttoreId() == null) {
+                // attore dall'elenco: ne deve essere stato scelto uno
+                bindingResult.rejectValue("cast[" + i + "].attoreLabel", "attore.mancante",
+                        "Seleziona un attore dall'elenco");
+            }
+        }
     }
 }

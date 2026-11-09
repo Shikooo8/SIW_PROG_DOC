@@ -50,7 +50,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     @ResponseStatus(HttpStatus.PAYLOAD_TOO_LARGE)
     public String handleFileTroppoGrande(Model model) {
-        model.addAttribute("errorMessage", "Il file è troppo grande (massimo 5MB).");
+        model.addAttribute("errorMessage",
+                "La richiesta è troppo grande: riduci i personaggi inseriti o la dimensione dell'immagine.");
         return "error/4xx";
     }
 

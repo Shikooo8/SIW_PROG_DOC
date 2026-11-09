@@ -10,8 +10,10 @@ public class InterpretazioneForm {
     private Long id; // id dell'interpretazione esistente (null se nuova)
     @NotBlank
     private String personaggio;
-    private Long attoreId; // attore scelto dall'elenco, oppure null...
-    private String nome; // ...e allora si usano questi per crearne uno nuovo
+    private Long attoreId; 
+    // @NotBlank
+    private String nome;
+    // @NotBlank 
     private String cognome;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dataNascita;
