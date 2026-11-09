@@ -24,6 +24,6 @@ public interface ProiezioneRepository extends CrudRepository<Proiezione, Long> {
     boolean existsBySalaId(Long salaId);
 
     
-    @Query("SELECT p FROM Proiezione p " +"JOIN FETCH p.film JOIN FETCH p.sala " +"WHERE p.festival.id = :festivalId AND p.data = :data " + "ORDER BY p.ora")
-    List<Proiezione> findByFestivalIdAndData(@Param("festivalId") Long festivalId, @Param("data") LocalDate data); //TODO controlla questi ""
+    @Query("SELECT p FROM Proiezione p JOIN FETCH p.film JOIN FETCH p.sala WHERE p.festival.id = :festivalId AND p.data = :data ORDER BY p.ora")
+    List<Proiezione> findByFestivalIdAndData(@Param("festivalId") Long festivalId, @Param("data") LocalDate data); 
 }

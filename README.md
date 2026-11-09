@@ -102,8 +102,8 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 - ...
 
 ### Preferenze da cambiare
+- Vorrei gestire meglio l'efficenza delle query, in particolare nascoste nel frontend
 - Mettere una post su react (modifica delle proiezioni direttamente da lì)
-- Controllo che tutta la logica applicativa sia nei service e non nei controller.
 - In service ci devono essere transazioni lettura vs scrittura
 - Quando si inseriscono le cose il seq number è a caso (+1 mentre negli insert +50)
 - Le immagini dei Festival sono lunghe e sono inguardabili così
@@ -422,21 +422,21 @@ Lo stile è molto importante, infatti serve dare al progetto una forma moderna.
 *   **`/attore`**
     *   `show.html` ()
 *   **`/authentication`**
-    *   `loginForm.html` (aggiornato)
-    *   `registerForm.html` (aggiornato)
+    *   `loginForm.html` 
+    *   `registerForm.html` 
 *   **`/error`**
     *   `404.html`
     *   `500.html`
 *   **`/festival`**
-    *   `list.html` (aggiornato)
-    *   `show.html` (aggiornato)
+    *   `list.html` 
+    *   `show.html` 
 *   **`/film`**
-    *   `list.html` (aggiornato)
+    *   `list.html` 
     *   `recensioni.html`
-    *   `show.html` (aggiornato)
+    *   `show.html` 
 *   **`/fragments`**
-    *   `base.html` (aggiornato)    
+    *   `base.html`     
 *   **`/recensione`**
-    *   `editForm.html` (aggiornato)
-    *   `form.html` (aggiornato)
+    *   `editForm.html` 
+    *   `form.html` 
 

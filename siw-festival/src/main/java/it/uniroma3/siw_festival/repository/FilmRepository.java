@@ -18,8 +18,7 @@ public interface FilmRepository extends CrudRepository<Film, Long> {
     Film findByIdWithProiezioni(@Param("id") Long id);
 
     @Query("SELECT f FROM Film f LEFT JOIN FETCH f.interpretazioni i LEFT JOIN FETCH i.attore WHERE f.id = :id")
-    Film findByIdWithCast(@Param("id") Long id); // TODO controllare se ha senso e soprattutto inserirla nel controlloer
-                                                 // per fare un EAGER
+    Film findByIdWithCast(@Param("id") Long id);
 
     boolean existsByTitoloAndAnnoAndIdNot(String titolo, Integer anno, Long id);
 

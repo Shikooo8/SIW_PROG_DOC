@@ -38,8 +38,7 @@ public class FilmController {
         this.recensioneService = recensioneService;
     }
 
-    // ================================== PUBBLICO
-    // ==================================
+    // ================================== PUBBLICO ==================================
 
     @GetMapping("/film")
     public String list(@RequestParam(defaultValue = "") String q,
@@ -60,13 +59,11 @@ public class FilmController {
         model.addAttribute("film", filmService.findById(id));
         model.addAttribute("mediaVoti", recensioneService.mediaVoti(id));
 
-        boolean loggato = authentication != null
-                && !(authentication instanceof AnonymousAuthenticationToken);
+        boolean loggato = authentication != null && !(authentication instanceof AnonymousAuthenticationToken);
         model.addAttribute("utenteLoggato", loggato);
 
         if (loggato) {
-            model.addAttribute("recensioneUtente",
-                    recensioneService.findByFilmIdAndUsername(id, authentication.getName()));
+            model.addAttribute("recensioneUtente", recensioneService.findByFilmIdAndUsername(id, authentication.getName()));
         }
         return "film/show";
     }
@@ -74,7 +71,6 @@ public class FilmController {
     // ================================== ADMIN ==================================
     // Un solo form (admin/film/form.html) per creazione e modifica
 
-    // prepara la pagina: i festival già scelti servono per mostrare i badge
     private String formView(FilmForm form, Model model) {
         model.addAttribute("festivalsSelezionati", festivalService.findAllById(form.getFestivalIds()));
         return "admin/film/form";
@@ -94,14 +90,12 @@ public class FilmController {
         return formView(form, model);
     }
 
-    // bottone "Aggiungi personaggio": aggiunge una riga vuota al cast
     @PostMapping("/admin/film/cast/add")
     public String addCast(@ModelAttribute("film") FilmForm form, Model model) {
         form.getCast().add(new InterpretazioneForm());
         return formView(form, model);
     }
 
-    // bottone "Rimuovi": toglie la riga con quell'indice
     @PostMapping("/admin/film/cast/{index}/remove")
     public String removeCast(@ModelAttribute("film") FilmForm form,
             @PathVariable("index") int index, Model model) {
@@ -131,8 +125,7 @@ public class FilmController {
         } catch (ImmagineNonValidaException e) {
             bindingResult.reject("immagine.nonValida");
         }
-        // si arriva qui solo se è stata catturata un'eccezione: rimostra il form con
-        // l'errore
+        // si arriva qui solo se è stata catturata un'eccezione: rimostra il form con l'errore
         return formView(form, model);
     }
 }

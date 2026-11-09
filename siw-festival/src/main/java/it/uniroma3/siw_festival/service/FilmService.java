@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-//import org.slf4j.Logger;
-
-//import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -72,6 +69,7 @@ public class FilmService {
         return (List<Film>) filmRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Long count() {
         return this.filmRepository.count();
     }
@@ -110,8 +108,7 @@ public class FilmService {
         for (InterpretazioneForm riga : form.getCast()) {
             Attore attore = risolviAttore(riga);
             if (!attoriUsati.add(attore.getId())) {
-                throw new CastNonValidoException(
-                        attore.getNome() + " " + attore.getCognome() + " compare più volte nel cast di questo film");
+                throw new CastNonValidoException(attore.getNome() + " " + attore.getCognome() + " compare più volte nel cast di questo film");
             }
             Interpretazione interp = (riga.getId() != null) ? esistenti.get(riga.getId()) : null;
             if (interp == null) {
@@ -122,7 +119,7 @@ public class FilmService {
             interp.setAttore(attore);
             nuovoCast.add(interp);
         }
-        film.getInterpretazioni().clear(); // orphanRemoval cancella quelle non più presenti
+        film.getInterpretazioni().clear();
         film.getInterpretazioni().addAll(nuovoCast);
 
         return filmRepository.save(film); // cascade ALL salva le interpretazioni

@@ -48,15 +48,51 @@ public class Proiezione {
 
 //==================== EQUALS & HASHCODE ==============    
 
-//TODO
 
 
+@Override
+public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((data == null) ? 0 : data.hashCode());
+    result = prime * result + ((ora == null) ? 0 : ora.hashCode());
+    result = prime * result + ((sala == null) ? 0 : sala.hashCode());
+    return result;
+}
+
+@Override
+public boolean equals(Object obj) {
+    if (this == obj)
+        return true;
+    if (obj == null)
+        return false;
+    if (getClass() != obj.getClass())
+        return false;
+    Proiezione other = (Proiezione) obj;
+    if (data == null) {
+        if (other.data != null)
+            return false;
+    } else if (!data.equals(other.data))
+        return false;
+    if (ora == null) {
+        if (other.ora != null)
+            return false;
+    } else if (!ora.equals(other.ora))
+        return false;
+    if (sala == null) {
+        if (other.sala != null)
+            return false;
+    } else if (!sala.equals(other.sala))
+        return false;
+    return true;
+}
 //=================== GETTERS & SETTERS ===============
 
     
     public java.time.LocalDate getData() {
         return data;
     }
+
 
     public void setData(java.time.LocalDate data) {
         this.data = data;

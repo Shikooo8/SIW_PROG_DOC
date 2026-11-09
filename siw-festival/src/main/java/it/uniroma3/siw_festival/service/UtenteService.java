@@ -20,19 +20,13 @@ public class UtenteService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Utente getUtente(Long id){
-        //TODO
-        return null;
-    }    
-
-
     @Transactional
     public Utente registra(Utente utente) {
         if (utenteRepository.existsByUsername(utente.getUsername())) {
             throw new DuplicateUtenteException(utente.getUsername());
         }
-        utente.setPassword(passwordEncoder.encode(utente.getPassword())); // MAI salvare in chiaro
-        utente.setRuolo(Utente.USER_ROLE); // il ruolo   NON arriva mai dal form: lo decide il server
+        utente.setPassword(passwordEncoder.encode(utente.getPassword())); 
+        utente.setRuolo(Utente.USER_ROLE); 
         return utenteRepository.save(utente);
     }
 
